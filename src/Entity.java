@@ -5,9 +5,9 @@ public abstract class Entity {
     String description;
     List<Entity> inventory;
 
-    public abstract void addItem(Entity item);
+    public abstract void addItemToInventory(Entity item);
 
-    public abstract void removeItem(Entity item);
+    public abstract void removeItemFromInventory(Entity item);
 
     @Override
     public abstract String toString();
