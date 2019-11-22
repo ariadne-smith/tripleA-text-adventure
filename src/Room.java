@@ -4,28 +4,32 @@ import java.util.List;
 
 public class Room {
 
-String name;
-String description;
-String story;
-Boolean playerFirstArrives;
-Room[] connections = new Room[6]; //n s e w in out
-List<Entity> characterList;
-List<Entity> itemList;
+    private String name;
+    private String description;
+    private String story;
+    private Boolean playerFirstArrives;
+    private Room[] connections = new Room[6]; //n s e w in out
+    private List<Entity> characterList;
+    private List<Entity> itemList;
 
-public Room(String name){
-    this.name = name;
-    this.description = null;
-    this.story = null;
-    this.playerFirstArrives = true;
-}
+    public Room(String name) {
+        this.name = name;
+        this.description = null;
+        this.story = null;
+        this.playerFirstArrives = true;
+    }
 
-void addItemToRoom(){}
+    void addItemToRoom() {
+    }
 
-void removeItemFromRoom(){}
+    void removeItemFromRoom() {
+    }
 
-void addCharacter(){}
+    void addCharacter() {
+    }
 
-void removeCharacter(){}
+    void removeCharacter() {
+    }
 
     public Room[] getConnections() {
         //return connections;
