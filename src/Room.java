@@ -19,16 +19,20 @@ public class Room {
         this.playerFirstArrives = true;
     }
 
-    void addItemToRoom() {
+    void addItemToRoom(Item item) {
+        itemList.add(item);
     }
 
-    void removeItemFromRoom() {
+    void removeItemFromRoom(Item item) {
+        itemList.remove(item);
     }
 
-    void addCharacter() {
+    void addCharacter(Character c) {
+        characterList.add(c);
     }
 
-    void removeCharacter() {
+    void removeCharacter(Character c) {
+        characterList.remove(c);
     }
 
     public Room[] getConnections() {
