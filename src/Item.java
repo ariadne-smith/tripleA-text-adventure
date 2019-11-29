@@ -1,13 +1,13 @@
 import java.util.List;
 
-public class Character extends Entity{
+public class Item extends Entity {
 
-    public Character(String name, String description, List<Entity> inventory) {
+    public Item (String name, String description, List<Entity> inventory){
         this.name = name;
         this.description = description;
         this.inventory = inventory;
     }
-    
+
     @Override
     public void addItemToInventory(Entity item) {
         inventory.add(item);
@@ -22,6 +22,4 @@ public class Character extends Entity{
     public String toString() {
         return "This is " + name + ". " + description;
     }
-
-
 }
