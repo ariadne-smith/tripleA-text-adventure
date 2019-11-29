@@ -9,6 +9,10 @@ public abstract class Entity {
 
     public abstract void removeItemFromInventory(Entity item);
 
+    public abstract String getInventoryList();
+
+    public abstract String getDescription();
+
     @Override
     public abstract String toString();
 

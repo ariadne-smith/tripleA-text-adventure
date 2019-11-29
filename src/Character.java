@@ -23,5 +23,18 @@ public class Character extends Entity{
         return "This is " + name + ". " + description;
     }
 
+    public String getInventoryList() {
+        String result = "";
+        for (Entity item : inventory){
+            result = result + " " + item.getDescription();
+        }
+        return result;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
 
 }

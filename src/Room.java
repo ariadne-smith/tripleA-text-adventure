@@ -26,6 +26,7 @@ public class Room {
     }
 
     void addCharacter() {
+
     }
 
     void removeCharacter() {

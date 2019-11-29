@@ -19,6 +19,20 @@ public class Item extends Entity {
     }
 
     @Override
+    public String getInventoryList() {
+        String result = "";
+        for (Entity item : inventory){
+            result = result + " " + item.getDescription();
+        }
+        return result;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
+    @Override
     public String toString() {
         return "This is " + name + ". " + description;
     }
