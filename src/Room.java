@@ -1,5 +1,3 @@
-import java.lang.reflect.Array;
-import java.util.Collections;
 import java.util.List;
 
 public class Room {
@@ -19,6 +17,16 @@ public class Room {
         this.playerFirstArrives = true;
     }
 
+    public Room(String name, Room north, Room south, Room east, Room west, Room in, Room out){
+        this(name);
+        connections[0] = north;
+        connections[1] = south;
+        connections[2] = east;
+        connections[3] = west;
+        connections[4] = in;
+        connections[5] = out;
+    }
+
     void addItemToRoom(Item item) {
         itemList.add(item);
     }
@@ -33,6 +41,38 @@ public class Room {
 
     void removeCharacter(Character c) {
         characterList.remove(c);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getStory() {
+        return story;
+    }
+
+    public void setStory(String story) {
+        this.story = story;
+    }
+
+    public Boolean getPlayerFirstArrives() {
+        return playerFirstArrives;
+    }
+
+    public void setPlayerFirstArrives(Boolean playerFirstArrives) {
+        this.playerFirstArrives = playerFirstArrives;
     }
 
     public Room[] getConnections() {
