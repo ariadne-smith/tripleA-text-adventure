@@ -69,7 +69,7 @@ public class TextAdventure {
     public void startGame(){
         Scanner in = new Scanner(System.in);
         String result = in.nextLine().trim().toLowerCase();
-        rooms.get(0).addCharacter(); //add user to first room
+        rooms.get(0).addCharacter(user);
         //handle commands
         if (!doCommand(result)) {
             System.out.println("Invalid command");
@@ -79,17 +79,25 @@ public class TextAdventure {
     public boolean doCommand (String command){
         command = command.toLowerCase().trim();
         if (commands.contains(command)){
-            if(commands.equals("show inventory")){
+            if(command.equals("show inventory")){
                 System.out.println(user.getInventoryList());
             }
-            if (commands.equals("go") && rooms.indexOf(currentRoom) < rooms.size() -1){
-                currentRoom = rooms.get(rooms.indexOf(currentRoom) + 1);
-                //TODO Remove the user from the previous room's inventory and add it to the current room's inventory, and
-                // print new room description
+            if (command.equals("go") && rooms.indexOf(currentRoom) < rooms.size() -1){
+                moveUserTo(rooms.get(rooms.indexOf(currentRoom) + 1));
             }
             return true;
         }
         else return false;
+    }
+
+    public void moveUserTo (Room room){
+        currentRoom = rooms.get(rooms.indexOf(currentRoom) + 1);
+        currentRoom.addCharacter(user);
+        rooms.get(rooms.indexOf(currentRoom) - 1).removeCharacter(user);
+        if(currentRoom.getPlayerFirstArrives()){
+            System.out.println(currentRoom.getStory());
+        }
+        System.out.println((currentRoom.getDescription()));
     }
 
     public void addCommand(String command){
