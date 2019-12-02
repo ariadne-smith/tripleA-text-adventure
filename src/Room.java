@@ -96,6 +96,7 @@ public class Room {
         return itemList;
     }
 
+
     public void setItemList(List<Entity> itemList) {
         this.itemList = itemList;
     }

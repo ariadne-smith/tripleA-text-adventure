@@ -23,7 +23,7 @@ public class TextAdventure {
     private List<Room> rooms;
     private Room currentRoom;
 
-    public TextAdventure (String story, ArrayList<String> commands, ArrayList rooms){
+    public TextAdventure (String story, ArrayList<String> commands, ArrayList<Room> rooms){
         this.story = story;
         this.commands = commands;
         this.rooms = rooms;
@@ -82,8 +82,11 @@ public class TextAdventure {
             if(command.equals("show inventory")){
                 System.out.println(user.getInventoryList());
             }
-            if (command.equals("go") && rooms.indexOf(currentRoom) < rooms.size() -1){
-                moveUserTo(rooms.get(rooms.indexOf(currentRoom) + 1));
+            if (command.indexOf("go") > 0){
+                handleGo(command);
+            }
+            if(command.indexOf("open") > 0){
+                handleOpen(command);
             }
             return true;
         }
@@ -91,9 +94,9 @@ public class TextAdventure {
     }
 
     public void moveUserTo (Room room){
-        currentRoom = rooms.get(rooms.indexOf(currentRoom) + 1);
+        currentRoom.removeCharacter(user);
+        currentRoom = room;
         currentRoom.addCharacter(user);
-        rooms.get(rooms.indexOf(currentRoom) - 1).removeCharacter(user);
         if(currentRoom.getPlayerFirstArrives()){
             System.out.println(currentRoom.getStory());
         }
@@ -102,6 +105,38 @@ public class TextAdventure {
 
     public void addCommand(String command){
         commands.add(command);
+    }
+
+    private void handleGo(String command){
+        String direction = command.substring(command.indexOf("go"));
+        direction = direction.toLowerCase().trim();
+        if (direction.equals("north") && currentRoom.getConnections()[0] != null){
+            moveUserTo(currentRoom.getConnections()[0]);
+        }
+        if (direction.equals("south") && currentRoom.getConnections()[1] != null){
+            moveUserTo(currentRoom.getConnections()[1]);
+        }
+        if (direction.equals("east") && currentRoom.getConnections()[2] != null){
+            moveUserTo(currentRoom.getConnections()[2]);
+        }
+        if (direction.equals("west") && currentRoom.getConnections()[3] != null){
+            moveUserTo(currentRoom.getConnections()[3]);
+        }
+        if (direction.equals("in") && currentRoom.getConnections()[4] != null){
+            moveUserTo(currentRoom.getConnections()[4]);
+        }
+        if (direction.equals("out") && currentRoom.getConnections()[5] != null){
+            moveUserTo(currentRoom.getConnections()[5]);
+        }
+        else{
+            System.out.println("Cannot do that. Try again.");
+        }
+    }
+
+    private void handleOpen (String command){
+        String item = command.substring(command.indexOf("open"));
+        item = item.trim().toLowerCase();
+        if(currentRoom.getItemList().contains(item));
     }
 
 }
