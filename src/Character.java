@@ -18,6 +18,14 @@ public class Character extends Entity{
         inventory.remove(item);
     }
 
+    public String getName(){
+        return this.name;
+    }
+
+    public void setName(String newName){
+        this.name = newName;
+    }
+
     @Override
     public String toString() {
         return "This is " + name + ". " + description;
@@ -36,5 +44,8 @@ public class Character extends Entity{
         return description;
     }
 
+    public void setDescription(String desc){
+        this.description = desc;
+    }
 
 }

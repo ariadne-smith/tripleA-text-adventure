@@ -134,9 +134,28 @@ public class TextAdventure {
     }
 
     private void handleOpen (String command){
-        String item = command.substring(command.indexOf("open"));
-        item = item.trim().toLowerCase();
-        if(currentRoom.getItemList().contains(item));
+        String itemName = command.substring(command.indexOf("open"));
+        itemName = itemName.trim().toLowerCase();
+        Item itemFound = currentRoom.containsItemOfName(itemName);
+        if(itemFound != null){
+            if(itemFound.isOpenable){
+                //handle open
+                if(itemFound.isOpen){
+                    //already open
+                    System.out.println("It's already open!");
+                } else {
+                    //it's not open, so open it
+                    itemFound.setOpen(true);
+                    itemFound.describeContents();
+                }
+            } else {
+                //is not openable
+                System.out.println("You can't open this.");
+            }
+        } else {
+            //no such item found
+            System.out.println("That doesn't exist here.");
+        }
     }
 
 }

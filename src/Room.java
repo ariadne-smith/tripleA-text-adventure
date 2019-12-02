@@ -8,7 +8,7 @@ public class Room {
     private Boolean playerFirstArrives;
     private Room[] connections = new Room[6]; //n s e w in out
     private List<Entity> characterList;
-    private List<Entity> itemList;
+    private List<Item> itemList;
 
     public Room(String name) {
         this.name = name;
@@ -92,12 +92,21 @@ public class Room {
         this.characterList = characterList;
     }
 
-    public List<Entity> getItemList() {
+    public List<Item> getItemList() {
         return itemList;
     }
 
-
-    public void setItemList(List<Entity> itemList) {
+    public void setItemList(List<Item> itemList) {
         this.itemList = itemList;
     }
+
+    public Item containsItemOfName(String itemName){
+        for(Item i: itemList){
+            if(i.getName().equals(itemName)){
+                return i;
+            }
+        }
+        return null;
+    }
+
 }

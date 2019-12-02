@@ -13,6 +13,8 @@ public abstract class Entity {
 
     public abstract String getDescription();
 
+    public abstract String getName();
+
     @Override
     public abstract String toString();
 
