@@ -2,12 +2,14 @@ import java.util.List;
 
 public class Character extends Entity{
 
+    //private List<Entity> inventory;
+
     public Character(String name, String description, List<Entity> inventory) {
         this.name = name;
         this.description = description;
         this.inventory = inventory;
     }
-    
+
     @Override
     public void addItemToInventory(Entity item) {
         inventory.add(item);

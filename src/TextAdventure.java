@@ -108,7 +108,7 @@ public class TextAdventure {
     }
 
     private void handleGo(String command){
-        String direction = command.substring(command.indexOf("go"));
+        String direction = command.substring(command.indexOf("go" + 2));
         direction = direction.toLowerCase().trim();
         if (direction.equals("north") && currentRoom.getConnections()[0] != null){
             moveUserTo(currentRoom.getConnections()[0]);
@@ -134,9 +134,9 @@ public class TextAdventure {
     }
 
     private void handleOpen (String command){
-        String itemName = command.substring(command.indexOf("open"));
+        String itemName = command.substring(command.indexOf("open" + 4));
         itemName = itemName.trim().toLowerCase();
-        Item itemFound = currentRoom.containsItemOfName(itemName);
+        Item itemFound = (Item) currentRoom.containsItemOfName(itemName);
         if(itemFound != null){
             if(itemFound.isOpenable){
                 //handle open
@@ -159,17 +159,31 @@ public class TextAdventure {
     }
 
     private void handlePickUp (String command){
-        String itemName = command.substring(command.indexOf("pick up"));
+        String itemName = command.substring(command.indexOf("pick up" + 7));
         itemName = itemName.toLowerCase().trim();
         if(user.containsItemOfName(itemName) != null){
             System.out.println("You already picked that up.");
         }
         else if(currentRoom.containsItemOfName(itemName) != null){
-            Item item = currentRoom.containsItemOfName(itemName);
+            Entity item = currentRoom.containsItemOfName(itemName);
             user.addItemToInventory(item);
-            currentRoom.removeItemFromRoom(item);
+            currentRoom.removeItemFromRoom((Item) item);
+            System.out.println("You picked up the " + itemName);
         } else{
             System.out.println("You cannot pick that item up or it does not exist.");
+        }
+    }
+
+    private void handleDrop (String command){
+        String itemName = command.substring(command.indexOf("drop" + 4));
+        itemName = itemName.toLowerCase().trim();
+        if(user.containsItemOfName(itemName) != null){
+            Entity item = user.containsItemOfName(itemName);
+            currentRoom.addItemToRoom((Item) item);
+            user.removeItemFromInventory(item);
+            System.out.println("You dropped the "+ itemName);
+        } else {
+            System.out.println("You don't have that on you.");
         }
     }
 
