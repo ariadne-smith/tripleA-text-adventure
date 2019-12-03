@@ -103,6 +103,6 @@ public class Item extends Entity {
 
     @Override
     public String toString() {
-        return "This is " + name + ". " + description;
+        return "This is " + name + ". " + description + " " + isOpen + " " + isOpenable;
     }
 }
