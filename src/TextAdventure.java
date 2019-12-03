@@ -61,7 +61,7 @@ public class TextAdventure {
 
         TextAdventure adventure = new TextAdventure("Once upon a time", commands, rooms);
 
-        while (5 + 5 == 10) {
+        while (true) {
             adventure.startGame();
         }
     }
@@ -69,7 +69,8 @@ public class TextAdventure {
     public void startGame(){
         Scanner in = new Scanner(System.in);
         String result = in.nextLine().trim().toLowerCase();
-        rooms.get(0).addCharacter(user);
+//        rooms.get(0).addCharacter(user);
+//        System.out.println(rooms.get(0).getStory());
         //handle commands
         if (!doCommand(result)) {
             System.out.println("Invalid command");
@@ -99,6 +100,7 @@ public class TextAdventure {
         currentRoom.addCharacter(user);
         if(currentRoom.getPlayerFirstArrives()){
             System.out.println(currentRoom.getStory());
+            currentRoom.setPlayerFirstArrives(false);
         }
         System.out.println((currentRoom.getDescription()));
     }
@@ -170,7 +172,7 @@ public class TextAdventure {
             currentRoom.removeItemFromRoom((Item) item);
             System.out.println("You picked up the " + itemName);
         } else{
-            System.out.println("You cannot pick that item up or it does not exist.");
+            System.out.println("That doesn't exist here.");
         }
     }
 

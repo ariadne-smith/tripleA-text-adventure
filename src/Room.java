@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Room {
@@ -15,6 +16,8 @@ public class Room {
         this.description = null;
         this.story = null;
         this.playerFirstArrives = true;
+        itemList = new ArrayList<>();
+        characterList = new ArrayList<>();
     }
 
     public Room(String name, Room north, Room south, Room east, Room west, Room in, Room out){

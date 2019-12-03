@@ -17,8 +17,8 @@ public class ThreeLittlePigs {
         Room house3 = new Room("The Brick House");
         house3.setStory("You decide to look for some more food and continue on to the next neighborhood, filled with " +
                 "brick houses. You sniff the air and have a good feeling about a house up ahead...\n");
-        house3.setDescription("Here is the site of the brick house.");
-        Room chimney = new Room("Chimney");
+        house3.setDescription("Here is the site of the brick house. You can see a chimney. ");
+        Room house3Inside = new Room("Inside the brick house.");
 
 
     }
