@@ -34,9 +34,18 @@ public class Character extends Entity{
     public String getInventoryList() {
         String result = "";
         for (Entity item : inventory){
-            result = result + " " + item.getDescription();
+            result = result + " " + name + "\n" + item.getDescription() + "\n";
         }
         return result;
+    }
+
+    public Entity containsItemOfName(String itemName){
+        for(Entity item : inventory){
+            if(itemName.equals(item.getName().toLowerCase())){
+                return item;
+            }
+        }
+        return null;
     }
 
     @Override

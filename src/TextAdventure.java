@@ -158,4 +158,19 @@ public class TextAdventure {
         }
     }
 
+    private void handlePickUp (String command){
+        String itemName = command.substring(command.indexOf("pick up"));
+        itemName = itemName.toLowerCase().trim();
+        if(user.containsItemOfName(itemName) != null){
+            System.out.println("You already picked that up.");
+        }
+        else if(currentRoom.containsItemOfName(itemName) != null){
+            Item item = currentRoom.containsItemOfName(itemName);
+            user.addItemToInventory(item);
+            currentRoom.removeItemFromRoom(item);
+        } else{
+            System.out.println("You cannot pick that item up or it does not exist.");
+        }
+    }
+
 }

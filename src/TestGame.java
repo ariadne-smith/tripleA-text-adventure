@@ -38,16 +38,18 @@ public class TestGame {
         Item pen, knife, box;
         pen = new Item("pen", "a ballpoint pen", null);
         knife = new Item("knife", "a sharp knife", null);
-        box = new Item("box", "a cardboard box", List.of(pen));
+        box = new Item("box", "a cardboard box", List.of(pen), true, false);
 
         room4.addItemToRoom(box);
         room3.addItemToRoom(knife);
 
-        ArrayList<String> commands = new ArrayList<String>(List.of("go", "show inventory", "pick up", "drop", "talk", "open"));
+        ArrayList<String> commands = new ArrayList<String>(List.of("go", "show inventory", "pick up", "drop", "open"));
         ArrayList<Room> rooms = new ArrayList<Room>(List.of(room1, room2, room3, room4, room5, room6));
 
         TextAdventure testGame = new TextAdventure("This is a test game! Have fun.", commands,rooms);
         testGame.startGame();
+
+
 
     }
 }
