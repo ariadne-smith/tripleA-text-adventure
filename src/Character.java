@@ -1,8 +1,9 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Character extends Entity{
 
-    //private List<Entity> inventory;
+    private List<Entity> inventory;
 
     public Character(String name, String description, List<Entity> inventory) {
         this.name = name;
@@ -12,7 +13,11 @@ public class Character extends Entity{
 
     @Override
     public void addItemToInventory(Entity item) {
-        inventory.add(item);
+        if(inventory == null){
+            inventory = new ArrayList<>(List.of(item));
+        } else {
+            inventory.add(item);
+        }
     }
 
     @Override
@@ -36,15 +41,24 @@ public class Character extends Entity{
     public String getInventoryList() {
         String result = "";
         for (Entity item : inventory){
-            result = result + " " + name + "\n" + item.getDescription() + "\n";
+            result = result + " " + item.getName();
+            if(item.getDescription()!= null){
+                result = result + "\n" + item.getDescription() + "\n";
+            }
         }
         return result;
     }
 
     public Entity containsItemOfName(String itemName){
+        if (inventory == null){
+            return null;
+        }
         for(Entity item : inventory){
             if(itemName.equals(item.getName().toLowerCase())){
                 return item;
+            }
+            if(item.containsItemOfName(itemName) != null){
+
             }
         }
         return null;

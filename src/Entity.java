@@ -15,6 +15,8 @@ public abstract class Entity {
 
     public abstract String getName();
 
+    public abstract Entity containsItemOfName(String itemName);
+
     @Override
     public abstract String toString();
 

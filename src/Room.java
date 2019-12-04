@@ -34,7 +34,7 @@ public class Room {
         itemList.add(item);
     }
 
-    void removeItemFromRoom(Item item) {
+    void removeItemFromRoom(Entity item) {
         itemList.remove(item);
     }
 
@@ -99,6 +99,21 @@ public class Room {
         return itemList;
     }
 
+    public String getItemListDescription(){
+        if(itemList == null || itemList.isEmpty()){
+            return "There is nothing to see in this room.";
+        } else{
+            String result = "In this room, you can see: \n";
+            for (Entity item : itemList){
+                result = result + "a(n) " + item.getName();
+                if(item.getDescription()!= null){
+                    result = result + ", " + item.getDescription() + "\n";
+                }
+            }
+            return result;
+        }
+    }
+
     public void setItemList(List<Entity> itemList) {
         this.itemList = itemList;
     }
@@ -108,8 +123,64 @@ public class Room {
             if(i.getName().equals(itemName)){
                 return i;
             }
+            if (i.containsItemOfName(itemName) != null){
+                return i.containsItemOfName(itemName);
+            }
         }
         return null;
+    }
+
+    public String indexToDirection(int index){
+        if(index == 0){
+            return "north";
+        }
+        if(index == 1){
+            return "south";
+        }
+        if(index == 2){
+            return "east";
+        }
+        if(index == 3){
+            return "west";
+        }
+        if(index == 4){
+            return "in";
+        }
+        if(index == 5){
+            return "out";
+        }
+        else return null;
+    }
+
+    /**
+     * Returns a description of the possible directions to go from a room.
+     * @return
+     */
+
+    public String getConnectionsDescription (){
+        String result = "You may go ";
+        if (connections == null){
+            result = "You may not move.";
+            return result;
+        }
+        for(int i = 0; i < connections.length; i ++){
+            if (connections[i] != null){
+                if(connections.length > 2){
+                    result = result + indexToDirection(i) +  ", ";
+                }
+                else if (connections.length == 2){
+                    result = result + indexToDirection(i)+  "and " + indexToDirection(i + 1) + ".";
+                    break;
+                }
+                else{
+                    result = result + indexToDirection(i);
+                }
+            }
+        }
+        if (result.endsWith(", ")){
+            result = result.substring(0, result.length()-2) + ".";
+        }
+        return result;
     }
 
 }

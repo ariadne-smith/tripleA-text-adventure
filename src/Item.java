@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Item extends Entity {
@@ -23,7 +24,11 @@ public class Item extends Entity {
 
     @Override
     public void addItemToInventory(Entity item) {
-        inventory.add(item);
+        if(inventory == null){
+            inventory = new ArrayList<>(List.of(item));
+        } else {
+            inventory.add(item);
+        }
     }
 
     @Override
@@ -62,7 +67,7 @@ public class Item extends Entity {
 
     @Override
     public String getDescription() {
-        return null;
+        return description;
     }
 
     public boolean isOpenable() {
@@ -99,6 +104,19 @@ public class Item extends Entity {
 
     public void setInventory(List<Entity> inventory) {
         this.inventory = inventory;
+    }
+
+    public Entity containsItemOfName(String itemName){
+        if (inventory == null){
+            return null;
+        } else {
+            for (Entity item : inventory) {
+                if (itemName.equals(item.getName().toLowerCase())) {
+                    return item;
+                }
+            }
+            return null;
+        }
     }
 
     @Override
