@@ -1,12 +1,12 @@
-import comp127graphics.ui.TextField;
-
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestGame {
+
     public static void main(String[] args) {
         Room room1, room2, room3, room4, room5, room6;
+        Character user = new Character("Player","You are the player.", List.of());
+
         room1 = new Room("Room 1");
         room1.setDescription("This is the first room.");
         room1.setStory("Once upon a time . . .");
@@ -43,16 +43,19 @@ public class TestGame {
         room4.addItemToRoom(box);
         room3.addItemToRoom(knife);
 
-        ArrayList<String> commands = new ArrayList<String>(List.of("go", "show inventory", "pick up", "drop", "open"));
-        ArrayList<Room> rooms = new ArrayList<Room>(List.of(room1, room2, room3, room4, room5, room6));
+        ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open"));
+        ArrayList<Room> rooms = new ArrayList<>(List.of(room1, room2, room3, room4, room5, room6));
 
         TextAdventure testGame = new TextAdventure("This is a test game! Have fun.", commands,rooms);
 
         System.out.println(rooms.get(0).getStory());
+        System.out.println(rooms.get(0).getDescription());
         rooms.get(0).addCharacter(user);
+        System.out.println("> ");
 
-        while(true) {
-            testGame.startGame();
+        String input = TextAdventure.scanner.nextLine().toLowerCase().trim();
+        while(!input.equalsIgnoreCase("quit game")) {
+            testGame.runGame(input);
         }
 
 

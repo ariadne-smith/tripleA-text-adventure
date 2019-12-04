@@ -2,11 +2,8 @@
 import comp127graphics.CanvasWindow;
 import comp127graphics.FontStyle;
 import comp127graphics.GraphicsText;
-import comp127graphics.ui.Button;
 import comp127graphics.ui.TextField;
 
-import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -22,6 +19,7 @@ public class TextAdventure {
     private Character user;
     private List<Room> rooms;
     private Room currentRoom;
+    public static Scanner scanner;
 
     public TextAdventure (String story, ArrayList<String> commands, ArrayList<Room> rooms){
         this.story = story;
@@ -29,6 +27,7 @@ public class TextAdventure {
         this.rooms = rooms;
         currentRoom = (Room) rooms.get(0);
         user = new Character("Wolf", "A big bad wolf",null);
+        scanner = new Scanner(System.in);
 
         title = new GraphicsText();
         title.setText("The Three Little Pigs");
@@ -61,29 +60,35 @@ public class TextAdventure {
 
         TextAdventure adventure = new TextAdventure("Once upon a time", commands, rooms);
 
+        String userInput = scanner.nextLine().trim().toLowerCase();
         while (true) {
-            adventure.startGame();
+            adventure.runGame(userInput);
         }
     }
 
-    public void startGame(){
-        Scanner in = new Scanner(System.in);
-        String result = in.nextLine().trim().toLowerCase();
-//        rooms.get(0).addCharacter(user);
-//        System.out.println(rooms.get(0).getStory());
+    public void runGame(String input){
+        //String result = scanner.nextLine().trim().toLowerCase();
+        //rooms.get(0).addCharacter(user);
+        //System.out.println(rooms.get(0).getStory());
         //handle commands
-        if (!doCommand(result)) {
+        //System.out.println("[in runGame] your input is: [" + input + "]");
+        if (!doCommand(input)) {
             System.out.println("Invalid command");
+            System.out.println("> ");
+        } else{
+            doCommand(input);
+            System.out.println("> ");
         }
+        input = scanner.nextLine();
     }
 
     public boolean doCommand (String command){
-        command = command.toLowerCase().trim();
+        //command = command.toLowerCase().trim();
         if (commands.contains(command)){
             if(command.equals("show inventory")){
                 System.out.println(user.getInventoryList());
             }
-            if (command.indexOf("go") > 0){
+            if(command.indexOf("go") > 0){
                 handleGo(command);
             }
             if(command.indexOf("open") > 0){
@@ -110,6 +115,7 @@ public class TextAdventure {
     }
 
     private void handleGo(String command){
+        //System.out.println(command.indexOf("go"));
         String direction = command.substring(command.indexOf("go" + 2));
         direction = direction.toLowerCase().trim();
         if (direction.equals("north") && currentRoom.getConnections()[0] != null){
