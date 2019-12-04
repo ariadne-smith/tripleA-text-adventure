@@ -53,11 +53,14 @@ public class TestGame {
         rooms.get(0).addCharacter(user);
         System.out.println("> ");
 
-        String input = TextAdventure.scanner.nextLine().toLowerCase().trim();
-        while(!input.equalsIgnoreCase("quit game")) {
-            testGame.runGame(input);
-        }
+//        String input = TextAdventure.scanner.nextLine().toLowerCase().trim();
+//        while(!input.equalsIgnoreCase("quit game")) {
+//            testGame.runGame(input)l;
+//        }
 
+       while(TextAdventure.scanner.hasNext()){
+           testGame.runGame(TextAdventure.scanner.nextLine());
+       }
 
 
     }

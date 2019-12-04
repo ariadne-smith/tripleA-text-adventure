@@ -21,12 +21,12 @@ public class TextAdventure {
     private Room currentRoom;
     public static Scanner scanner;
 
-    public TextAdventure (String story, ArrayList<String> commands, ArrayList<Room> rooms){
+    public TextAdventure(String story, ArrayList<String> commands, ArrayList<Room> rooms) {
         this.story = story;
         this.commands = commands;
         this.rooms = rooms;
         currentRoom = (Room) rooms.get(0);
-        user = new Character("Wolf", "A big bad wolf",null);
+        user = new Character("Wolf", "A big bad wolf", null);
         scanner = new Scanner(System.in);
 
         title = new GraphicsText();
@@ -38,7 +38,7 @@ public class TextAdventure {
         history = new GraphicsText();
         history.setText(story);
         history.setFont(FontStyle.PLAIN, 15);
-        
+
 
         input = new TextField();
         input.setCenter(400, 700);
@@ -48,9 +48,9 @@ public class TextAdventure {
     }
 
     public static void main(String[] args) {
-        Room room1 = new Room ("Room 1");
+        Room room1 = new Room("Room 1");
         ArrayList<Room> rooms = new ArrayList<>();
-        Room room2 = new Room ("Room 2");
+        Room room2 = new Room("Room 2");
         rooms.add(room1);
         rooms.add(room2);
 
@@ -66,7 +66,7 @@ public class TextAdventure {
         }
     }
 
-    public void runGame(String input){
+    public void runGame(String input) {
         //String result = scanner.nextLine().trim().toLowerCase();
         //rooms.get(0).addCharacter(user);
         //System.out.println(rooms.get(0).getStory());
@@ -75,80 +75,85 @@ public class TextAdventure {
         if (!doCommand(input)) {
             System.out.println("Invalid command");
             System.out.println("> ");
-        } else{
-            doCommand(input);
+        } else {
+//            doCommand(input);
             System.out.println("> ");
         }
         input = scanner.nextLine();
     }
 
-    public boolean doCommand (String command){
-        //command = command.toLowerCase().trim();
-        if (commands.contains(command)){
-            if(command.equals("show inventory")){
-                System.out.println(user.getInventoryList());
-            }
-            if(command.indexOf("go") > 0){
-                handleGo(command);
-            }
-            if(command.indexOf("open") > 0){
-                handleOpen(command);
-            }
+    public boolean doCommand(String command) {
+        command = command.toLowerCase().trim();
+        if (command.contains("show inventory")) {
+            System.out.println(user.getInventoryList());
             return true;
         }
-        else return false;
+        if (command.contains("go")) {
+            handleGo(command);
+            return true;
+        }
+        if (command.contains("open")) {
+            handleOpen(command);
+            return true;
+        }
+        if (command.contains("pick up")) {
+            handlePickUp(command);
+            return true;
+        }
+        if (command.contains("drop")) {
+            handlePickUp(command);
+            return true;
+        } else return false;
     }
 
-    public void moveUserTo (Room room){
+    public void moveUserTo(Room room) {
         currentRoom.removeCharacter(user);
         currentRoom = room;
         currentRoom.addCharacter(user);
-        if(currentRoom.getPlayerFirstArrives()){
+        if (currentRoom.getPlayerFirstArrives()) {
             System.out.println(currentRoom.getStory());
             currentRoom.setPlayerFirstArrives(false);
         }
         System.out.println((currentRoom.getDescription()));
     }
 
-    public void addCommand(String command){
+    public void addCommand(String command) {
         commands.add(command);
     }
 
-    private void handleGo(String command){
-        //System.out.println(command.indexOf("go"));
-        String direction = command.substring(command.indexOf("go" + 2));
+    private void handleGo(String command) {
+        String direction = command.substring(command.indexOf("go") + 2);
         direction = direction.toLowerCase().trim();
-        if (direction.equals("north") && currentRoom.getConnections()[0] != null){
+        if (direction.contains("north") && currentRoom.getConnections()[0] != null) {
             moveUserTo(currentRoom.getConnections()[0]);
         }
-        if (direction.equals("south") && currentRoom.getConnections()[1] != null){
+        if (direction.contains("south") && currentRoom.getConnections()[1] != null) {
             moveUserTo(currentRoom.getConnections()[1]);
         }
-        if (direction.equals("east") && currentRoom.getConnections()[2] != null){
+        if (direction.contains("east") && currentRoom.getConnections()[2] != null) {
             moveUserTo(currentRoom.getConnections()[2]);
         }
-        if (direction.equals("west") && currentRoom.getConnections()[3] != null){
+        if (direction.contains("west") && currentRoom.getConnections()[3] != null) {
             moveUserTo(currentRoom.getConnections()[3]);
         }
-        if (direction.equals("in") && currentRoom.getConnections()[4] != null){
+        if (direction.contains("in") && currentRoom.getConnections()[4] != null) {
             moveUserTo(currentRoom.getConnections()[4]);
         }
-        if (direction.equals("out") && currentRoom.getConnections()[5] != null){
+        if (direction.contains("out") && currentRoom.getConnections()[5] != null) {
             moveUserTo(currentRoom.getConnections()[5]);
-        }
-        else{
+        } else {
             System.out.println("Cannot do that. Try again.");
         }
     }
 
-    private void handleOpen (String command){
+    private void handleOpen(String command) {
         String itemName = command.substring(command.indexOf("open" + 4));
         itemName = itemName.trim().toLowerCase();
         Item itemFound = (Item) currentRoom.containsItemOfName(itemName);
-        if(itemFound != null){
-            if(itemFound.isOpenable){
+        if (itemFound != null) {
+            if (itemFound.isOpenable) {
                 //handle open
-                if(itemFound.isOpen){
+                if (itemFound.isOpen) {
                     //already open
                     System.out.println("It's already open!");
                 } else {
@@ -166,30 +171,29 @@ public class TextAdventure {
         }
     }
 
-    private void handlePickUp (String command){
+    private void handlePickUp(String command) {
         String itemName = command.substring(command.indexOf("pick up" + 7));
         itemName = itemName.toLowerCase().trim();
-        if(user.containsItemOfName(itemName) != null){
+        if (user.containsItemOfName(itemName) != null) {
             System.out.println("You already picked that up.");
-        }
-        else if(currentRoom.containsItemOfName(itemName) != null){
+        } else if (currentRoom.containsItemOfName(itemName) != null) {
             Entity item = currentRoom.containsItemOfName(itemName);
             user.addItemToInventory(item);
             currentRoom.removeItemFromRoom((Item) item);
             System.out.println("You picked up the " + itemName);
-        } else{
+        } else {
             System.out.println("That doesn't exist here.");
         }
     }
 
-    private void handleDrop (String command){
+    private void handleDrop(String command) {
         String itemName = command.substring(command.indexOf("drop" + 4));
         itemName = itemName.toLowerCase().trim();
-        if(user.containsItemOfName(itemName) != null){
+        if (user.containsItemOfName(itemName) != null) {
             Entity item = user.containsItemOfName(itemName);
             currentRoom.addItemToRoom((Item) item);
             user.removeItemFromInventory(item);
-            System.out.println("You dropped the "+ itemName);
+            System.out.println("You dropped the " + itemName);
         } else {
             System.out.println("You don't have that on you.");
         }
