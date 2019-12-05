@@ -101,13 +101,28 @@ public class Room {
 
     public String getItemListDescription(){
         if(itemList == null || itemList.isEmpty()){
-            return "There is nothing to see in this room.";
+            return "There is nothing else to see here.";
         } else{
             String result = "In this room, you can see: \n";
             for (Entity item : itemList){
                 result = result + "a(n) " + item.getName();
                 if(item.getDescription()!= null){
                     result = result + ", " + item.getDescription() + "\n";
+                }
+            }
+            return result;
+        }
+    }
+
+    public String getCharacterListDescription(){
+        if(characterList == null || characterList.isEmpty()){
+            return "There's no one here.";
+        } else {
+            String result = "Present, there is: \n";
+            for (Entity character : characterList){
+                result += character.getName();
+                if(character.getDescription() != null){
+                    result += ", " + character.getDescription() + "\n";
                 }
             }
             return result;

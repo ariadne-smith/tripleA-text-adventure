@@ -1,5 +1,4 @@
 
-import comp127graphics.CanvasWindow;
 import comp127graphics.FontStyle;
 import comp127graphics.GraphicsText;
 import comp127graphics.ui.TextField;
@@ -25,7 +24,7 @@ public class TextAdventure {
         this.story = story;
         this.commands = commands;
         this.rooms = rooms;
-        currentRoom = (Room) rooms.get(0);
+        currentRoom = rooms.get(0);
         user = new Character("Wolf", "A big bad wolf", null);
         scanner = new Scanner(System.in);
 
@@ -47,6 +46,33 @@ public class TextAdventure {
 //        canvas.draw();
     }
 
+    public TextAdventure(String story, ArrayList<String> commands, ArrayList<Room> rooms, Room startingRoom) {
+        this.story = story;
+        this.commands = commands;
+        this.rooms = rooms;
+        this.currentRoom = startingRoom;
+        user = new Character("Wolf", "A big bad wolf", null);
+        scanner = new Scanner(System.in);
+
+        title = new GraphicsText();
+        title.setText("");
+        title.setFont(FontStyle.BOLD, 30);
+        title.setPosition(25, 25);
+        //canvas.add(title);
+
+        history = new GraphicsText();
+        history.setText(story);
+        history.setFont(FontStyle.PLAIN, 15);
+
+
+        input = new TextField();
+        input.setCenter(400, 700);
+        //canvas.add(input);
+
+//        canvas.draw();
+    }
+
+    /*
     public static void main(String[] args) {
         Room room1 = new Room("Room 1");
         ArrayList<Room> rooms = new ArrayList<>();
@@ -64,7 +90,7 @@ public class TextAdventure {
         while (true) {
             adventure.runGame();
         }
-    }
+    }*/
 
     public void startGame(){
         System.out.println("Available commands: " + getCommandList());
@@ -75,8 +101,9 @@ public class TextAdventure {
         System.out.println(rooms.get(0).getConnectionsDescription());
         if (currentRoom.getItemListDescription() != null) {
             System.out.println(currentRoom.getItemListDescription());
-        }
-        rooms.get(0).addCharacter(user);
+        } if (currentRoom.getCharacterListDescription() != null){
+            System.out.println(currentRoom.getCharacterListDescription());
+        }        rooms.get(0).addCharacter(user);
         System.out.println("> ");
     }
 
@@ -120,6 +147,10 @@ public class TextAdventure {
         }
         if (command.contains("drop")) {
             handleDrop(command);
+            return true;
+        }
+        if (command.contains("talk")) {
+            handleTalk(command);
             return true;
         }
         else return false;
@@ -230,6 +261,55 @@ public class TextAdventure {
         } else {
             System.out.println("You don't have that on you.");
         }
+    }
+
+    private void handleTalk(String command){ //need to refactor
+        String targetCharacterName, commandWord;
+        String chosenTopic = "";
+        if(command.contains("talk to")) {
+            commandWord = "talk to";
+            targetCharacterName = command.substring(command.indexOf("talk to") + 7).trim();
+        } else {
+            //the command was just "talk"
+            commandWord = "talk";
+            targetCharacterName = command.substring(command.indexOf("talk") + 4).trim();
+        }
+
+        Character targetCharacter = findCharacterInRoomByName(currentRoom, targetCharacterName);
+
+        System.out.println("c"+command);
+        if(targetCharacter != null && !command.contains(" about ")){
+            //then the character is in the room
+            //so talk to it
+            if(targetCharacter.getIsPlayersFirstTimeSpeakingTo()){
+                //then it's the user's first time speaking with this character
+                System.out.println(targetCharacter.getFirstDialogue());
+                targetCharacter.setIsPlayersFirstTimeSpeakingTo(false);
+            } else {
+                //it's not the first time
+                System.out.println(targetCharacter.getGeneralGreeting());
+            }
+        } else if (targetCharacter != null){
+            chosenTopic = command.substring(
+                    commandWord.length() + 1 + targetCharacterName.length() + 7
+                    /*command.indexOf(targetCharacterName.length()) + 7*/
+            ).trim();
+            System.out.println("ct: " + chosenTopic);
+            targetCharacter.beSpokenToAbout(chosenTopic);
+        }
+
+    }
+
+    public Character findCharacterInRoomByName(Room room, String characterName){
+        Entity foundCharacter = null;
+
+        for(Entity character : room.getCharacterList()){
+            if(character.getName().equalsIgnoreCase(characterName)){
+                foundCharacter = character;
+            }
+        }
+
+        return (Character) foundCharacter;
     }
 
     private String getCommandList (){

@@ -41,12 +41,20 @@ public class TestGame {
         box = new Item("box", "a cardboard box", List.of(pen), true, false);
 
         room1.addItemToRoom(box);
+        room1.addCharacter(user);
         room3.addItemToRoom(knife);
+
+        Character owl = new Character("Owl", "It's an owl. You can talk to it", List.of());
+        owl.setFirstDialogue("I'm an owl, hoot hoot. \n You can talk to the owl about: forest, sky");
+        owl.setGeneralGreeting("Hello hoot hoot");
+        owl.populateDialogueByTopics("forest","It's big and green");
+        owl.populateDialogueByTopics("sky", "It's big and blue");
+        room1.addCharacter(owl);
 
         ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open"));
         ArrayList<Room> rooms = new ArrayList<>(List.of(room1, room2, room3, room4, room5, room6));
 
-        TextAdventure testGame = new TextAdventure("This is a test game! Have fun.", commands, rooms);
+        TextAdventure testGame = new TextAdventure("This is a test game! Have fun.", commands, rooms, room1);
 
 
 //        String input = TextAdventure.scanner.nextLine().toLowerCase().trim();
