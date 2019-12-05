@@ -1,7 +1,47 @@
 import java.util.ArrayList;
 import java.util.List;
 
+
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
 public class TestGame {
+    /**
+     * Test that the user was removed from current room upon a keyboard command of "go (some direction)'
+     *
+     */
+    @Test
+    public void testUserPositionUpdate() {
+        //
+    }
+    /**
+     * Test that the current room was updated after user commanded a direction change
+     *
+     */
+    @Test
+    public void testRoomUpdate() {
+        //
+    }
+    /**
+     * Test that the item picked up was dropped
+     *
+     */
+    @Test
+    public void testItemDrop() {
+        //
+    }
+    /**
+     * Test that when a direction is written incorrectly by the user,
+     * the program will respond by saying "You can't do that"
+     * Mostly a text for the close cases (ex: wesst vs. west)
+     *
+     */
+    @Test
+    public void testInputWord() {
+        //
+    }
 
     public static void main(String[] args) {
         Room room1, room2, room3, room4, room5, room6;
