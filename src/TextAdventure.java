@@ -18,6 +18,8 @@ public class TextAdventure {
     private Character user;
     private List<Room> rooms;
     private Room currentRoom;
+    List<Entity> allGameItems = new ArrayList<>();
+
     public static Scanner scanner;
 
     public TextAdventure(String story, ArrayList<String> commands, ArrayList<Room> rooms) {
@@ -27,6 +29,10 @@ public class TextAdventure {
         currentRoom = rooms.get(0);
         user = new Character("Wolf", "A big bad wolf", null);
         scanner = new Scanner(System.in);
+
+        for(Room r : rooms){
+            allGameItems.addAll(r.getItemList());
+        }
 
         title = new GraphicsText();
         title.setText("");
@@ -53,6 +59,10 @@ public class TextAdventure {
         this.currentRoom = startingRoom;
         user = new Character("Wolf", "A big bad wolf", null);
         scanner = new Scanner(System.in);
+
+        for(Room r : rooms) {
+            allGameItems.addAll(r.getItemList());
+        }
 
         title = new GraphicsText();
         title.setText("");
@@ -132,26 +142,26 @@ public class TextAdventure {
             System.out.println(user.getInventoryList());
             return true;
         }
-        if (command.contains("go")) {
+        if (command.contains("go ")) {
             if (handleGo(command)) {
                 return true;
             } else {
                 return false;
             }
         }
-        if (command.contains("open")) {
+        if (command.contains("open ")) {
             handleOpen(command);
             return true;
         }
-        if (command.contains("pick up")) {
+        if (command.contains("pick up ")) {
             handlePickUp(command);
             return true;
         }
-        if (command.contains("drop")) {
+        if (command.contains("drop ")) {
             handleDrop(command);
             return true;
         }
-        if (command.contains("talk")) {
+        if (command.contains("talk ")) {
             handleTalk(command);
             return true;
         } else return false;
