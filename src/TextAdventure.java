@@ -99,11 +99,11 @@ public class TextAdventure {
         System.out.println(rooms.get(0).getStory());
         System.out.println(rooms.get(0).getDescription());
         System.out.println(rooms.get(0).getConnectionsDescription());
-        if (currentRoom.getItemListDescription() != null) {
-            System.out.println(currentRoom.getItemListDescription());
-        }
         if (currentRoom.getCharacterListDescription() != null) {
             System.out.println(currentRoom.getCharacterListDescription());
+        }
+        if (currentRoom.getItemListDescription() != null) {
+            System.out.println(currentRoom.getItemListDescription());
         }
         rooms.get(0).addCharacter(user);
         System.out.println("> ");
@@ -168,6 +168,7 @@ public class TextAdventure {
         System.out.println((currentRoom.getDescription()));
         System.out.println(currentRoom.getConnectionsDescription());
         if (currentRoom.getItemListDescription() != null) {
+            System.out.println(currentRoom.getCharacterListDescription());
             System.out.println(currentRoom.getItemListDescription());
         }
     }
@@ -300,7 +301,7 @@ public class TextAdventure {
                 }
             } else {
                 chosenTopic = command.substring(
-                        command.indexOf(targetCharacterName) + 9
+                        command.indexOf("about") + 5
                 ).trim();
                 targetCharacter.beSpokenToAbout(chosenTopic);
             }
