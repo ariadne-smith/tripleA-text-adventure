@@ -85,10 +85,10 @@ public class TestGame {
         room3.addItemToRoom(knife);
 
         Character owl = new Character("Owl", "It's an owl. You can talk to it", List.of());
-        owl.setFirstDialogue("I'm an owl, hoot hoot. \n You can talk to the owl about: forest, sky");
-        owl.setGeneralGreeting("Hello hoot hoot");
-        owl.populateDialogueByTopics("forest","It's big and green");
-        owl.populateDialogueByTopics("sky", "It's big and blue");
+        owl.setFirstDialogue("\"I'm an owl, hoot hoot.\"");
+        owl.setGeneralGreeting("\"Hello again, hoot hoot.\"");
+        owl.populateDialogueByTopics("forest","\"It's big and green.\"");
+        owl.populateDialogueByTopics("sky", "\"It's big and blue.\"");
         room1.addCharacter(owl);
 
         ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open"));

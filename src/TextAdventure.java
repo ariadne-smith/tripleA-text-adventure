@@ -92,7 +92,7 @@ public class TextAdventure {
         }
     }*/
 
-    public void startGame(){
+    public void startGame() {
         System.out.println("Available commands: " + getCommandList());
         System.out.println("Enter 'quit game' to quit.");
         System.out.println(story);
@@ -101,22 +101,24 @@ public class TextAdventure {
         System.out.println(rooms.get(0).getConnectionsDescription());
         if (currentRoom.getItemListDescription() != null) {
             System.out.println(currentRoom.getItemListDescription());
-        } if (currentRoom.getCharacterListDescription() != null){
+        }
+        if (currentRoom.getCharacterListDescription() != null) {
             System.out.println(currentRoom.getCharacterListDescription());
-        }        rooms.get(0).addCharacter(user);
+        }
+        rooms.get(0).addCharacter(user);
         System.out.println("> ");
     }
 
     public void runGame() {
-        while(true){
+        while (true) {
             String command = scanner.nextLine();
-            if(command.contains("quit game")){
+            if (command.contains("quit game")) {
                 System.out.println("Quitting game");
                 break;
             }
-            if(doCommand(command)){
+            if (doCommand(command)) {
                 System.out.println(">");
-            } else{
+            } else {
                 System.out.println("You can't do that.");
                 System.out.println(">");
             }
@@ -133,7 +135,7 @@ public class TextAdventure {
         if (command.contains("go")) {
             if (handleGo(command)) {
                 return true;
-            } else{
+            } else {
                 return false;
             }
         }
@@ -152,8 +154,7 @@ public class TextAdventure {
         if (command.contains("talk")) {
             handleTalk(command);
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
     public void moveUserTo(Room room) {
@@ -203,7 +204,7 @@ public class TextAdventure {
             return true;
         } else {
 //            System.out.println("Cannot do that. Try again.");
-        return false;
+            return false;
         }
     }
 
@@ -251,7 +252,7 @@ public class TextAdventure {
     }
 
     private void handleDrop(String command) {
-        String itemName = command.substring(command.indexOf("drop")+ 4);
+        String itemName = command.substring(command.indexOf("drop") + 4);
         itemName = itemName.toLowerCase().trim();
         if (user.containsItemOfName(itemName) != null) {
             Entity item = user.containsItemOfName(itemName);
@@ -263,10 +264,10 @@ public class TextAdventure {
         }
     }
 
-    private void handleTalk(String command){ //need to refactor
+    private void handleTalk(String command) { //need to refactor
         String targetCharacterName, commandWord;
         String chosenTopic = "";
-        if(command.contains("talk to")) {
+        if (command.contains("talk to")) {
             commandWord = "talk to";
             targetCharacterName = command.substring(command.indexOf("talk to") + 7).trim();
         } else {
@@ -275,36 +276,43 @@ public class TextAdventure {
             targetCharacterName = command.substring(command.indexOf("talk") + 4).trim();
         }
 
+        if(targetCharacterName.contains(" about ")){
+            chosenTopic = targetCharacterName.substring(targetCharacterName.indexOf("about") + 6);
+            targetCharacterName = targetCharacterName.substring(0, targetCharacterName.indexOf(" about "));
+        }
+
         Character targetCharacter = findCharacterInRoomByName(currentRoom, targetCharacterName);
 
-        System.out.println("c"+command);
-        if(targetCharacter != null && !command.contains(" about ")){
+        if (targetCharacter != null) {
             //then the character is in the room
             //so talk to it
-            if(targetCharacter.getIsPlayersFirstTimeSpeakingTo()){
-                //then it's the user's first time speaking with this character
-                System.out.println(targetCharacter.getFirstDialogue());
-                targetCharacter.setIsPlayersFirstTimeSpeakingTo(false);
+            if (!command.contains(" about ")) {
+
+                if (targetCharacter.getIsPlayersFirstTimeSpeakingTo()) {
+                    //then it's the user's first time speaking with this character
+                    System.out.println(targetCharacter.getFirstDialogue());
+                    System.out.println(" You can talk with " + targetCharacter.getName() + " about: " +
+                            targetCharacter.getDialogueByTopics().keySet());
+                    targetCharacter.setIsPlayersFirstTimeSpeakingTo(false);
+                } else {
+                    //it's not the first time
+                    System.out.println(targetCharacter.getGeneralGreeting());
+                }
             } else {
-                //it's not the first time
-                System.out.println(targetCharacter.getGeneralGreeting());
+                chosenTopic = command.substring(
+                        command.indexOf(targetCharacterName) + 9
+                ).trim();
+                targetCharacter.beSpokenToAbout(chosenTopic);
             }
-        } else if (targetCharacter != null){
-            chosenTopic = command.substring(
-                    commandWord.length() + 1 + targetCharacterName.length() + 7
-                    /*command.indexOf(targetCharacterName.length()) + 7*/
-            ).trim();
-            System.out.println("ct: " + chosenTopic);
-            targetCharacter.beSpokenToAbout(chosenTopic);
         }
 
     }
 
-    public Character findCharacterInRoomByName(Room room, String characterName){
+    public Character findCharacterInRoomByName(Room room, String characterName) {
         Entity foundCharacter = null;
 
-        for(Entity character : room.getCharacterList()){
-            if(character.getName().equalsIgnoreCase(characterName)){
+        for (Entity character : room.getCharacterList()) {
+            if (character.getName().equalsIgnoreCase(characterName)) {
                 foundCharacter = character;
             }
         }
@@ -312,16 +320,15 @@ public class TextAdventure {
         return (Character) foundCharacter;
     }
 
-    private String getCommandList (){
+    private String getCommandList() {
         String result = "";
-        for (int i = 0; i < commands.size(); i ++){
-            if(commands.get(i).equals("go")){
+        for (int i = 0; i < commands.size(); i++) {
+            if (commands.get(i).equals("go")) {
                 result = result + commands.get(i) + " (direction)";
-            }
-            else{
+            } else {
                 result = result + commands.get(i);
             }
-            if(i < commands.size() - 1){
+            if (i < commands.size() - 1) {
                 result = result + ", ";
             } else {
                 result = result + ".";

@@ -78,7 +78,7 @@ public class Character extends Entity{
         this.dialogueByTopics.put(topic, dialogue);
     }
 
-    public void beSpokenToAbout(String topic){
+    public void beSpokenToAbout(String topic){ //test this and figure out char null
         if(dialogueByTopics.isEmpty()){
             System.out.println("They have nothing to say to you.");
         } else {
