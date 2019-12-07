@@ -64,6 +64,11 @@ public class TextAdventure {
             allGameItems.addAll(r.getItemList());
         }
 
+        for(Entity i : allGameItems){
+            Item definedItem = (Item) i;
+            definedItem.populateInteractions(allGameItems);
+        }
+
         title = new GraphicsText();
         title.setText("");
         title.setFont(FontStyle.BOLD, 30);
@@ -346,6 +351,11 @@ public class TextAdventure {
             }
         }
         return result;
+    }
+
+    //item interaction methods -- must be static
+    static void doNothing(){
+        System.out.println("You can't do that.");
     }
 
 }

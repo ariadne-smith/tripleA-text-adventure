@@ -1,10 +1,14 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 public class Item extends Entity {
 
     boolean isOpenable;
     boolean isOpen;
+    Map<Entity, Runnable> interactionsByItem = new HashMap<>();
 
     public Item (String name, String description, List<Entity> inventory){
         this.name = name;
@@ -20,6 +24,14 @@ public class Item extends Entity {
         this.inventory = inventory;
         isOpenable = canBeOpened;
         isOpen = currentlyOpen;
+    }
+
+    public void populateInteractions(List<Entity> itemList){
+        for(Entity i : itemList){
+            if(!i.getName().equals(this.getName())){
+                interactionsByItem.put(i, TextAdventure::doNothing);
+            }
+        }
     }
 
     @Override

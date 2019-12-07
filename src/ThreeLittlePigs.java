@@ -66,7 +66,6 @@ public class ThreeLittlePigs {
         house3.addItemToRoom(brick);
         house3Interior.addCharacter(pig3);
 
-
         woods.setConnections(new Room[] {null, null, house1, null, null, null});
         house1.setConnections(new Room[] {null, house2, null, woods, null, null});
         house2.setConnections(new Room[] {house1, null, house3, null, null, null});
