@@ -9,6 +9,7 @@ public class Character extends Entity{
     private boolean playersFirstTimeSpeakingTo;
     private String firstDialogue, generalGreeting;
     private Map<String, String> dialogueByTopics;
+    private boolean isPickUpAble = false;
 
     public Character(String name, String description, List<Entity> inventory) {
         this.name = name;
@@ -115,6 +116,11 @@ public class Character extends Entity{
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean getIsPickUpAble() {
+        return false;
     }
 
     @Override

@@ -17,6 +17,8 @@ public abstract class Entity {
 
     public abstract Entity containsItemOfName(String itemName);
 
+    public abstract boolean getIsPickUpAble();
+
     @Override
     public abstract String toString();
 
