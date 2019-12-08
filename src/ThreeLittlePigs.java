@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThreeLittlePigs {
+    public static TextAdventure threeLittlePigs;
     public static void main(String[] args) {
         Room woods = new Room("Woods");
         woods.setStory("You are a ferocious wolf, hungry, and tired after a long excursion " +
@@ -74,10 +75,10 @@ public class ThreeLittlePigs {
 
         ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open", "eat", "talk"));
         ArrayList<Room> rooms = new ArrayList<>((List.of(woods, house1, house2, house3, house3Interior)));
-        TextAdventure threePigs = new TextAdventure("Three Little Pigs", commands,
+        threeLittlePigs = new TextAdventure("Three Little Pigs", commands,
                 rooms);
-        threePigs.startGame();
-        threePigs.runGame();
+        threeLittlePigs.startGame();
+        threeLittlePigs.runGame();
 
     }
 }
