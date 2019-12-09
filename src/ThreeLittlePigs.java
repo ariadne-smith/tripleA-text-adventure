@@ -1,9 +1,12 @@
+import javafx.application.Application;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ThreeLittlePigs {
-    public static TextAdventure threeLittlePigs;
+
     public static void main(String[] args) {
+
         Room woods = new Room("Woods");
         woods.setStory("You are a ferocious wolf, hungry, and tired after a long excursion " +
                 "out in the deep dark woods. You have just heard tell that there are three little " +
@@ -75,10 +78,10 @@ public class ThreeLittlePigs {
 
         ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open", "eat", "talk"));
         ArrayList<Room> rooms = new ArrayList<>((List.of(woods, house1, house2, house3, house3Interior)));
-        threeLittlePigs = new TextAdventure("Three Little Pigs", commands,
-                rooms);
-        threeLittlePigs.startGame();
-        threeLittlePigs.runGame();
-
+        TextAdventure threeLittlePigs = new TextAdventure("Three Little Pigs", commands, rooms);
+        //TextAdventureDisplay tad = new TextAdventureDisplay(threeLittlePigs);
+        //threeLittlePigs.startGame();
+        //threeLittlePigs.runGame();
     }
+
 }

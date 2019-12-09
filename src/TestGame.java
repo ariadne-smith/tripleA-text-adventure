@@ -102,7 +102,7 @@ public class TestGame {
 //            testGame.runGame(input)l;
 //        }
         testGame.startGame();
-        testGame.runGame();
+        //testGame.runGame();
 
 
     }

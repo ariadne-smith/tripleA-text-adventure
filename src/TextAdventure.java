@@ -1,64 +1,40 @@
-
-import comp127graphics.FontStyle;
-import comp127graphics.GraphicsText;
-import comp127graphics.ui.TextField;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class TextAdventure {
-    //private CanvasWindow canvas = new CanvasWindow("Text Adventure", 800, 800);
-    private GraphicsText title;
-    private GraphicsText history;
-    private TextField input;
-
     private List<String> commands;
+    private String title;
     private String story;
     private Character user;
     private List<Room> rooms;
+    private Room startingRoom;
     private Room currentRoom;
-    List<Entity> allGameItems = new ArrayList<>();
+    public List<Entity> allGameItems = new ArrayList<>();
+    //public static Scanner scanner;
 
-    public static Scanner scanner;
-
-    public TextAdventure(String story, ArrayList<String> commands, ArrayList<Room> rooms) {
-        this.story = story;
+    public TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms) {
+        this.title = title;
         this.commands = commands;
         this.rooms = rooms;
-        currentRoom = rooms.get(0);
+        startingRoom = rooms.get(0);
+        currentRoom = startingRoom;
         user = new Character("Wolf", "A big bad wolf", null);
-        scanner = new Scanner(System.in);
+        //scanner = new Scanner();
 
         for(Room r : rooms){
             allGameItems.addAll(r.getItemList());
         }
-
-        title = new GraphicsText();
-        title.setText("");
-        title.setFont(FontStyle.BOLD, 30);
-        title.setPosition(25, 25);
-        //canvas.add(title);
-
-        history = new GraphicsText();
-        history.setText(story);
-        history.setFont(FontStyle.PLAIN, 15);
-
-
-        input = new TextField();
-        input.setCenter(400, 700);
-        //canvas.add(input);
-
-//        canvas.draw();
     }
 
-    public TextAdventure(String story, ArrayList<String> commands, ArrayList<Room> rooms, Room startingRoom) {
-        this.story = story;
+    public TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms, Room startingRoom) {
+        this.title = title;
         this.commands = commands;
         this.rooms = rooms;
-        this.currentRoom = startingRoom;
+        this.startingRoom = startingRoom;
+        currentRoom = startingRoom;
         user = new Character("Wolf", "A big bad wolf", null);
-        scanner = new Scanner(System.in);
+        //scanner = new Scanner(System.in);
 
         for(Room r : rooms) {
             allGameItems.addAll(r.getItemList());
@@ -69,73 +45,22 @@ public class TextAdventure {
             definedItem.populateInteractions(allGameItems);
         }
 
-        title = new GraphicsText();
-        title.setText("");
-        title.setFont(FontStyle.BOLD, 30);
-        title.setPosition(25, 25);
-        //canvas.add(title);
-
-        history = new GraphicsText();
-        history.setText(story);
-        history.setFont(FontStyle.PLAIN, 15);
-
-
-        input = new TextField();
-        input.setCenter(400, 700);
-        //canvas.add(input);
-
-//        canvas.draw();
     }
-
-    /*
-    public static void main(String[] args) {
-        Room room1 = new Room("Room 1");
-        ArrayList<Room> rooms = new ArrayList<>();
-        Room room2 = new Room("Room 2");
-        rooms.add(room1);
-        rooms.add(room2);
-
-        ArrayList<String> commands = new ArrayList<>();
-        commands.add("go");
-        commands.add("show inventory");
-
-        TextAdventure adventure = new TextAdventure("Once upon a time", commands, rooms);
-
-        String userInput = scanner.nextLine().trim().toLowerCase();
-        while (true) {
-            adventure.runGame();
-        }
-    }*/
 
     public void startGame() {
-        System.out.println("Available commands: " + getCommandList());
-        System.out.println("Enter 'quit game' to quit.");
-        System.out.println(story);
-        System.out.println(rooms.get(0).getStory());
-        System.out.println(rooms.get(0).getDescription());
-        System.out.println(rooms.get(0).getConnectionsDescription());
-        if (currentRoom.getCharacterListDescription() != null) {
-            System.out.println(currentRoom.getCharacterListDescription());
-        }
-        if (currentRoom.getItemListDescription() != null) {
-            System.out.println(currentRoom.getItemListDescription());
-        }
-        rooms.get(0).addCharacter(user);
-        System.out.println("> ");
+        startingRoom.addCharacter(user);
     }
 
-    public void runGame() {
+    public void runGame(String command) {
         while (true) {
-            String command = scanner.nextLine();
+            // = scanner.nextLine();
             if (command.contains("quit game")) {
                 System.out.println("Quitting game");
                 break;
             }
             if (doCommand(command)) {
-                System.out.println(">");
             } else {
                 System.out.println("You can't do that.");
-                System.out.println(">");
             }
         }
 
@@ -230,7 +155,6 @@ public class TextAdventure {
         Item itemFound = (Item) currentRoom.containsItemOfName(itemName);
         if (itemFound != null) {
             if (itemFound.isOpenable) {
-                //handle open
                 if (itemFound.isOpen) {
                     //already open
                     System.out.println("It's already open!");
@@ -336,7 +260,7 @@ public class TextAdventure {
         return (Character) foundCharacter;
     }
 
-    private String getCommandList() {
+    public String getCommandList() {
         String result = "";
         for (int i = 0; i < commands.size(); i++) {
             if (commands.get(i).equals("go")) {
@@ -353,9 +277,20 @@ public class TextAdventure {
         return result;
     }
 
-    //item interaction methods -- must be static
-    static void doNothing(){
-        System.out.println("You can't do that.");
+    public String getTitle(){
+        return this.title;
+    }
+
+    public String getStory(){
+        return this.story;
+    }
+
+    public void setStory(String story){
+        this.story = story;
+    }
+
+    public Room getStartingRoom(){
+        return this.startingRoom;
     }
 
 }
