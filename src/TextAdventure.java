@@ -59,8 +59,10 @@ public class TextAdventure {
                 break;
             }
             if (doCommand(command)) {
+                break;
             } else {
                 System.out.println("You can't do that.");
+                break;
             }
         }
 

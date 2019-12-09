@@ -94,6 +94,9 @@ public class Character extends Entity{
 
     public String getInventoryList() {
         String result = "";
+        if(inventory == null || inventory.isEmpty()){
+            return "There's nothing in your inventory.";
+        }
         for (Entity item : inventory){
             result = result + " " + item.getName();
             if(item.getDescription()!= null){
