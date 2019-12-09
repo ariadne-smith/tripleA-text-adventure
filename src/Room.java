@@ -7,6 +7,7 @@ public class Room {
     private String description;
     private String story;
     private Boolean playerFirstArrives;
+    private Boolean accessible;
     private Room[] connections = new Room[6]; //n s e w in out
     private List<Entity> characterList;
     private List<Entity> itemList;
@@ -16,6 +17,7 @@ public class Room {
         this.description = null;
         this.story = null;
         this.playerFirstArrives = true;
+        this.accessible = true;
         itemList = new ArrayList<>();
         characterList = new ArrayList<>();
     }
@@ -68,6 +70,14 @@ public class Room {
 
     public void setStory(String story) {
         this.story = story;
+    }
+
+    public void setAccessible(boolean access){
+        accessible = access;
+    }
+
+    public boolean getAccessible(){
+        return accessible;
     }
 
     public Boolean getPlayerFirstArrives() {
@@ -145,6 +155,15 @@ public class Room {
         return null;
     }
 
+    public Entity containsCharacterOfName(String charName){
+        for(Entity i: characterList){
+            if(i.getName().equalsIgnoreCase(charName)){
+                return i;
+            }
+        }
+        return null;
+    }
+
     public String indexToDirection(int index){
         if(index == 0){
             return "north";
@@ -179,7 +198,7 @@ public class Room {
             return result;
         }
         for(int i = 0; i < connections.length; i ++){
-            if (connections[i] != null){
+            if (connections[i] != null && connections[i].getAccessible()){
                 if(connections.length > 2){
                     result = result + indexToDirection(i) +  ", ";
                 }

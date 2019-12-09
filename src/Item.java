@@ -8,6 +8,7 @@ public class Item extends Entity {
     boolean isOpenable;
     boolean isOpen;
     boolean isPickupable;
+    boolean isEatable;
     Map<Entity, Runnable> interactionsByItem = new HashMap<>();
 
     public Item (String name, String description, List<Entity> inventory){
@@ -16,6 +17,8 @@ public class Item extends Entity {
         this.inventory = inventory;
         isOpenable = false;
         isOpen = false;
+        isPickupable = true;
+        isEatable = false;
     }
 
     public Item (String name, String description, List<Entity> inventory, boolean canBeOpened, boolean currentlyOpen){
@@ -32,6 +35,10 @@ public class Item extends Entity {
                 interactionsByItem.put(i, ThreeLittlePigs_Interactions::doNothing);
             }
         }
+    }
+
+    public void addInteraction(Item item, Runnable interaction){
+        interactionsByItem.put(item, interaction);
     }
 
     @Override
@@ -102,8 +109,18 @@ public class Item extends Entity {
         isPickupable = set;
     }
 
+    @Override
     public boolean getIsPickUpAble(){
         return isPickupable;
+    }
+
+    public boolean getIsEatable(){
+        return isEatable;
+    }
+
+    @Override
+    public void setIsEatable(boolean set) {
+        isEatable = set;
     }
 
     public String getName() {

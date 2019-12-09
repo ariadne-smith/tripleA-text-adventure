@@ -169,6 +169,10 @@ public class TextAdventure {
         if (command.contains("talk ")) {
             handleTalk(command);
             return true;
+        }
+        if (command.contains("eat")){
+            handleEat(command);
+            return true;
         } else return false;
     }
 
@@ -353,9 +357,37 @@ public class TextAdventure {
         return result;
     }
 
+    public void addInteraction(Item item1, Item item2, Runnable interaction){
+        item1.addInteraction(item2, interaction);
+        item2.addInteraction(item1, interaction);
+    }
+
     //item interaction methods -- must be static
     static void doNothing(){
         System.out.println("You can't do that.");
     }
 
+    static void houseDestroyed(Room nextRoom){
+        nextRoom.setAccessible(true);
+        //increase points;
+        //pig set eatable;
+        System.out.println("You have destroyed this house.");
+
+    }
+
+    private void handleEat(String command){
+        String itemName = command.substring(command.indexOf("eat") + 3);
+        itemName = itemName.toLowerCase().trim();
+        if (currentRoom.containsItemOfName(itemName) != null && currentRoom.containsItemOfName(itemName).getIsEatable()) {
+            Entity item = user.containsItemOfName(itemName);
+            currentRoom.removeItemFromRoom((Item) item);
+            System.out.println("You ate the" + itemName + "!");
+        } else if(currentRoom.containsCharacterOfName(itemName) != null && currentRoom.containsCharacterOfName(itemName).getIsEatable()){
+            Entity character = user.containsItemOfName(itemName);
+            currentRoom.removeItemFromRoom((Character) character);
+            System.out.println("You ate " + itemName + "!");
+        } else{
+            System.out.println("You can't eat that.");
+        }
+    }
 }

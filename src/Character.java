@@ -16,6 +16,7 @@ public class Character extends Entity{
         this.description = description;
         this.inventory = inventory;
         this.playersFirstTimeSpeakingTo = true;
+        isEatable = false;
         this.firstDialogue = "This is my first dialogue.";
         this.generalGreeting = "Well hello there";
         dialogueByTopics = new HashMap<>();
@@ -120,7 +121,17 @@ public class Character extends Entity{
 
     @Override
     public boolean getIsPickUpAble() {
-        return false;
+        return isEatable;
+    }
+
+    @Override
+    public boolean getIsEatable() {
+        return isEatable;
+    }
+
+    @Override
+    public void setIsEatable(boolean set) {
+        isEatable = set;
     }
 
     @Override
