@@ -138,7 +138,6 @@ public class TextAdventure {
                 System.out.println(">");
             }
         }
-
     }
 
     public boolean doCommand(String command) {
@@ -284,6 +283,7 @@ public class TextAdventure {
         }
     }
 
+
     private void handleTalk(String command) { //need to refactor
         String targetCharacterName, commandWord;
         String chosenTopic = "";
@@ -379,15 +379,16 @@ public class TextAdventure {
         String itemName = command.substring(command.indexOf("eat") + 3);
         itemName = itemName.toLowerCase().trim();
         if (currentRoom.containsItemOfName(itemName) != null && currentRoom.containsItemOfName(itemName).getIsEatable()) {
-            Entity item = user.containsItemOfName(itemName);
+            Entity item = currentRoom.containsItemOfName(itemName);
             currentRoom.removeItemFromRoom((Item) item);
             System.out.println("You ate the" + itemName + "!");
         } else if(currentRoom.containsCharacterOfName(itemName) != null && currentRoom.containsCharacterOfName(itemName).getIsEatable()){
-            Entity character = user.containsItemOfName(itemName);
-            currentRoom.removeItemFromRoom((Character) character);
+            Entity character = currentRoom.containsCharacterOfName(itemName);
+            currentRoom.removeCharacter((Character) character);
+            System.out.println(currentRoom.getCharacterList());
             System.out.println("You ate " + itemName + "!");
         } else{
-            System.out.println("You can't eat that.");
+            System.out.println("You can't eat that or you already ate it.");
         }
     }
 }

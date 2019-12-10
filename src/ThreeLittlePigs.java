@@ -21,18 +21,18 @@ public class ThreeLittlePigs {
         house2.setStory("You decide to look for some more food and continue on to the next neighborhood," +
                 " filled with stick houses. You sniff the air and have a good feeling about a house to your left…");
         house2.setDescription("Here is the site of another flimsy house.");
-        house2.setAccessible(false);// must set accessible again after the first pig is eaten
+//        house2.setAccessible(false);// must set accessible again after the first pig is eaten
 
         Room house3 = new Room("The Brick House");
         house3.setStory("You decide to look for some more food and continue on to the next neighborhood, filled with " +
                 "brick houses. You sniff the air and have a good feeling about a house up ahead, which is made of bricks " +
                 "and has a lovely skylight");
         house3.setDescription("Here is the site of the brick house. You can see a skylight.");
-        house3.setAccessible(false);// must set accessible again after the second pig is eaten
+//        house3.setAccessible(false);// must set accessible again after the second pig is eaten
 
         Room house3Interior = new Room("Inside the brick house.");
         house3Interior.setStory("Aha! Here is the delicious pig! Your stomach is rumbling . . . ");
-        house3Interior.setAccessible(false);// must set accessible again after the window is broken
+//        house3Interior.setAccessible(false);// must set accessible again after the window is broken
 
         Room woods2 = new Room("More Woods");
         woods2.setStory("You're feeling pretty good now, having gobbled up some pigs and successfully stopped your stomach from growling." +
@@ -40,7 +40,7 @@ public class ThreeLittlePigs {
                 "But you have a feeling that you're not out of the woods yet-- literally. There's a pig cop here, and if you don't get out of here fast, " +
                 "you might find yourself in trouble again.");
         woods2.setDescription("A dark and ominous forest.");
-        woods2.setAccessible(false); // must set accessible again after the third pig is eaten
+//        woods2.setAccessible(false); // must set accessible again after the third pig is eaten
 
         Room river = new Room ("River shore");
         river.setStory("You've run from the pig cop into another section of woods, but there's a wide rushing river in front of you. Surely you won't be able " +
@@ -52,7 +52,13 @@ public class ThreeLittlePigs {
                 "and arrive home. Your family cheers when they see you and you swear to never trek into the woods without some extra provisions" +
                 "ever again." );
         home.setDescription("");
-        home.setAccessible(false); //must set accessible again after the river is crossed
+//        home.setAccessible(false); //must set accessible again after the river is crossed
+
+        Room woods3 = new Room("Back into the woods");
+        woods3.setStory("Congrats! You made it through a day of pig-eating and law-evading! After a good nights rest you are ready to" +
+                " venture back out into the woods and try your luck at finding breakfast. You've recently heard that Grandma Riding-Hood" +
+                "has fallen ill...Perhaps this is a good opportunity...");
+        woods3.setDescription("A dark and ominous forest.");
 
         Character owl = new Character("Owl", "A wise elderly owl who might have some helpful advice", null);
         owl.setFirstDialogue("I'm an owl, hoot hoot.");
@@ -110,6 +116,12 @@ public class ThreeLittlePigs {
         house3.setConnections(new Room[] {null, null, null, house2, house3Interior, null});
         house3Interior.setConnections(new Room[] {null, null, null, null, null, house3});
         woods2.setConnections(new Room[] {house3, null, null, null, null, null});
+        //river
+        //home
+        woods3.setConnections(new Room[] {house3, null, null, null, null, null});
+
+        //N , S, E, W, in, out
+
 
 
         ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open", "eat", "talk"));
