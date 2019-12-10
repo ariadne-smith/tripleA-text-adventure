@@ -12,6 +12,14 @@ public class ThreeLittlePigs_Interactions {
 
     }
 
+    static void destroyHouse(Room nextRoom){
+        nextRoom.setAccessible(true);
+        //increase points;
+        //pig set eatable;
+        System.out.println("You have destroyed this house.");
+
+    }
+
     //brick & window
     //leafblower & stick house
     //blow command

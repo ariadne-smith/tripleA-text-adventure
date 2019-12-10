@@ -142,6 +142,10 @@ public class TextAdventure {
 
     public boolean doCommand(String command) {
         command = command.toLowerCase().trim();
+        if(command.contains("use")){
+            handleUse(command);
+            return true;
+        }
         if (command.contains("show inventory")) {
             System.out.println(user.getInventoryList());
             return true;
@@ -193,6 +197,17 @@ public class TextAdventure {
 
     public void addCommand(String command) {
         commands.add(command);
+    }
+
+    public void addInteraction(Item item1, Item item2, Runnable interaction){
+        item1.addInteraction(item2, interaction);
+        item2.addInteraction(item1, interaction);
+    }
+
+    public void populateInteractions(){
+        for (Entity item : allGameItems) {
+            ((Item)item).populateInteractions(allGameItems);
+        }
     }
 
     private boolean handleGo(String command) {
@@ -283,7 +298,6 @@ public class TextAdventure {
         }
     }
 
-
     private void handleTalk(String command) { //need to refactor
         String targetCharacterName, commandWord;
         String chosenTopic = "";
@@ -328,6 +342,43 @@ public class TextAdventure {
 
     }
 
+    private void handleEat(String command){
+        String itemName = command.substring(command.indexOf("eat") + 3);
+        itemName = itemName.toLowerCase().trim();
+        if (currentRoom.containsItemOfName(itemName) != null && currentRoom.containsItemOfName(itemName).getIsEatable()) {
+            Entity item = currentRoom.containsItemOfName(itemName);
+            currentRoom.removeItemFromRoom((Item) item);
+            System.out.println("You ate the" + itemName + "!");
+        } else if(currentRoom.containsCharacterOfName(itemName) != null && currentRoom.containsCharacterOfName(itemName).getIsEatable()){
+            Entity character = currentRoom.containsCharacterOfName(itemName);
+            currentRoom.removeCharacter((Character) character);
+            System.out.println(currentRoom.getCharacterList());
+            System.out.println("You ate " + itemName + "!");
+        } else{
+            System.out.println("You can't eat that or you already ate it.");
+        }
+    }
+
+    private void handleUse(String command){
+        command = command.substring(command.indexOf("use") + 3);
+        //if command contains "with" and there is a valid word to process after "with"
+        if (!command.contains("with") || command.substring(command.indexOf("with")).length() < 5 ){
+            System.out.println("That doesn't make sense.");
+        } else {
+            String itemName = command.substring(0, command.indexOf("with")).trim().toLowerCase();
+            String itemName2 = command.substring(command.indexOf("with") + 4).trim().toLowerCase();
+            Item item1 = getItemForUse(itemName);
+            Item item2 = getItemForUse(itemName2);
+            //if both of these items are valid items in the room or in the user's inventory
+            if(item1 == null || item2 == null){
+                System.out.println("You can't do that.");
+            } else{
+                Runnable action = item1.getInteraction(item2);
+                action.run();
+            }
+        }
+    }
+
     public Character findCharacterInRoomByName(Room room, String characterName) {
         Entity foundCharacter = null;
 
@@ -357,38 +408,25 @@ public class TextAdventure {
         return result;
     }
 
-    public void addInteraction(Item item1, Item item2, Runnable interaction){
-        item1.addInteraction(item2, interaction);
-        item2.addInteraction(item1, interaction);
-    }
-
     //item interaction methods -- must be static
     static void doNothing(){
         System.out.println("You can't do that.");
     }
 
-    static void houseDestroyed(Room nextRoom){
-        nextRoom.setAccessible(true);
-        //increase points;
-        //pig set eatable;
-        System.out.println("You have destroyed this house.");
-
-    }
-
-    private void handleEat(String command){
-        String itemName = command.substring(command.indexOf("eat") + 3);
-        itemName = itemName.toLowerCase().trim();
-        if (currentRoom.containsItemOfName(itemName) != null && currentRoom.containsItemOfName(itemName).getIsEatable()) {
-            Entity item = currentRoom.containsItemOfName(itemName);
-            currentRoom.removeItemFromRoom((Item) item);
-            System.out.println("You ate the" + itemName + "!");
-        } else if(currentRoom.containsCharacterOfName(itemName) != null && currentRoom.containsCharacterOfName(itemName).getIsEatable()){
-            Entity character = currentRoom.containsCharacterOfName(itemName);
-            currentRoom.removeCharacter((Character) character);
-            System.out.println(currentRoom.getCharacterList());
-            System.out.println("You ate " + itemName + "!");
-        } else{
-            System.out.println("You can't eat that or you already ate it.");
+    private Item getItemForUse(String name){
+        Item thing;
+        if(currentRoom.containsItemOfName(name) != null) {
+            thing = (Item) currentRoom.containsItemOfName(name);
+            return thing;
         }
+        else if(user.containsItemOfName(name) != null) {
+            thing = (Item) user.containsItemOfName(name);
+            return thing;
+        } else return null;
     }
+
+    public Room getCurrentRoom(){
+        return currentRoom;
+    }
+
 }

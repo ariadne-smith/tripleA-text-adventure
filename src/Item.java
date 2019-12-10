@@ -41,6 +41,10 @@ public class Item extends Entity {
         interactionsByItem.put(item, interaction);
     }
 
+    public Runnable getInteraction(Item item){
+        return interactionsByItem.get(item);
+    }
+
     @Override
     public void addItemToInventory(Entity item) {
         if(inventory == null){

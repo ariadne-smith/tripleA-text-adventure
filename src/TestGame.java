@@ -8,40 +8,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestGame {
-    /**
-     * Test that the user was removed from current room upon a keyboard command of "go (some direction)'
-     *
-     */
-    @Test
-    public void testUserPositionUpdate() {
-        //
-    }
-    /**
-     * Test that the current room was updated after user commanded a direction change
-     *
-     */
-    @Test
-    public void testRoomUpdate() {
-        //
-    }
-    /**
-     * Test that the item picked up was dropped
-     *
-     */
-    @Test
-    public void testItemDrop() {
-        //
-    }
-    /**
-     * Test that when a direction is written incorrectly by the user,
-     * the program will respond by saying "You can't do that"
-     * Mostly a text for the close cases (ex: wesst vs. west)
-     *
-     */
-    @Test
-    public void testInputWord() {
-        //
-    }
 
     public static void main(String[] args) {
         Room room1, room2, room3, room4, room5, room6;
@@ -78,32 +44,35 @@ public class TestGame {
         Item pen, knife, box;
         pen = new Item("pen", "a ballpoint pen", null);
         knife = new Item("knife", "a sharp knife", null);
-        box = new Item("box", "a cardboard box", List.of(pen), true, false);
+        box = new Item("box", "a cardboard box", null, true, false);
 
         room1.addItemToRoom(box);
-        room1.addCharacter(user);
+        room1.addItemToRoom(pen);
         room3.addItemToRoom(knife);
 
         Character owl = new Character("Owl", "It's an owl. You can talk to it", List.of());
         owl.setFirstDialogue("\"I'm an owl, hoot hoot.\"");
         owl.setGeneralGreeting("\"Hello again, hoot hoot.\"");
-        owl.populateDialogueByTopics("forest","\"It's big and green.\"");
+        owl.populateDialogueByTopics("forest", "\"It's big and green.\"");
         owl.populateDialogueByTopics("sky", "\"It's big and blue.\"");
         room1.addCharacter(owl);
 
-        ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open"));
+        ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open", "use"));
         ArrayList<Room> rooms = new ArrayList<>(List.of(room1, room2, room3, room4, room5, room6));
 
         TextAdventure testGame = new TextAdventure("This is a test game! Have fun.", commands, rooms, room1);
 
 
-//        String input = TextAdventure.scanner.nextLine().toLowerCase().trim();
-//        while(!input.equalsIgnoreCase("quit game")) {
-//            testGame.runGame(input)l;
-//        }
+        testGame.populateInteractions();
+
+        testGame.addInteraction(box, pen, () ->{
+            testGame.getCurrentRoom().removeItemFromRoom(pen);
+            System.out.println("The box destroyed the pen!");
+        });
+
         testGame.startGame();
         testGame.runGame();
 
-
     }
+
 }
