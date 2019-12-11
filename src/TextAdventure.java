@@ -18,7 +18,8 @@ public class TextAdventure {
     private Character user;
     private List<Room> rooms;
     private Room currentRoom;
-    List<Entity> allGameItems = new ArrayList<>();
+    private int score;
+    private List<Entity> allGameItems = new ArrayList<>();
 
     public static Scanner scanner;
 
@@ -352,7 +353,6 @@ public class TextAdventure {
         } else if(currentRoom.containsCharacterOfName(itemName) != null && currentRoom.containsCharacterOfName(itemName).getIsEatable()){
             Entity character = currentRoom.containsCharacterOfName(itemName);
             currentRoom.removeCharacter((Character) character);
-            System.out.println(currentRoom.getCharacterList());
             System.out.println("You ate " + itemName + "!");
         } else{
             System.out.println("You can't eat that or you already ate it.");
@@ -427,6 +427,10 @@ public class TextAdventure {
 
     public Room getCurrentRoom(){
         return currentRoom;
+    }
+
+    public void addPoints(int points){
+        score += points;
     }
 
 }

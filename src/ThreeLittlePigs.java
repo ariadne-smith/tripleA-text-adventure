@@ -128,6 +128,31 @@ public class ThreeLittlePigs {
         ArrayList<Room> rooms = new ArrayList<>((List.of(woods, house1, house2, house3, house3Interior, woods2, river, home)));
         threeLittlePigs = new TextAdventure("Three Little Pigs", commands,
                 rooms);
+
+        //add house1 and house2 objects
+        threeLittlePigs.addInteraction(leafBlower, null, () ->{
+            house2.setAccessible(true);
+            threeLittlePigs.addPoints(10);
+            pig1.setIsEatable(true);
+            System.out.println("You have destroyed this house.");
+        });
+
+        threeLittlePigs.addInteraction(leafBlower, null, () ->{
+            house3.setAccessible(true);
+            threeLittlePigs.addPoints(10);
+            pig2.setIsEatable(true);
+            System.out.println("You have destroyed this house.");
+        });
+
+        threeLittlePigs.addInteraction(brick, window, () ->{
+            house3Interior.setAccessible(true);
+            threeLittlePigs.getCurrentRoom().removeItemFromRoom(window);
+            threeLittlePigs.getCurrentRoom().removeItemFromRoom(brick);
+            house3Interior.addItemToRoom(brick);
+            System.out.println("You broke the window with the brick!");
+        });
+
+
         threeLittlePigs.startGame();
         threeLittlePigs.runGame();
 

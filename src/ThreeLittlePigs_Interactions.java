@@ -8,16 +8,11 @@ public class ThreeLittlePigs_Interactions {
         System.out.println("You can't do that.");
     }
 
-    static void breakWindow(){
-
-    }
-
-    static void destroyHouse(Room nextRoom){
+    static void destroyHouse(Room nextRoom, TextAdventure game, Character pig){
         nextRoom.setAccessible(true);
-        //increase points;
-        //pig set eatable;
+        game.addPoints(10);
+        pig.setIsEatable(true);
         System.out.println("You have destroyed this house.");
-
     }
 
     //brick & window
