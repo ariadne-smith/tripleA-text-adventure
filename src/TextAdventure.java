@@ -58,7 +58,8 @@ public class TextAdventure {
         this.commands = commands;
         this.rooms = rooms;
         this.currentRoom = startingRoom;
-        user = new Character("Wolf", "A big bad wolf", null);
+        user = new Character(null, null, null);
+        score = 0;
         scanner = new Scanner(System.in);
 
         for(Room r : rooms) {
@@ -111,6 +112,7 @@ public class TextAdventure {
     public void startGame() {
         System.out.println("Available commands: " + getCommandList());
         System.out.println("Enter 'quit game' to quit.");
+        System.out.println("Current score: " + score);
         System.out.println(story);
         System.out.println(rooms.get(0).getStory());
         System.out.println(rooms.get(0).getDescription());
@@ -185,8 +187,12 @@ public class TextAdventure {
         currentRoom = room;
         currentRoom.addCharacter(user);
         if (currentRoom.getPlayerFirstArrives()) {
+            System.out.println("Current score: " + score);
             System.out.println(currentRoom.getStory());
             currentRoom.setPlayerFirstArrives(false);
+        } else{
+            score--;
+            System.out.println("Current score: " + score);
         }
         System.out.println((currentRoom.getDescription()));
         System.out.println(currentRoom.getConnectionsDescription());
@@ -214,27 +220,33 @@ public class TextAdventure {
     private boolean handleGo(String command) {
         String direction = command.substring(command.indexOf("go") + 2);
         direction = direction.toLowerCase().trim();
-        if (direction.contains("north") && currentRoom.getConnections()[0] != null) {
+        if (direction.contains("north") && currentRoom.getConnections()[0] != null
+                && currentRoom.getConnections()[0].getAccessible()) {
             moveUserTo(currentRoom.getConnections()[0]);
             return true;
         }
-        if (direction.contains("south") && currentRoom.getConnections()[1] != null) {
+        if (direction.contains("south") && currentRoom.getConnections()[1] != null
+                && currentRoom.getConnections()[1].getAccessible()) {
             moveUserTo(currentRoom.getConnections()[1]);
             return true;
         }
-        if (direction.contains("east") && currentRoom.getConnections()[2] != null) {
+        if (direction.contains("east") && currentRoom.getConnections()[2] != null
+                && currentRoom.getConnections()[2].getAccessible()) {
             moveUserTo(currentRoom.getConnections()[2]);
             return true;
         }
-        if (direction.contains("west") && currentRoom.getConnections()[3] != null) {
+        if (direction.contains("west") && currentRoom.getConnections()[3] != null
+                && currentRoom.getConnections()[3].getAccessible()) {
             moveUserTo(currentRoom.getConnections()[3]);
             return true;
         }
-        if (direction.contains("in") && currentRoom.getConnections()[4] != null) {
+        if (direction.contains("in") && currentRoom.getConnections()[4] != null
+                && currentRoom.getConnections()[4].getAccessible()) {
             moveUserTo(currentRoom.getConnections()[4]);
             return true;
         }
-        if (direction.contains("out") && currentRoom.getConnections()[5] != null) {
+        if (direction.contains("out") && currentRoom.getConnections()[5] != null
+                && currentRoom.getConnections()[5].getAccessible()) {
             moveUserTo(currentRoom.getConnections()[5]);
             return true;
         } else {
@@ -349,11 +361,11 @@ public class TextAdventure {
         if (currentRoom.containsItemOfName(itemName) != null && currentRoom.containsItemOfName(itemName).getIsEatable()) {
             Entity item = currentRoom.containsItemOfName(itemName);
             currentRoom.removeItemFromRoom((Item) item);
-            System.out.println("You ate the" + itemName + "!");
+            System.out.println("You ate the" + item.getName() + "!");
         } else if(currentRoom.containsCharacterOfName(itemName) != null && currentRoom.containsCharacterOfName(itemName).getIsEatable()){
             Entity character = currentRoom.containsCharacterOfName(itemName);
             currentRoom.removeCharacter((Character) character);
-            System.out.println("You ate " + itemName + "!");
+            System.out.println("You ate " + character.getName() + "!");
         } else{
             System.out.println("You can't eat that or you already ate it.");
         }
@@ -369,6 +381,8 @@ public class TextAdventure {
             String itemName2 = command.substring(command.indexOf("with") + 4).trim().toLowerCase();
             Item item1 = getItemForUse(itemName);
             Item item2 = getItemForUse(itemName2);
+            System.out.println(itemName);
+            System.out.println(itemName2);
             //if both of these items are valid items in the room or in the user's inventory
             if(item1 == null || item2 == null){
                 System.out.println("You can't do that.");
@@ -414,6 +428,7 @@ public class TextAdventure {
     }
 
     private Item getItemForUse(String name){
+
         Item thing;
         if(currentRoom.containsItemOfName(name) != null) {
             thing = (Item) currentRoom.containsItemOfName(name);
@@ -431,6 +446,11 @@ public class TextAdventure {
 
     public void addPoints(int points){
         score += points;
+    }
+
+    public void setUser(String name, String description){
+        user.setName("You, " + name);
+        user.setDescription(description);
     }
 
 }

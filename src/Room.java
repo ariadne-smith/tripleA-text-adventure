@@ -113,7 +113,7 @@ public class Room {
         if(itemList == null || itemList.isEmpty()){
             return "There is nothing else to see here.";
         } else{
-            String result = "In this room, you can see: \n";
+            String result = "Here, you can see: \n";
             for (Entity item : itemList){
                 result = result + "a(n) " + item.getName();
                 if(item.getDescription()!= null){
@@ -145,7 +145,7 @@ public class Room {
 
     public Entity containsItemOfName(String itemName){
         for(Entity i: itemList){
-            if(i.getName().equals(itemName)){
+            if(i.getName().equalsIgnoreCase(itemName)){
                 return i;
             }
             if (i.containsItemOfName(itemName) != null){
