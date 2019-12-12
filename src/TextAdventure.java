@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class TextAdventure {
     private List<String> commands;
@@ -11,6 +10,7 @@ public class TextAdventure {
     private Room startingRoom;
     private Room currentRoom;
     public List<Entity> allGameItems = new ArrayList<>();
+    public TextAdventureDisplay tad = new TextAdventureDisplay();
     //public static Scanner scanner;
 
     public TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms) {
@@ -51,99 +51,130 @@ public class TextAdventure {
         startingRoom.addCharacter(user);
     }
 
-    public void runGame(String command) {
+    public String runGame(String command) {
         while (true) {
             // = scanner.nextLine();
             if (command.contains("quit game")) {
-                System.out.println("Quitting game");
-                break;
+                //System.out.println("Quitting game");
+                return "Quitting game";
             }
-            if (doCommand(command)) {
-                break;
+            if (checkCommand(command)) {
+                return doCommand(command);
             } else {
-                System.out.println("You can't do that.");
-                break;
+                //System.out.println("You can't do that.");
+                return "You can't do that.";
             }
         }
-
     }
 
-    public boolean doCommand(String command) {
+    public boolean checkCommand(String command){
         command = command.toLowerCase().trim();
         if (command.contains("show inventory")) {
-            System.out.println(user.getInventoryList());
             return true;
         }
         if (command.contains("go ")) {
-            if (handleGo(command)) {
+            if (checkGo(command)) {
                 return true;
             } else {
                 return false;
             }
         }
         if (command.contains("open ")) {
-            handleOpen(command);
             return true;
         }
         if (command.contains("pick up ")) {
-            handlePickUp(command);
             return true;
         }
         if (command.contains("drop ")) {
-            handleDrop(command);
             return true;
         }
         if (command.contains("talk ")) {
-            handleTalk(command);
             return true;
         } else return false;
     }
 
-    public void moveUserTo(Room room) {
+    public String doCommand(String command) {
+        command = command.toLowerCase().trim();
+        if (command.contains("show inventory")) {
+            //System.out.println(user.getInventoryList());
+            //return true;
+            return user.getInventoryList();
+        }
+        if (command.contains("go ")) {
+            if (checkGo(command)) {
+                //return true;
+                return handleGo(command);
+            } /*else {
+                return false;
+            }*/
+        }
+        if (command.contains("open ")) {
+            return handleOpen(command);
+            //return true;
+        }
+        if (command.contains("pick up ")) {
+            return handlePickUp(command);
+            //return true;
+        }
+        if (command.contains("drop ")) {
+            return handleDrop(command);
+            //return true;
+        }
+        if (command.contains("talk ")) {
+            return handleTalk(command);
+            //return true;
+        } //else return false;
+        else return "You can't do that.";
+    }
+
+    public String moveUserTo(Room room) {
+        String output = "";
         currentRoom.removeCharacter(user);
         currentRoom = room;
         currentRoom.addCharacter(user);
         if (currentRoom.getPlayerFirstArrives()) {
-            System.out.println(currentRoom.getStory());
+            output += currentRoom.getStory();
             currentRoom.setPlayerFirstArrives(false);
         }
-        System.out.println((currentRoom.getDescription()));
-        System.out.println(currentRoom.getConnectionsDescription());
+        output += "\n" + currentRoom.getDescription();
+        output += "\n" + currentRoom.getConnectionsDescription();
         if (currentRoom.getItemListDescription() != null) {
-            System.out.println(currentRoom.getCharacterListDescription());
-            System.out.println(currentRoom.getItemListDescription());
+            output += "\n" + currentRoom.getCharacterListDescription();
+            output += "\n" + currentRoom.getItemListDescription();
         }
+        System.out.println("moveuserto" + output);
+        return output;
     }
 
     public void addCommand(String command) {
         commands.add(command);
     }
 
-    private boolean handleGo(String command) {
+    private boolean checkGo(String command){
         String direction = command.substring(command.indexOf("go") + 2);
         direction = direction.toLowerCase().trim();
         if (direction.contains("north") && currentRoom.getConnections()[0] != null) {
-            moveUserTo(currentRoom.getConnections()[0]);
+            //moveUserTo(currentRoom.getConnections()[0]);
             return true;
         }
         if (direction.contains("south") && currentRoom.getConnections()[1] != null) {
-            moveUserTo(currentRoom.getConnections()[1]);
+            //moveUserTo(currentRoom.getConnections()[1]);
             return true;
         }
         if (direction.contains("east") && currentRoom.getConnections()[2] != null) {
-            moveUserTo(currentRoom.getConnections()[2]);
+            //moveUserTo(currentRoom.getConnections()[2]);
             return true;
         }
         if (direction.contains("west") && currentRoom.getConnections()[3] != null) {
-            moveUserTo(currentRoom.getConnections()[3]);
+            //moveUserTo(currentRoom.getConnections()[3]);
             return true;
         }
         if (direction.contains("in") && currentRoom.getConnections()[4] != null) {
-            moveUserTo(currentRoom.getConnections()[4]);
+            //moveUserTo(currentRoom.getConnections()[4]);
             return true;
         }
         if (direction.contains("out") && currentRoom.getConnections()[5] != null) {
-            moveUserTo(currentRoom.getConnections()[5]);
+            //moveUserTo(currentRoom.getConnections()[5]);
             return true;
         } else {
 //            System.out.println("Cannot do that. Try again.");
@@ -151,7 +182,33 @@ public class TextAdventure {
         }
     }
 
-    private void handleOpen(String command) {
+    private String handleGo(String command) {
+        String direction = command.substring(command.indexOf("go") + 2);
+        direction = direction.toLowerCase().trim();
+        if (direction.contains("north") && currentRoom.getConnections()[0] != null) {
+            return moveUserTo(currentRoom.getConnections()[0]);
+        }
+        if (direction.contains("south") && currentRoom.getConnections()[1] != null) {
+            return moveUserTo(currentRoom.getConnections()[1]);
+        }
+        if (direction.contains("east") && currentRoom.getConnections()[2] != null) {
+            return moveUserTo(currentRoom.getConnections()[2]);
+        }
+        if (direction.contains("west") && currentRoom.getConnections()[3] != null) {
+            return moveUserTo(currentRoom.getConnections()[3]);
+        }
+        if (direction.contains("in") && currentRoom.getConnections()[4] != null) {
+            return moveUserTo(currentRoom.getConnections()[4]);
+        }
+        if (direction.contains("out") && currentRoom.getConnections()[5] != null) {
+            return moveUserTo(currentRoom.getConnections()[5]);
+        } else {
+//            System.out.println("Cannot do that. Try again.");
+            return "Cannot do that. Try again.";
+        }
+    }
+
+    private String handleOpen(String command) {
         String itemName = command.substring(command.indexOf("open") + 5);
         itemName = itemName.trim().toLowerCase();
         Item itemFound = (Item) currentRoom.containsItemOfName(itemName);
@@ -159,54 +216,64 @@ public class TextAdventure {
             if (itemFound.isOpenable) {
                 if (itemFound.isOpen) {
                     //already open
-                    System.out.println("It's already open!");
+                    //System.out.println("It's already open!");
+                    return "It's already open!";
                 } else {
                     //it's not open, so open it
                     itemFound.setOpen(true);
-                    System.out.println((itemFound.describeContents()));
+                    //System.out.println((itemFound.describeContents()));
+                    return itemFound.describeContents();
                 }
             } else {
                 //is not openable
-                System.out.println("You can't open this.");
+                //System.out.println("You can't open this.");
+                return "You can't open this.";
             }
         } else {
             //no such item found
-            System.out.println("That doesn't exist here.");
+            //System.out.println("That doesn't exist here.");
+            return "That doesn't exist here.";
         }
     }
 
-    private void handlePickUp(String command) {
+    private String handlePickUp(String command) {
         String itemName = command.substring(command.indexOf("pick up") + 7);
         itemName = itemName.toLowerCase().trim();
 
         if (user.containsItemOfName(itemName) != null) {
             //if it is already in user's inventory
-            System.out.println("You already picked that up.");
+            //System.out.println("You already picked that up.");
+            return "You already picked that up.";
         } else if (currentRoom.containsItemOfName(itemName) != null) {
             //if the room contains the item, pick it up
             Entity item = currentRoom.containsItemOfName(itemName);
             user.addItemToInventory(item);
             currentRoom.removeItemFromRoom((Item) item);
-            System.out.println("You picked up the " + itemName + ".");
+            //System.out.println("You picked up the " + itemName + ".");
+            return "You picked up the " + itemName + ".";
         } else {
-            System.out.println("You can't do that.");
+            //System.out.println("You can't do that.");
+            return "You can't do that.";
         }
     }
 
-    private void handleDrop(String command) {
+    private String handleDrop(String command) {
         String itemName = command.substring(command.indexOf("drop") + 4);
         itemName = itemName.toLowerCase().trim();
         if (user.containsItemOfName(itemName) != null) {
             Entity item = user.containsItemOfName(itemName);
             currentRoom.addItemToRoom((Item) item);
             user.removeItemFromInventory(item);
-            System.out.println("You dropped the " + itemName + ".");
+            //System.out.println("You dropped the " + itemName + ".");
+            return "You dropped the " + itemName + ".";
         } else {
-            System.out.println("You don't have that on you.");
+            //System.out.println("You don't have that on you.");
+            return "You don't have that on you.";
         }
     }
 
-    private void handleTalk(String command) { //need to refactor
+    private String handleTalk(String command) { //need to refactor
+        String talkResponse = "";
         String targetCharacterName, commandWord;
         String chosenTopic = "";
         if (command.contains("talk to")) {
@@ -229,25 +296,25 @@ public class TextAdventure {
             //then the character is in the room
             //so talk to it
             if (!command.contains(" about ")) {
-
                 if (targetCharacter.getIsPlayersFirstTimeSpeakingTo()) {
                     //then it's the user's first time speaking with this character
-                    System.out.println(targetCharacter.getFirstDialogue());
-                    System.out.println(" You can talk with " + targetCharacter.getName() + " about: " +
-                            targetCharacter.getDialogueByTopics().keySet());
+                    talkResponse += targetCharacter.getFirstDialogue();
+                    talkResponse += "\n You can talk with " + targetCharacter.getName() + " about: " +
+                            targetCharacter.getDialogueByTopics().keySet();
                     targetCharacter.setIsPlayersFirstTimeSpeakingTo(false);
                 } else {
                     //it's not the first time
-                    System.out.println(targetCharacter.getGeneralGreeting());
+                    talkResponse += targetCharacter.getGeneralGreeting();
                 }
             } else {
                 chosenTopic = command.substring(
                         command.indexOf("about") + 5
                 ).trim();
-                targetCharacter.beSpokenToAbout(chosenTopic);
+                talkResponse += targetCharacter.beSpokenToAbout(chosenTopic);
             }
         }
 
+        return talkResponse;
     }
 
     public Character findCharacterInRoomByName(Room room, String characterName) {
