@@ -70,10 +70,43 @@ public class TextAdventure {
         }
     }
 
+    public boolean checkCommand(String command){
+        command = command.toLowerCase().trim();
+        if(command.contains("use ")){
+            return true;
+        }
+        if (command.contains("show inventory")) {
+            return true;
+        }
+        if (command.contains("go ")) {
+            if (checkGo(command)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (command.contains("open ")) {
+            return true;
+        }
+        if (command.contains("pick up ")) {
+            return true;
+        }
+        if (command.contains("drop ")) {
+            return true;
+        }
+        if (command.contains("talk ")) {
+            return true;
+        }
+        if (command.contains("eat ")){
+            return true;
+        }
+        else return false;
+    }
+
     public String doCommand(String command) {
         command = command.toLowerCase().trim();
         if(command.contains("use")){
-            handleUse(command);
+            return handleUse(command);
             //return true;
         }
         if (command.contains("show inventory")) {
@@ -106,7 +139,7 @@ public class TextAdventure {
             //return true;
         }
         if (command.contains("eat")){
-            handleEat(command);
+            return handleEat(command);
             //return true;
         }  //else return false;
         else return "You can't do that.";
@@ -210,7 +243,7 @@ public class TextAdventure {
             return moveUserTo(currentRoom.getConnections()[5]);
         } else {
 //            System.out.println("Cannot do that. Try again.");
-            return false;
+            return "Cannot do that. Try again.";
         }
     }
 
@@ -323,42 +356,44 @@ public class TextAdventure {
         return talkResponse;
     }
 
-    private void handleEat(String command){
+    private String handleEat(String command){
+        String output = "";
         String itemName = command.substring(command.indexOf("eat") + 3);
         itemName = itemName.toLowerCase().trim();
         if (currentRoom.containsItemOfName(itemName) != null && currentRoom.containsItemOfName(itemName).getIsEatable()) {
             Entity item = currentRoom.containsItemOfName(itemName);
             currentRoom.removeItemFromRoom((Item) item);
-            System.out.println("You ate the" + item.getName() + "!");
+            output += "You ate the" + item.getName() + "!";
         } else if(currentRoom.containsCharacterOfName(itemName) != null && currentRoom.containsCharacterOfName(itemName).getIsEatable()){
             Entity character = currentRoom.containsCharacterOfName(itemName);
             currentRoom.removeCharacter((Character) character);
-            System.out.println("You ate " + character.getName() + "!");
+            output += "You ate " + character.getName() + "!";
         } else{
-            System.out.println("You can't eat that or you already ate it.");
+            output += "You can't eat that or you already ate it.";
         }
+        return output;
     }
 
-    private void handleUse(String command){
+    private String handleUse(String command){
+        String output = "";
         command = command.substring(command.indexOf("use") + 3);
         //if command contains "with" and there is a valid word to process after "with"
         if (!command.contains("with") || command.substring(command.indexOf("with")).length() < 5 ){
-            System.out.println("That doesn't make sense.");
+            output += "That doesn't make sense.";
         } else {
             String itemName = command.substring(0, command.indexOf("with")).trim().toLowerCase();
             String itemName2 = command.substring(command.indexOf("with") + 4).trim().toLowerCase();
             Item item1 = getItemForUse(itemName);
             Item item2 = getItemForUse(itemName2);
-            System.out.println(itemName);
-            System.out.println(itemName2);
             //if both of these items are valid items in the room or in the user's inventory
             if(item1 == null || item2 == null){
-                System.out.println("You can't do that.");
+                output += "You can't do that.";
             } else{
                 Runnable action = item1.getInteraction(item2);
                 action.run();
             }
         }
+        return output;
     }
 
     public Character findCharacterInRoomByName(Room room, String characterName) {

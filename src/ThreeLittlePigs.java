@@ -188,8 +188,8 @@ public class ThreeLittlePigs {
         });
 
         //Starts game and runs it
-        threeLittlePigs.startGame();
-        threeLittlePigs.runGame();
+        //threeLittlePigs.startGame();
+        //threeLittlePigs.runGame();
 
     }
 
