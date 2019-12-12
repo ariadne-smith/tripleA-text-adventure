@@ -7,6 +7,7 @@ public class Room {
     private String description;
     private String story;
     private Boolean playerFirstArrives;
+    private Boolean accessible;
     private Room[] connections = new Room[6]; //n s e w in out
     private List<Entity> characterList;
     private List<Entity> itemList;
@@ -16,6 +17,7 @@ public class Room {
         this.description = null;
         this.story = null;
         this.playerFirstArrives = true;
+        this.accessible = true;
         itemList = new ArrayList<>();
         characterList = new ArrayList<>();
     }
@@ -70,6 +72,14 @@ public class Room {
         this.story = story;
     }
 
+    public void setAccessible(boolean access){
+        accessible = access;
+    }
+
+    public boolean getAccessible(){
+        return accessible;
+    }
+
     public Boolean getPlayerFirstArrives() {
         return playerFirstArrives;
     }
@@ -103,7 +113,7 @@ public class Room {
         if(itemList == null || itemList.isEmpty()){
             return "There is nothing else to see here.";
         } else{
-            String result = "In this room, you can see: \n";
+            String result = "Here, you can see: \n";
             for (Entity item : itemList){
                 result = result + "a(n) " + item.getName();
                 if(item.getDescription()!= null){
@@ -135,11 +145,20 @@ public class Room {
 
     public Entity containsItemOfName(String itemName){
         for(Entity i: itemList){
-            if(i.getName().equals(itemName)){
+            if(i.getName().equalsIgnoreCase(itemName)){
                 return i;
             }
             if (i.containsItemOfName(itemName) != null){
                 return i.containsItemOfName(itemName);
+            }
+        }
+        return null;
+    }
+
+    public Entity containsCharacterOfName(String charName){
+        for(Entity i: characterList){
+            if(i.getName().equalsIgnoreCase(charName)){
+                return i;
             }
         }
         return null;
@@ -179,7 +198,7 @@ public class Room {
             return result;
         }
         for(int i = 0; i < connections.length; i ++){
-            if (connections[i] != null){
+            if (connections[i] != null && connections[i].getAccessible()){
                 if(connections.length > 2){
                     result = result + indexToDirection(i) +  ", ";
                 }

@@ -8,10 +8,6 @@ public class ThreeLittlePigs_Interactions {
         System.out.println("You can't do that.");
     }
 
-    static void breakWindow(){
-
-    }
-
     //brick & window
     //leafblower & stick house
     //blow command
