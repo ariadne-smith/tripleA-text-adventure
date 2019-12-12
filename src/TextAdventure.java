@@ -30,27 +30,18 @@ public class TextAdventure {
         currentRoom = rooms.get(0);
         user = new Character("Wolf", "A big bad wolf", null);
         scanner = new Scanner(System.in);
-
         for(Room r : rooms){
             allGameItems.addAll(r.getItemList());
         }
-
         title = new GraphicsText();
         title.setText("");
         title.setFont(FontStyle.BOLD, 30);
         title.setPosition(25, 25);
-        //canvas.add(title);
-
         history = new GraphicsText();
         history.setText(story);
         history.setFont(FontStyle.PLAIN, 15);
-
-
         input = new TextField();
         input.setCenter(400, 700);
-        //canvas.add(input);
-
-//        canvas.draw();
     }
 
     public TextAdventure(String story, ArrayList<String> commands, ArrayList<Room> rooms, Room startingRoom) {
@@ -61,53 +52,23 @@ public class TextAdventure {
         user = new Character(null, null, null);
         score = 0;
         scanner = new Scanner(System.in);
-
         for(Room r : rooms) {
             allGameItems.addAll(r.getItemList());
         }
-
         for(Entity i : allGameItems){
             Item definedItem = (Item) i;
             definedItem.populateInteractions(allGameItems);
         }
-
         title = new GraphicsText();
         title.setText("");
         title.setFont(FontStyle.BOLD, 30);
         title.setPosition(25, 25);
-        //canvas.add(title);
-
         history = new GraphicsText();
         history.setText(story);
         history.setFont(FontStyle.PLAIN, 15);
-
-
         input = new TextField();
         input.setCenter(400, 700);
-        //canvas.add(input);
-
-//        canvas.draw();
     }
-
-    /*
-    public static void main(String[] args) {
-        Room room1 = new Room("Room 1");
-        ArrayList<Room> rooms = new ArrayList<>();
-        Room room2 = new Room("Room 2");
-        rooms.add(room1);
-        rooms.add(room2);
-
-        ArrayList<String> commands = new ArrayList<>();
-        commands.add("go");
-        commands.add("show inventory");
-
-        TextAdventure adventure = new TextAdventure("Once upon a time", commands, rooms);
-
-        String userInput = scanner.nextLine().trim().toLowerCase();
-        while (true) {
-            adventure.runGame();
-        }
-    }*/
 
     public void startGame() {
         System.out.println("Available commands: " + getCommandList());
@@ -421,12 +382,10 @@ public class TextAdventure {
         }
         return result;
     }
-
     //item interaction methods -- must be static
     static void doNothing(){
         System.out.println("You can't do that.");
     }
-
     private Item getItemForUse(String name){
 
         Item thing;
@@ -452,5 +411,4 @@ public class TextAdventure {
         user.setName("You, " + name);
         user.setDescription(description);
     }
-
 }
