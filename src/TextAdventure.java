@@ -20,7 +20,7 @@ public class TextAdventure {
         this.rooms = rooms;
         startingRoom = rooms.get(0);
         currentRoom = startingRoom;
-        user = new Character("Wolf", "A big bad wolf", null);
+        user = new Character("You, a wolf", "A big bad wolf", null);
         //scanner = new Scanner();
 
         for(Room r : rooms){
@@ -42,10 +42,7 @@ public class TextAdventure {
         for(Room r : rooms) {
             allGameItems.addAll(r.getItemList());
         }
-        for(Entity i : allGameItems){
-            Item definedItem = (Item) i;
-            definedItem.populateInteractions(allGameItems);
-        }
+        this.populateInteractions();
 
     }
 
@@ -100,12 +97,15 @@ public class TextAdventure {
         if (command.contains("eat ")){
             return true;
         }
+        if (command.contains("blow down")){
+            return true;
+        }
         else return false;
     }
 
     public String doCommand(String command) {
         command = command.toLowerCase().trim();
-        if(command.contains("use")){
+        if(command.contains("use ")){
             return handleUse(command);
             //return true;
         }
@@ -142,6 +142,9 @@ public class TextAdventure {
             return handleEat(command);
             //return true;
         }  //else return false;
+        if(command.contains("blow down")){
+            return handleBlowDown(command);
+        }
         else return "You can't do that.";
     }
 
@@ -329,12 +332,12 @@ public class TextAdventure {
             targetCharacterName = targetCharacterName.substring(0, targetCharacterName.indexOf(" about "));
         }
 
-        Character targetCharacter = findCharacterInRoomByName(currentRoom, targetCharacterName);
 
-        if (targetCharacter != null) {
+        if (currentRoom.containsCharacterOfName(targetCharacterName) != null && !targetCharacterName.equalsIgnoreCase(user.getName())) {
             //then the character is in the room
             //so talk to it
-            if (!command.contains(" about ")) {
+            Character targetCharacter = (Character) currentRoom.containsCharacterOfName(targetCharacterName);
+            if (!command.contains(" about ") && command.length() > 5) {
                 if (targetCharacter.getIsPlayersFirstTimeSpeakingTo()) {
                     //then it's the user's first time speaking with this character
                     talkResponse += targetCharacter.getFirstDialogue();
@@ -351,6 +354,9 @@ public class TextAdventure {
                 ).trim();
                 talkResponse += targetCharacter.beSpokenToAbout(chosenTopic);
             }
+
+        } else{
+            talkResponse = "You can't do that or you need to rephrase it.";
         }
 
         return talkResponse;
@@ -376,7 +382,7 @@ public class TextAdventure {
 
     private String handleUse(String command){
         String output = "";
-        command = command.substring(command.indexOf("use") + 3);
+        command = command.substring(command.indexOf("use ") + 4);
         //if command contains "with" and there is a valid word to process after "with"
         if (!command.contains("with") || command.substring(command.indexOf("with")).length() < 5 ){
             output += "That doesn't make sense.";
@@ -385,6 +391,8 @@ public class TextAdventure {
             String itemName2 = command.substring(command.indexOf("with") + 4).trim().toLowerCase();
             Item item1 = getItemForUse(itemName);
             Item item2 = getItemForUse(itemName2);
+            System.out.println(itemName);
+            System.out.println(itemName2);
             //if both of these items are valid items in the room or in the user's inventory
             if(item1 == null || item2 == null){
                 output += "You can't do that.";
@@ -395,6 +403,29 @@ public class TextAdventure {
         }
         return output;
     }
+
+    private String handleBlowDown(String command){
+        String output = "";
+        String blowThis = command.substring((command.indexOf("blow down") + 9));
+        blowThis = blowThis.toLowerCase().trim();
+        if((blowThis.contains("straw house")) && currentRoom.containsItemOfName("Straw House") != null){
+            currentRoom.removeItemFromRoom(currentRoom.containsItemOfName("Straw House"));
+            if(currentRoom.containsCharacterOfName("Billy") != null){
+                currentRoom.containsCharacterOfName("Billy").setIsEatable(true);
+            }
+            rooms.get(2).setAccessible(true);
+            output = "You blew down the Straw house!" + "\n" +currentRoom.getConnectionsDescription();
+            //print out: "You blew the Straw House down!"
+        }
+        else if(currentRoom.containsItemOfName("Straw House") == null){
+            output = "You already blew down the Straw House!";
+        }
+        else{
+            output = "You can't blow this down.";
+        }
+        return output;
+    }
+
 
     public Character findCharacterInRoomByName(Room room, String characterName) {
         Entity foundCharacter = null;
