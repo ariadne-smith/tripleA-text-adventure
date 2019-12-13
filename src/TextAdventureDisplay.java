@@ -227,6 +227,7 @@ public class TextAdventureDisplay extends Application {
             house3Interior.addItemToRoom(brick);
             System.out.println("You broke the window with the brick!");
             System.out.println(threeLittlePigs.getCurrentRoom().getConnectionsDescription());
+            //TODO: Must change from sout to adding to text display. Not sure how to do that.
         });
         threeLittlePigs.addInteraction(vine, rock, () -> {
             river.setAccessible(false);
