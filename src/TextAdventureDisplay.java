@@ -188,7 +188,7 @@ public class TextAdventureDisplay extends Application {
         woods3.setConnections(new Room[] {house3, null, null, null, null, null}); //not done
 
         //Commands possible
-        ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open", "eat", "talk"));
+        ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open", "eat", "talk to", "blow down"));
         //Existing rooms in game
         ArrayList<Room> rooms = new ArrayList<>((List.of(woods, house1, house2, house3, house3Interior, woods2, river, home)));
 
@@ -241,7 +241,7 @@ public class TextAdventureDisplay extends Application {
             if (e.getCode() == KeyCode.ENTER) {
                 Node currentFocus = scene.getFocusOwner();
                 if (currentFocus instanceof TextInputControl) {
-                    System.out.println("textfieldinstance true");
+                    //System.out.println("textfieldinstance true");
                     retrieveCommand(((TextInputControl) currentFocus).getText());
                     //retrieveCommand(userInput.getText());
                     ((TextInputControl) currentFocus).setText("");

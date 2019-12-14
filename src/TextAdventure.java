@@ -72,7 +72,7 @@ public class TextAdventure {
 
     public boolean checkCommand(String command){
         command = command.toLowerCase().trim();
-        if(command.contains("use ")){
+         if(command.contains("blow down ")){
             return true;
         }
         if (command.contains("show inventory")) {
@@ -100,14 +100,15 @@ public class TextAdventure {
         if (command.contains("eat ")){
             return true;
         }
-        else return false;
+        if(command.contains("use ")){
+            return true;
+        }       else return false;
     }
 
     public String doCommand(String command) {
         command = command.toLowerCase().trim();
-        if(command.contains("use")){
-            return handleUse(command);
-            //return true;
+        if (command.contains("blow down ")) {
+            return handleBlowDown(command);
         }
         if (command.contains("show inventory")) {
             //System.out.println(user.getInventoryList());
@@ -142,6 +143,10 @@ public class TextAdventure {
             return handleEat(command);
             //return true;
         }  //else return false;
+        if(command.contains("use")){
+            return handleUse(command);
+            //return true;
+        }
         else return "You can't do that.";
     }
 
@@ -355,6 +360,22 @@ public class TextAdventure {
 
         return talkResponse;
     }
+
+    private String handleBlowDown(String command){
+        String blowThis = command.substring((command.indexOf("blow down") + 9));
+        blowThis = blowThis.toLowerCase().trim();
+        if((blowThis.contains("the straw house")) && currentRoom.containsItemOfName("Straw House") != null){
+            currentRoom.removeItemFromRoom(currentRoom.containsItemOfName("Straw House"));
+            return "You blew the Straw House down!";
+        }
+        else if(currentRoom.containsItemOfName("Straw House") == null){
+            return "You already blew down the Straw House";
+        }
+        else{
+            return "You can't blow this down";
+        }
+    }
+
 
     private String handleEat(String command){
         String output = "";
