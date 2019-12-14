@@ -64,20 +64,20 @@ public class TextAdventureDisplay extends Application {
         house2.setStory("You decide to look for some more food and continue on to the next neighborhood," +
                 " filled with stick houses. You sniff the air and have a good feeling about a house to your left…");
         house2.setDescription("Here is the site of a stick house.");
-        house2.setAccessible(false);// must set accessible again after the first pig is eaten
+        house2.setAccessible(false);
 
         Room house3 = new Room("The Brick House");
         house3.setStory("You decide to look for some more food and continue on to the next neighborhood, filled with " +
                 "brick houses. You sniff the air and have a good feeling about a house up ahead, which is made of bricks " +
                 "and has a lovely skylight.");
         house3.setDescription("Here is the site of the brick house.");
-        house3.setAccessible(false);// must set accessible again after the second pig is eaten
+        house3.setAccessible(false);
 
         Room house3Interior = new Room("Inside the brick house.");
         house3Interior.setStory("Aha! Here is the delicious pig! Your stomach is rumbling . . . ");
         house3Interior.setDescription("This is a nice house made for a pig. Above the fireplace is a framed photo eat " +
                 "of the pig who lives here and his two brothers.");
-        house3Interior.setAccessible(false);// must set accessible again after the window is broken
+        house3Interior.setAccessible(false);
 
         Room woods2 = new Room("More Woods");
         woods2.setStory("You're feeling pretty good now, having gobbled up some pigs and successfully stopped your stomach from growling." +
@@ -85,7 +85,7 @@ public class TextAdventureDisplay extends Application {
                 "But you have a feeling that you're not out of the woods yet-- literally. There's a pig cop here, and if you don't get out of here fast, " +
                 "you might find yourself in trouble again.");
         woods2.setDescription("A dark and ominous forest.");
-        woods2.setAccessible(false); // must set accessible again after the third pig is eaten
+        woods2.setAccessible(false);
 
         Room river = new Room ("River shore");
         river.setStory("You've run from the pig cop into another section of woods, but there's a wide rushing river in front of you. Surely you won't be able " +
@@ -97,7 +97,7 @@ public class TextAdventureDisplay extends Application {
                 "and arrive home. Your family cheers when they see you and you swear to never trek into the woods without some extra provisions" +
                 "ever again." );
         home.setDescription("");
-        home.setAccessible(false); //must set accessible again after the river is crossed
+        home.setAccessible(false);
 
         //User can possibly end the game here
 
@@ -114,7 +114,7 @@ public class TextAdventureDisplay extends Application {
         Character owl = new Character("Owl", "A wise elderly owl who might have some helpful advice", null);
         owl.setFirstDialogue("I'm an owl, hoot hoot.");
         owl.setGeneralGreeting("Hello again. Hoot hoot!");
-        owl.populateDialogueByTopics("advice", "That straw house over there looks pretty flimsy. Even a slight breeze could knock it down!" +
+        owl.populateDialogueByTopics("advice", "That straw house over there looks pretty flimsy. Even a slight breeze could knock it down! " +
                 "Hoot hoot!");
         owl.populateDialogueByTopics("owl things", "I eat mice. Hoot hoot!");
         owl.populateDialogueByTopics("the forest", "It sure is dark and scary in here. Hoot hoot!");
@@ -203,14 +203,20 @@ public class TextAdventureDisplay extends Application {
             house2.setAccessible(true);
             threeLittlePigs.addPoints(10);
             pig1.setIsEatable(true);
-            System.out.println("You have destroyed the Straw House.");
+            String output = "You have destroyed the Straw House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
+//            System.out.println(output);
+            return output;
+
         });
         threeLittlePigs.addInteraction(leafBlower, house2Item, () ->{
             house2.removeItemFromRoom(house2Item);
             house3.setAccessible(true);
             threeLittlePigs.addPoints(10);
             pig2.setIsEatable(true);
-            System.out.println("You have destroyed the Stick House.");
+            String output = "You have destroyed the Stick House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
+//            System.out.println(output);
+            return output;
+
         });
         threeLittlePigs.addInteraction(brick, window, () ->{
             house3Interior.setAccessible(true);
@@ -219,15 +225,20 @@ public class TextAdventureDisplay extends Application {
             threeLittlePigs.getCurrentRoom().removeItemFromRoom(window);
             threeLittlePigs.getCurrentRoom().removeItemFromRoom(brick);
             house3Interior.addItemToRoom(brick);
-            System.out.println("You broke the window with the brick!");
+//            System.out.println("You broke the window with the brick!");
+//            System.out.println(threeLittlePigs.getCurrentRoom().getConnectionsDescription());
+            return "You broke the window with the brick!" + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
         });
         threeLittlePigs.addInteraction(vine, rock, () -> {
             river.setAccessible(false);
             home.setAccessible(true);
-            System.out.println("You move the rock so that you can reach the vine and you swing across the river! The " +
-                    "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
-                    "Congratulations, you've made it home!");
+//            System.out.println("You move the rock so that you can reach the vine and you swing across the river! The " +
+//                    "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
+//                    "Congratulations, you've made it home!");
             threeLittlePigs.moveUserTo(home);
+            return "You move the rock so that you can reach the vine and you swing across the river! The " +
+                    "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
+                    "Congratulations, you've made it home!";
         });
 
         /*

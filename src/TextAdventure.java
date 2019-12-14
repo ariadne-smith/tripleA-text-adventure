@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class TextAdventure {
     private List<String> commands;
@@ -20,7 +21,7 @@ public class TextAdventure {
         this.rooms = rooms;
         startingRoom = rooms.get(0);
         currentRoom = startingRoom;
-        user = new Character("Wolf", "A big bad wolf", null);
+        user = new Character("You, a wolf", "A big bad wolf", null);
         //scanner = new Scanner();
 
         for(Room r : rooms){
@@ -42,10 +43,11 @@ public class TextAdventure {
         for(Room r : rooms) {
             allGameItems.addAll(r.getItemList());
         }
-        for(Entity i : allGameItems){
+        this.populateInteractions();
+        /*for(Entity i : allGameItems){
             Item definedItem = (Item) i;
             definedItem.populateInteractions(allGameItems);
-        }
+        }*/
 
     }
 
@@ -72,7 +74,7 @@ public class TextAdventure {
 
     public boolean checkCommand(String command){
         command = command.toLowerCase().trim();
-         if(command.contains("blow down ")){
+        if(command.contains("blow down ")){
             return true;
         }
         if (command.contains("show inventory")) {
@@ -102,7 +104,8 @@ public class TextAdventure {
         }
         if(command.contains("use ")){
             return true;
-        }       else return false;
+        }
+        else return false;
     }
 
     public String doCommand(String command) {
@@ -177,7 +180,7 @@ public class TextAdventure {
         commands.add(command);
     }
 
-    public void addInteraction(Item item1, Item item2, Runnable interaction){
+    public void addInteraction(Item item1, Item item2, Supplier<String> interaction){
         item1.addInteraction(item2, interaction);
         item2.addInteraction(item1, interaction);
     }
@@ -316,6 +319,7 @@ public class TextAdventure {
         }
     }
 
+    /*
     private String handleTalk(String command) { //need to refactor
         String talkResponse = "";
         String targetCharacterName, commandWord;
@@ -356,24 +360,83 @@ public class TextAdventure {
                 ).trim();
                 talkResponse += targetCharacter.beSpokenToAbout(chosenTopic);
             }
+
+        } else{
+            talkResponse = "You can't do that or you need to rephrase it.";
+        }
+
+        return talkResponse;
+    }
+     */
+
+    private String handleTalk(String command) { //need to refactor
+        String talkResponse = "";
+        String targetCharacterName, commandWord;
+        String chosenTopic = "";
+        if (command.contains("talk to")) {
+            commandWord = "talk to";
+            targetCharacterName = command.substring(command.indexOf("talk to") + 7).trim();
+        } else {
+            //the command was just "talk"
+            commandWord = "talk";
+            targetCharacterName = command.substring(command.indexOf("talk") + 4).trim();
+        }
+
+        if(targetCharacterName.contains(" about ")){
+            chosenTopic = targetCharacterName.substring(targetCharacterName.indexOf("about") + 6);
+            targetCharacterName = targetCharacterName.substring(0, targetCharacterName.indexOf(" about "));
+        }
+
+
+        if (currentRoom.containsCharacterOfName(targetCharacterName) != null && !targetCharacterName.equalsIgnoreCase(user.getName())) {
+            //then the character is in the room
+            //so talk to it
+            Character targetCharacter = (Character) currentRoom.containsCharacterOfName(targetCharacterName);
+            if (!command.contains(" about ") && command.length() > 5) {
+                if (targetCharacter.getIsPlayersFirstTimeSpeakingTo()) {
+                    //then it's the user's first time speaking with this character
+                    talkResponse += targetCharacter.getFirstDialogue();
+                    talkResponse += "\n You can talk with " + targetCharacter.getName() + " about: " +
+                            targetCharacter.getDialogueByTopics().keySet();
+                    targetCharacter.setIsPlayersFirstTimeSpeakingTo(false);
+                } else {
+                    //it's not the first time
+                    talkResponse += targetCharacter.getGeneralGreeting();
+                }
+            } else {
+                chosenTopic = command.substring(
+                        command.indexOf("about") + 5
+                ).trim();
+                talkResponse += targetCharacter.beSpokenToAbout(chosenTopic);
+            }
+
+        } else{
+            talkResponse = "You can't do that or you need to rephrase it.";
         }
 
         return talkResponse;
     }
 
     private String handleBlowDown(String command){
+        String output = "";
         String blowThis = command.substring((command.indexOf("blow down") + 9));
         blowThis = blowThis.toLowerCase().trim();
-        if((blowThis.contains("the straw house")) && currentRoom.containsItemOfName("Straw House") != null){
+        if((blowThis.contains("straw house")) && currentRoom.containsItemOfName("Straw House") != null){
             currentRoom.removeItemFromRoom(currentRoom.containsItemOfName("Straw House"));
-            return "You blew the Straw House down!";
+            if(currentRoom.containsCharacterOfName("Billy") != null){
+                currentRoom.containsCharacterOfName("Billy").setIsEatable(true);
+            }
+            rooms.get(2).setAccessible(true);
+            output = "You blew down the Straw house!" + "\n" +currentRoom.getConnectionsDescription();
+            //print out: "You blew the Straw House down!"
         }
         else if(currentRoom.containsItemOfName("Straw House") == null){
-            return "You already blew down the Straw House";
+            output = "You already blew down the Straw House!";
         }
         else{
-            return "You can't blow this down";
+            output = "You can't blow this down.";
         }
+        return output;
     }
 
 
@@ -397,7 +460,7 @@ public class TextAdventure {
 
     private String handleUse(String command){
         String output = "";
-        command = command.substring(command.indexOf("use") + 3);
+        command = command.substring(command.indexOf("use ") + 4);
         //if command contains "with" and there is a valid word to process after "with"
         if (!command.contains("with") || command.substring(command.indexOf("with")).length() < 5 ){
             output += "That doesn't make sense.";
@@ -406,16 +469,19 @@ public class TextAdventure {
             String itemName2 = command.substring(command.indexOf("with") + 4).trim().toLowerCase();
             Item item1 = getItemForUse(itemName);
             Item item2 = getItemForUse(itemName2);
+            //System.out.println(itemName);
+            //System.out.println(itemName2);
             //if both of these items are valid items in the room or in the user's inventory
             if(item1 == null || item2 == null){
                 output += "You can't do that.";
             } else{
-                Runnable action = item1.getInteraction(item2);
-                action.run();
+                Supplier<String> action = item1.getInteraction(item2);
+                output = action.get();
             }
         }
         return output;
     }
+
 
     public Character findCharacterInRoomByName(Room room, String characterName) {
         Entity foundCharacter = null;
