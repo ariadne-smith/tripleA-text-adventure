@@ -292,7 +292,8 @@ public class TextAdventure {
             //if it is already in user's inventory
             //System.out.println("You already picked that up.");
             return "You already picked that up.";
-        } else if (currentRoom.containsItemOfName(itemName) != null) {
+        } else if (currentRoom.containsItemOfName(itemName) != null &&
+                currentRoom.containsItemOfName(itemName).getIsPickUpAble()) {
             //if the room contains the item, pick it up
             Entity item = currentRoom.containsItemOfName(itemName);
             user.addItemToInventory(item);
