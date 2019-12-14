@@ -160,6 +160,7 @@ public class TextAdventure {
         currentRoom.addCharacter(user);
         if (currentRoom.getPlayerFirstArrives()) {
             System.out.println("Current score: " + score);
+
             output += currentRoom.getStory();
             currentRoom.setPlayerFirstArrives(false);
         } else{
@@ -511,10 +512,13 @@ public class TextAdventure {
         }
         return result;
     }
+
+
     //item interaction methods -- must be static
     static void doNothing(){
         System.out.println("You can't do that.");
     }
+
     private Item getItemForUse(String name){
 
         Item thing;
@@ -555,5 +559,13 @@ public class TextAdventure {
     public void setUser(String name, String description){
         user.setName("You, " + name);
         user.setDescription(description);
+    }
+
+    public Character getUser(){
+        return user;
+    }
+
+    public int getScore(){
+        return score;
     }
 }

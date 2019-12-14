@@ -101,8 +101,19 @@ public class Character extends Entity{
         for (Entity item : inventory){
             result = result + " " + item.getName();
             if(item.getDescription()!= null){
-                result = result + "\n" + item.getDescription() + "\n";
+                result = result + "\n" + item.getDescription();
             }
+        }
+        return result;
+    }
+
+    public String getListOfItems(){
+        String result = "";
+        if(inventory == null || inventory.isEmpty()){
+            return "There's nothing in your inventory.";
+        }
+        for (Entity item : inventory){
+            result = result + " | " + item.getName();
         }
         return result;
     }

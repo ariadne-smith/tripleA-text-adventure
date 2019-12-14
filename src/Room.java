@@ -132,7 +132,7 @@ public class Room {
             for (Entity character : characterList){
                 result += character.getName();
                 if(character.getDescription() != null){
-                    result += ", " + character.getDescription() + "\n";
+                    result += ": " + character.getDescription() + "\n";
                 }
             }
             return result;

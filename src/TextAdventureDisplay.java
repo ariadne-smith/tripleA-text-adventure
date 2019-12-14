@@ -2,11 +2,11 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -15,9 +15,8 @@ import java.util.List;
 
 public class TextAdventureDisplay extends Application {
 
-    public TextArea textDisplay;
-    public TextField userInput, gameTitle;
-    Button button;
+    public TextArea textDisplay, inventoryDisplay;
+    public TextField userInput, gameTitle, scoreCounter, commandList;
     TextAdventure currentTA;
 
     public static void main(String[] args) {
@@ -28,15 +27,32 @@ public class TextAdventureDisplay extends Application {
     public void start(Stage stage) throws Exception {
         stage.setTitle("Triple-A Text Adventure");
         VBox organisation = new VBox();
-        Scene scene = new Scene(organisation, 550,450);
+        HBox topLevel = new HBox(); //title - score
+        Scene scene = new Scene(organisation, 660,450);
 
         gameTitle = new TextField();
+        gameTitle.setPrefWidth(300);
         gameTitle.setText("game name goes here");
         gameTitle.setEditable(false);
         gameTitle.setDisable(true);
 
+        scoreCounter = new TextField();
+        scoreCounter.setText("Score: 0");
+        scoreCounter.setEditable(false);
+        scoreCounter.setDisable(true);
+
+        commandList = new TextField();
+        commandList.setText("You may use the following commands:" +
+                " \"go\", \"show inventory\", \"pick up\", \"drop\", \"open\", \"eat\", \"talk to\", \"blow down\"");
+        commandList.setEditable(false);
+        commandList.setDisable(true);
+
+        inventoryDisplay = new TextArea();
+        inventoryDisplay.setPrefRowCount(2);
+        inventoryDisplay.setEditable(false);
+
         textDisplay = new TextArea();
-        textDisplay.setPrefSize(300, 300);
+        textDisplay.setPrefSize(400, 300);
         textDisplay.setPadding(new Insets(4));
         textDisplay.setEditable(false);
         textDisplay.setWrapText(true);
@@ -252,23 +268,31 @@ public class TextAdventureDisplay extends Application {
             if (e.getCode() == KeyCode.ENTER) {
                 Node currentFocus = scene.getFocusOwner();
                 if (currentFocus instanceof TextInputControl) {
+                    printLnToDisplay("\n> " + ((TextInputControl) currentFocus).getText());
                     //System.out.println("textfieldinstance true");
                     retrieveCommand(((TextInputControl) currentFocus).getText());
                     //retrieveCommand(userInput.getText());
                     ((TextInputControl) currentFocus).setText("");
+                    inventoryDisplay.setText(threeLittlePigs.getUser().getListOfItems());
+                    scoreCounter.setText("Score: " + threeLittlePigs.getScore());
                 }
                 e.consume();
             }
             e.consume();
         });
 
-        button = new Button();
-        button.setText("test submit");
-        button.setOnAction(e -> {});
 
+        VBox middleLevel = new VBox();
+        middleLevel.setSpacing(10.0);
+        middleLevel.setPadding(new Insets(1));
+        middleLevel.getChildren().addAll(inventoryDisplay, textDisplay);
+
+        topLevel.setPadding(new Insets(1));
+        topLevel.setSpacing(10.0);
+        topLevel.getChildren().addAll(gameTitle, scoreCounter);
         organisation.setPadding(new Insets(10));
         organisation.setSpacing(10.0);
-        organisation.getChildren().addAll(gameTitle, textDisplay, userInput, button);
+        organisation.getChildren().addAll(topLevel, commandList, middleLevel, userInput);
 
         stage.setScene(scene);
         stage.show();
@@ -299,6 +323,7 @@ public class TextAdventureDisplay extends Application {
         if (room.getItemListDescription() != null) {
             printLnToDisplay(room.getItemListDescription());
         }
+        inventoryDisplay.setText(currentTA.getUser().getListOfItems());
         currentTA.startGame();
     }
 
