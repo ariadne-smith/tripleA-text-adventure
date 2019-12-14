@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class TextAdventure {
     private List<String> commands;
@@ -175,7 +176,7 @@ public class TextAdventure {
         commands.add(command);
     }
 
-    public void addInteraction(Item item1, Item item2, Runnable interaction){
+    public void addInteraction(Item item1, Item item2, Supplier<String> interaction){
         item1.addInteraction(item2, interaction);
         item2.addInteraction(item1, interaction);
     }
@@ -385,7 +386,7 @@ public class TextAdventure {
         command = command.substring(command.indexOf("use ") + 4);
         //if command contains "with" and there is a valid word to process after "with"
         if (!command.contains("with") || command.substring(command.indexOf("with")).length() < 5 ){
-            output += "That doesn't make sense.";
+            output = "That doesn't make sense.";
         } else {
             String itemName = command.substring(0, command.indexOf("with")).trim().toLowerCase();
             String itemName2 = command.substring(command.indexOf("with") + 4).trim().toLowerCase();
@@ -395,10 +396,10 @@ public class TextAdventure {
             System.out.println(itemName2);
             //if both of these items are valid items in the room or in the user's inventory
             if(item1 == null || item2 == null){
-                output += "You can't do that.";
+                output = "You can't do that.";
             } else{
-                Runnable action = item1.getInteraction(item2);
-                action.run();
+                Supplier<String> action = item1.getInteraction(item2);
+                output = action.get();
             }
         }
         return output;

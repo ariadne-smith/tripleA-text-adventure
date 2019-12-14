@@ -204,8 +204,8 @@ public class TextAdventureDisplay extends Application {
             threeLittlePigs.addPoints(10);
             pig1.setIsEatable(true);
             String output = "You have destroyed the Straw House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
-            System.out.println(output);
-            //TODO: Must change from sout to adding to text display. Not sure how to do that.
+//            System.out.println(output);
+            return output;
 
         });
         threeLittlePigs.addInteraction(leafBlower, house2Item, () ->{
@@ -214,8 +214,8 @@ public class TextAdventureDisplay extends Application {
             threeLittlePigs.addPoints(10);
             pig2.setIsEatable(true);
             String output = "You have destroyed the Stick House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
-            System.out.println(output);
-            //TODO: Must change from sout to adding to text display. Not sure how to do that.
+//            System.out.println(output);
+            return output;
 
         });
         threeLittlePigs.addInteraction(brick, window, () ->{
@@ -225,18 +225,20 @@ public class TextAdventureDisplay extends Application {
             threeLittlePigs.getCurrentRoom().removeItemFromRoom(window);
             threeLittlePigs.getCurrentRoom().removeItemFromRoom(brick);
             house3Interior.addItemToRoom(brick);
-            System.out.println("You broke the window with the brick!");
-            System.out.println(threeLittlePigs.getCurrentRoom().getConnectionsDescription());
-            //TODO: Must change from sout to adding to text display. Not sure how to do that.
+//            System.out.println("You broke the window with the brick!");
+//            System.out.println(threeLittlePigs.getCurrentRoom().getConnectionsDescription());
+            return "You broke the window with the brick!" + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
         });
         threeLittlePigs.addInteraction(vine, rock, () -> {
             river.setAccessible(false);
             home.setAccessible(true);
-            System.out.println("You move the rock so that you can reach the vine and you swing across the river! The " +
-                    "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
-                    "Congratulations, you've made it home!");
+//            System.out.println("You move the rock so that you can reach the vine and you swing across the river! The " +
+//                    "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
+//                    "Congratulations, you've made it home!");
             threeLittlePigs.moveUserTo(home);
-            //TODO: Must change from sout to adding to text display. Not sure how to do that.
+            return "You move the rock so that you can reach the vine and you swing across the river! The " +
+                    "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
+                    "Congratulations, you've made it home!";
         });
 
         /*

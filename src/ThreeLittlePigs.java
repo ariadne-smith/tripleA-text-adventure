@@ -160,14 +160,17 @@ public class ThreeLittlePigs {
             house2.setAccessible(true);
             threeLittlePigs.addPoints(10);
             pig1.setIsEatable(true);
-            System.out.println("You have destroyed the Straw House.");
+//            System.out.println("You have destroyed the Straw House.");
+           return "You have destroyed the Straw House.";
+
         });
         threeLittlePigs.addInteraction(leafBlower, house2Item, () ->{
             house2.removeItemFromRoom(house2Item);
             house3.setAccessible(true);
             threeLittlePigs.addPoints(10);
             pig2.setIsEatable(true);
-            System.out.println("You have destroyed the Stick House.");
+//            System.out.println("You have destroyed the Stick House.");
+            return "You have destroyed the Stick House";
         });
         threeLittlePigs.addInteraction(brick, window, () ->{
             house3Interior.setAccessible(true);
@@ -176,15 +179,19 @@ public class ThreeLittlePigs {
             threeLittlePigs.getCurrentRoom().removeItemFromRoom(window);
             threeLittlePigs.getCurrentRoom().removeItemFromRoom(brick);
             house3Interior.addItemToRoom(brick);
-            System.out.println("You broke the window with the brick!");
+//            System.out.println("You broke the window with the brick!");
+            return "You broke the window with the brick!";
         });
         threeLittlePigs.addInteraction(vine, rock, () -> {
             river.setAccessible(false);
             home.setAccessible(true);
-            System.out.println("You move the rock so that you can reach the vine and you swing across the river! The " +
-                    "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
-                    "Congratulations, you've made it home!");
+//            System.out.println("You move the rock so that you can reach the vine and you swing across the river! The " +
+//                    "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
+//                    "Congratulations, you've made it home!");
             threeLittlePigs.moveUserTo(home);
+            return "You move the rock so that you can reach the vine and you swing across the river! The " +
+                    "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
+                    "Congratulations, you've made it home!";
         });
 
         //Starts game and runs it

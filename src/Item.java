@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Item extends Entity {
 
@@ -9,7 +11,7 @@ public class Item extends Entity {
     boolean isOpen;
     boolean isPickupable;
     boolean isEatable;
-    Map<Entity, Runnable> interactionsByItem = new HashMap<>();
+    Map<Entity, Supplier<String>> interactionsByItem = new HashMap<>();
 
     public Item (String name, String description, List<Entity> inventory){
         this.name = name;
@@ -32,16 +34,16 @@ public class Item extends Entity {
     public void populateInteractions(List<Entity> itemList){
         for(Entity i : itemList){
             if(!i.getName().equals(this.getName())){
-                interactionsByItem.put(i, ThreeLittlePigs_Interactions::doNothing);
+                interactionsByItem.put(i, () -> "That does nothing.");
             }
         }
     }
 
-    public void addInteraction(Item item, Runnable interaction){
+    public void addInteraction(Item item, Supplier<String> interaction){
         interactionsByItem.put(item, interaction);
     }
 
-    public Runnable getInteraction(Item item){
+    public Supplier<String> getInteraction(Item item){
         return interactionsByItem.get(item);
     }
 

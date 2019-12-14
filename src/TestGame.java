@@ -65,10 +65,10 @@ public class TestGame {
 
         testGame.populateInteractions();
 
-        testGame.addInteraction(box, pen, () ->{
-            testGame.getCurrentRoom().removeItemFromRoom(pen);
-            System.out.println("The box destroyed the pen!");
-        });
+//        testGame.addInteraction(box, pen, () ->{
+//            testGame.getCurrentRoom().removeItemFromRoom(pen);
+//            System.out.println("The box destroyed the pen!");
+//        });
 
         testGame.startGame();
         //testGame.runGame();
