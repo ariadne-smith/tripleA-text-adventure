@@ -20,6 +20,7 @@ public class TextAdventureDisplay extends Application {
     private TextField gameTitle;
     private TextField scoreCounter;
     private TextAdventure currentTA;
+    private Stage gameWindow;
 
     public static void main(String[] args) {
         launch(args);
@@ -35,7 +36,8 @@ public class TextAdventureDisplay extends Application {
 
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Triple-A Text Adventure");
+        gameWindow = stage;
+        gameWindow.setTitle("Triple-A Text Adventure");
         VBox organisation = new VBox();
         HBox topLevel = new HBox();
         Scene scene = new Scene(organisation, 660,450);
@@ -307,8 +309,8 @@ public class TextAdventureDisplay extends Application {
         organisation.setSpacing(10.0);
         organisation.getChildren().addAll(topLevel, commandList, middleLevel, userInput);
 
-        stage.setScene(scene);
-        stage.show();
+        gameWindow.setScene(scene);
+        gameWindow.show();
 
     }
 
@@ -345,6 +347,9 @@ public class TextAdventureDisplay extends Application {
      */
 
     private void retrieveCommand(String commandString){
+        if(commandString.equals("quit game")){
+            quitGame();
+        }
         printLnToDisplay(currentTA.runGame(commandString));
     }
 
@@ -369,4 +374,13 @@ public class TextAdventureDisplay extends Application {
         textDisplay.setText(textDisplay.getText() + "\n" + text);
         textDisplay.appendText("");
     }
+
+    /*
+     * Stops the game and exits the game window
+     */
+
+    private void quitGame(){
+        gameWindow.close();
+    }
+
 }
