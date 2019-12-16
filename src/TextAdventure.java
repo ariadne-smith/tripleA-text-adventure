@@ -18,24 +18,6 @@ public class TextAdventure {
     private int score;
     private List<Entity> allGameItems = new ArrayList<>();
 
-    /**
-     *
-     */
-
-    TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms) {
-        this.title = title;
-        this.commands = commands;
-        this.rooms = rooms;
-        startingRoom = rooms.get(0);
-        currentRoom = startingRoom;
-        user = new Character(null, null, null);
-        score = 0;
-
-        for(Room r : rooms){
-            allGameItems.addAll(r.getItemList());
-        }
-        this.populateInteractions();
-    }
 
     TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms, Room startingRoom) {
         this.title = title;
@@ -45,7 +27,6 @@ public class TextAdventure {
         currentRoom = startingRoom;
         user = new Character(null, null, null);
         score = 0;
-
         for(Room r : rooms) {
             allGameItems.addAll(r.getItemList());
         }

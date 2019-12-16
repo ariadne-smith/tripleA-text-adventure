@@ -3,6 +3,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class is not actually used in the running of the game, it was developed before FX were implemented but gives
+ * a good idea of how story development works
+ */
+
+/**
  * This is the main class for the actual 'text' part of the text-adventure. It functions as a class that makes the
  * map of story. It only contains the main method, which sets room names, the stories for each room,
  * and the descriptions of the location the user has entered. It also sets up the location of all of the characters,
@@ -15,7 +20,7 @@ import java.util.List;
  * the outline at the bottom of the main method...
  */
 
-public class ThreeLittlePigs {
+public class  ThreeLittlePigs {
     public static TextAdventure threeLittlePigs;
 
     public static void main(String[] args) {
@@ -30,12 +35,13 @@ public class ThreeLittlePigs {
         Room house1 = new Room ("The Straw House");
         house1.setStory("You’ve trekked out of the woods and followed the rocky dirt road until you" +
                 " find a neighborhood full of questionably constructed straw houses. Your nose twitches " +
-                "and you realize the one right in front of you quite possibly contains bacon…");
+                "and you realize the one right in front of you contains some tasty bacon named Billy");
         house1.setDescription("This is the site of the straw house.");
 
         Room house2 = new Room("The Stick House");
         house2.setStory("You decide to look for some more food and continue on to the next neighborhood," +
-                " filled with stick houses. You sniff the air and have a good feeling about a house to your left…");
+                " filled with stick houses. You sniff the air and know immediately that the house to your left" +
+                "houses Reginald -- a chunky pig");
         house2.setDescription("Here is the site of a stick house.");
         house2.setAccessible(false);// must set accessible again after the first pig is eaten
 
@@ -47,7 +53,7 @@ public class ThreeLittlePigs {
         house3.setAccessible(false);// must set accessible again after the second pig is eaten
 
         Room house3Interior = new Room("Inside the brick house.");
-        house3Interior.setStory("Aha! Here is the delicious pig! Your stomach is rumbling . . . ");
+        house3Interior.setStory("Aha! Here is the delicious pig -- Spike! Your stomach is rumbling . . . ");
         house3Interior.setDescription("This is a nice house made for a pig. Above the fireplace is a framed photo eat " +
                 "of the pig who lives here and his two brothers.");
         house3Interior.setAccessible(false);// must set accessible again after the window is broken
@@ -157,7 +163,7 @@ public class ThreeLittlePigs {
         ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open", "eat", "talk"));
         //Existing rooms in game
         ArrayList<Room> rooms = new ArrayList<>((List.of(woods, house1, house2, house3, house3Interior, woods2, river, home)));
-        threeLittlePigs = new TextAdventure("Three Little Pigs", commands, rooms);
+        threeLittlePigs = new TextAdventure("Three Little Pigs", commands, rooms, woods);
 
         //Item + item interactions possible
         threeLittlePigs.addInteraction(leafBlower, house1Item, () ->{
