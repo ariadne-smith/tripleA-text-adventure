@@ -1,11 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
-
-
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.*;
+
+/**
+ * Test game is a class that we used to test our other classes and their methods, without having to write out a whole
+ * story. It tests for smooth function, obvious errors, and the placement of text in the console. However, it does not
+ * use the canvas.
+ */
 
 public class TestGame {
 
@@ -40,7 +43,6 @@ public class TestGame {
         room2.setConnections(new Room[]{room4, room5, room3, room1, room6, null});
         room1.setConnections(new Room[]{null, null, room2, null, null, null});
 
-
         Item pen, knife, box;
         pen = new Item("pen", "a ballpoint pen", null);
         knife = new Item("knife", "a sharp knife", null);
@@ -62,7 +64,6 @@ public class TestGame {
 
         TextAdventure testGame = new TextAdventure("This is a test game! Have fun.", commands, rooms, room1);
 
-
         testGame.populateInteractions();
 
 //        testGame.addInteraction(box, pen, () ->{
@@ -72,7 +73,5 @@ public class TestGame {
 
         testGame.startGame();
         //testGame.runGame();
-
     }
-
 }
