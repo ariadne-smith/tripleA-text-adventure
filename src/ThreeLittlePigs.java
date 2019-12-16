@@ -1,7 +1,19 @@
 import javafx.application.Application;
-
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * This is the main class for the actual 'text' part of the text-adventure. It functions as a class that makes the
+ * map of story. It only contains the main method, which sets room names, the stories for each room,
+ * and the descriptions of the location the user has entered. It also sets up the location of all of the characters,
+ * items for use, and the layout of the rooms by direction.
+ */
+
+/**
+ * NOTE: we have also written a general outline for rooms that would be used if the "Little Red Riding Hood" fairytale
+ * were to be developed with the text adventure framework. Unfortunately, there was no time to do as such. You can view
+ * the outline at the bottom of the main method...
+ */
 
 public class ThreeLittlePigs {
     public static TextAdventure threeLittlePigs;
@@ -60,14 +72,8 @@ public class ThreeLittlePigs {
         home.setDescription("");
         home.setAccessible(false); //must set accessible again after the river is crossed
 
-        //User can possibly end the game here
-
-        //Transition into Little Red Riding Hood
-        Room woods3 = new Room("Back into the woods");
-        woods3.setStory("Congrats! You made it through a day of pig-eating and law-evading! After a good nights rest you are ready to" +
-                " venture back out into the woods and try your luck at finding breakfast. You've recently heard that Grandma Riding-Hood" +
-                "has fallen ill...Perhaps this is a good opportunity...");
-        woods3.setDescription("A dark and ominous forest.");
+        //END OF GAME
+        //now possible to add another story...
 
 
         //Characters and their related actions
@@ -146,7 +152,6 @@ public class ThreeLittlePigs {
         woods2.setConnections(new Room[] {house3, null, null, null, null, null});
         //river
         //home
-        woods3.setConnections(new Room[] {house3, null, null, null, null, null}); //not done
 
         //Commands possible
         ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open", "eat", "talk"));
@@ -194,9 +199,43 @@ public class ThreeLittlePigs {
                     "Congratulations, you've made it home!";
         });
 
-        //Starts game and runs it
-        //threeLittlePigs.startGame();
-        //threeLittlePigs.runGame();
+        //OUTLINE FOR LITTLE RED RIDING HOOD TEXT ADVENTURE
+
+        Room woods3 = new Room("More Woods");
+        woods3.setStory("Congrats! You made it through a day of pig-eating and law-evading! After a good nights rest you are ready to" +
+                " venture back out into the woods and try your luck at finding breakfast. You've recently heard that Grandma Riding-Hood" +
+                "has fallen ill...Perhaps this is a good opportunity...");
+        woods3.setDescription("A dark and ominous forest.");
+        woods2.setAccessible(false); //is this needed?
+
+        Room clearing = new Room("Clearing");
+        clearing.setStory("You heard whistling so you followed the noise which led you to a clearing in the woods where a wee girl in a" +
+                "red-hooded poncho cape was bending over to pick flowers. To her left is a basket filled with muffins.");
+        clearing.setDescription("A sunny clearing in the woods");
+        clearing.setAccessible(false); //is this needed?
+
+        Room grandmaHouse = new Room("Grandma's House");
+        grandmaHouse.setStory("You trot along the path for a while until you get to a wee cabin on a hill. " +
+                "You smell a human inside!!");
+        grandmaHouse.setDescription("A cabin on a hill");
+        grandmaHouse.setAccessible(false); //Unlock once you have 'gotten directions' from lil Red
+
+        Room insideGhouse = new Room("Inside Grandma's House");
+        insideGhouse.setStory("Poor Grandma lying asleep in the bed, she looks very ill, and you are very hungry...");
+        insideGhouse.setDescription("A rustic cabin with a huge, four poster bed and many quilts");
+        insideGhouse.setAccessible(false);
+
+        Room inBed = new Room("Lying in Bed");
+        inBed.setStory("After eating Grandma and disguising yourself with her clothes, you decide to take a wee nap before lil Red arrives...");
+        inBed.setDescription("Lying amongst the quilts in Grandma's bed");
+        inBed.setAccessible(false); //ONLY UNLOCK ONCE GRANDMA IS EATEN
+
+        Room woods4 = new Room("More Woods");
+        woods4.setStory("Congrats! You feel very full after eating so much today, perhaps its time to return home and get a good nights sleep");
+        woods4.setDescription("A dark and ominous forest.");
+        woods4.setAccessible(false); ////ONLY UNLOCK ONCE GRANDMA and lil Red are eaten
+
+        //Now make it possible to go back to the original Room -- "Home??"
 
     }
 
