@@ -1,59 +1,22 @@
-# tripleA-text-adventure
+Comp 127: TextAdventure Final Project
+====
 
-<b> Game </b>
+This text adventure code has been developed by Andie Wallker, Ariadne Smith, and Augusta Fricke.
+It is part of a final project for COMP 127, an introductory CS class at Macalester College. 
 
-- Character player
-- List <Room> rooms
-- List <String> commands
-- CanvasWindow canvas
-- GraphicsText history— for testing use System.out.print for each input and return
-- TextField input
-- Compass compass
+Thank you for playing!
 
 
-<b> Entity </b>
+Text Adventure : The Three Little Pigs
+---
 
-- String name
-- String description
-- List<Entity> inventory
-- void addItemToInventory
-- void removeItemFromInventory
+Text Adventure : The Three Little Pigs walks the game-player through the basic plot of the original fairytale.
+The user may talk to different characters along the way, use tools to get to different scenes, and must eat pig
+characters before getting back home. 
 
-<b> Character extends Entity </b>
+Cheat Code Instructions and Map (a diagram of the plot)
+---
+(copy and paste the link below in your search bar)
 
-- Talking
+https://docs.google.com/document/d/1bEhA4jbL2iuvAbl263Z8pYhxn6MUmm0w-zZYdtOlOLU/edit?usp=sharing
 
-<b> Item extends Entity </b>
-
-
-
-
-<b> Room </b>
-
-- List<Entity> characters
-- List<Entity> items
-- String description
-- String story
-- Boolean firstTime
-- Room[] connections
-- Void addItem
-- Void removeItem
-- void addCharacter
-- void removeCharacter
-
-<b> Compass </b>
-
-- GraphicsGroup icon
-- Button north
-- Button south
-- Button east
-- Button west
-
-
-
-<b> Other features </b>
-
-- score implementation
-- timer affecting score
-- game-player interactions with certain inputs
-- talking & dialogue trees

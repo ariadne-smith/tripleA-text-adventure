@@ -168,7 +168,7 @@ public class TextAdventure {
     }
 
     /**
-     *
+     * Gives every interaction a default option in the list.
      */
 
     void populateInteractions(){
