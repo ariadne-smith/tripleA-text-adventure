@@ -20,14 +20,24 @@ public class TextAdventureDisplay extends Application {
     private TextField gameTitle;
     private TextField scoreCounter;
     private TextAdventure currentTA;
+    private Stage gameWindow;
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    /*
+     * Initialises all the objects of the GUI and
+     * opens the window in which those objects are contained.
+     * Includes the current story for the text adventure
+     * to be played, as well as event handling for certain
+     * GUI objects.
+     */
+
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Triple-A Text Adventure");
+        gameWindow = stage;
+        gameWindow.setTitle("Triple-A Text Adventure");
         VBox organisation = new VBox();
         HBox topLevel = new HBox();
         Scene scene = new Scene(organisation, 660,450);
@@ -80,19 +90,19 @@ public class TextAdventureDisplay extends Application {
         Room house1 = new Room ("The Straw House");
         house1.setStory("You’ve trekked out of the woods and followed the rocky dirt road until you" +
                 " find a neighborhood full of questionably constructed straw houses. Your nose twitches " +
-                "and you realize the one right in front of you quite possibly contains bacon…");
+                "and you realize the one right in front of you contains bacon! Better find a way to get inside.");
         house1.setDescription("This is the site of the straw house.");
 
         Room house2 = new Room("The Stick House");
         house2.setStory("You decide to look for some more food and continue on to the next neighborhood," +
-                " filled with stick houses. You sniff the air and have a good feeling about a house to your left…");
+                " filled with stick houses. You sniff the air and have a good feeling about a house to your left . . .");
         house2.setDescription("Here is the site of a stick house.");
         house2.setAccessible(false);
 
         Room house3 = new Room("The Brick House");
         house3.setStory("You decide to look for some more food and continue on to the next neighborhood, filled with " +
                 "brick houses. You sniff the air and have a good feeling about a house up ahead, which is made of bricks " +
-                "and has a lovely skylight.");
+                "and has a lovely skylight. Inside, you can see a little pig moving about.");
         house3.setDescription("Here is the site of the brick house.");
         house3.setAccessible(false);
 
@@ -175,13 +185,6 @@ public class TextAdventureDisplay extends Application {
         Item house3Item = new Item("brick house", "a strong, well-built brick house", null);
         house3Item.setPickUpAble(false);
 
-//        Item leafBlower = new Item("leaf blower", "a gardening tool that generates a lot of wind", null);
-//        Item brick = new Item("brick", "looks like a leftover brick from building a house", null);
-//        Item window = new Item ("window", "a nice skylight on the roof of the brick house", null);
-//        window.setPickUpAble(false);
-//        Item rock = new Item("rock", "a flat gray rock", null);
-//        Item vine = new Item("vine", "a long green vine suspended from a tree branch", null);
-//        vine.setPickUpAble(false);
         Item shed = new Item("shed", "a garden shed that might contain some tools",null);
         shed.setOpenable(true);
         Item leafBlower = new Item("leaf blower", "a gardening tool that generates a lot of wind", null);
@@ -196,7 +199,6 @@ public class TextAdventureDisplay extends Application {
         rock.setPickUpAble(false);
         Item vine = new Item("vine", "a long green vine suspended from a tree branch, too high to reach", null);
         vine.setPickUpAble(false);
-
 
         //Where the items are placed in the game
         woods.addCharacter(owl);
@@ -230,8 +232,9 @@ public class TextAdventureDisplay extends Application {
         ArrayList<Room> rooms = new ArrayList<>((List.of(woods, house1, house2, house3, house3Interior, woods2, river, home)));
 
         TextAdventure threeLittlePigs = new TextAdventure("Three Little Pigs", commands, rooms, woods);
+        threeLittlePigs.setUser("a wolf", "a big bad wolf");
         currentTA = threeLittlePigs;
-        currentTA.setStory("================================================== \n" +
+        currentTA.setStory("=========================================================== \n" +
                 "This is a story about the big bad wolf.");
 
         currentTA.populateInteractions();
@@ -306,10 +309,16 @@ public class TextAdventureDisplay extends Application {
         organisation.setSpacing(10.0);
         organisation.getChildren().addAll(topLevel, commandList, middleLevel, userInput);
 
-        stage.setScene(scene);
-        stage.show();
+        gameWindow.setScene(scene);
+        gameWindow.show();
 
     }
+
+    /*
+     * Loads a text adventure such that its title,
+     * starting room, commands, and story show up
+     * in the text adventure display.
+     */
 
     private void loadTextAdventure() {
         gameTitle.setText(currentTA.getTitle());
@@ -330,17 +339,48 @@ public class TextAdventureDisplay extends Application {
         currentTA.startGame();
     }
 
+    /*
+     * Takes a command as a string (extracted from a textfield
+     * for user input), processes the command according to
+     * the current text adventure's instructions,
+     * and prints the returned string to the display's textarea.
+     */
+
     private void retrieveCommand(String commandString){
+        if(commandString.equals("quit game")){
+            quitGame();
+        }
         printLnToDisplay(currentTA.runGame(commandString));
     }
+
+    /*
+     * Prints text to the display's text area, then
+     * triggers the textarea event that scrolls the
+     * textarea view down.
+     */
 
     private void printToDisplay(String text){
         textDisplay.setText(textDisplay.getText() + text);
         textDisplay.appendText("");
     }
 
+    /*
+     * Prints text on a new line to the display's
+     * text area, then triggers the textarea even that
+     * scrolls the textarea view down.
+     */
+
     private void printLnToDisplay(String text){
         textDisplay.setText(textDisplay.getText() + "\n" + text);
         textDisplay.appendText("");
     }
+
+    /*
+     * Stops the game and exits the game window
+     */
+
+    private void quitGame(){
+        gameWindow.close();
+    }
+
 }

@@ -34,7 +34,7 @@ public class TextAdventure {
     }
 
     /**
-     * 'Places' the user into the first room that has been designated by the story line, also causes the score to display.
+     * 'Places' the user into the first room that has been designated by the story line.
      */
 
     void startGame() {
@@ -306,17 +306,15 @@ public class TextAdventure {
         String talkResponse = "";
         String targetCharacterName;
         String chosenTopic;
-        if (command.contains("talk to")) {
+        if (command.contains("talk to") && command.length() > 7) {
             targetCharacterName = command.substring(command.indexOf("talk to") + 7).trim();
         } else {
             //the command was just "talk"
             targetCharacterName = command.substring(command.indexOf("talk") + 4).trim();
         }
-
         if(targetCharacterName.contains(" about ")){
             targetCharacterName = targetCharacterName.substring(0, targetCharacterName.indexOf(" about "));
         }
-
 
         if (currentRoom.containsCharacterOfName(targetCharacterName) != null && !targetCharacterName.equalsIgnoreCase(user.getName())) {
             //then the character is in the room
@@ -381,7 +379,10 @@ public class TextAdventure {
             Entity character = currentRoom.containsCharacterOfName(itemName);
             currentRoom.removeCharacter((Character) character);
             output += "You ate " + character.getName() + "!";
-        } else{
+            addPoints(10);
+        } else if(currentRoom.containsCharacterOfName(itemName) == null){
+            output += "You can't eat that or you already ate it.";
+        }        else {
             output += "You can't eat that or you already ate it.";
         }
         return output;

@@ -77,7 +77,7 @@ public class Item extends Entity {
     }
 
     /**
-     * Returns a list of what is contained in the inventory of an Item formatted to be displayed in TextAdventure.
+     * Returns a string describing what is contained in the inventory of an Item formatted to be displayed in TextAdventure.
      */
 
     String describeContents() {
@@ -93,6 +93,7 @@ public class Item extends Entity {
                     desc.append(".");
                     return desc.toString();
                 } else {
+                    desc.append(", ");
                     ct--;
                 }
             }
