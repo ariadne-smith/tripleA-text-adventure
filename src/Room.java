@@ -183,6 +183,9 @@ public class Room {
 
     Entity containsCharacterOfName(String charName){
         for(Entity i: characterList){
+            if(i.getName() == null){
+                return null;
+            }
             if(i.getName().equalsIgnoreCase(charName)){
                 return i;
             }

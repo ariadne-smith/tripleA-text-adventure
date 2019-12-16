@@ -53,7 +53,7 @@ public class TextAdventure {
     }
 
     /**
-     * 'Places' the user into the first room that has been designated by the story line, also causes the score to display.
+     * 'Places' the user into the first room that has been designated by the story line.
      */
 
     void startGame() {
@@ -393,14 +393,17 @@ public class TextAdventure {
         itemName = itemName.toLowerCase().trim();
         if (currentRoom.containsItemOfName(itemName) != null && currentRoom.containsItemOfName(itemName).getIsEatable()) {
             Entity item = currentRoom.containsItemOfName(itemName);
-            currentRoom.removeItemFromRoom((Item) item);
+            currentRoom.removeItemFromRoom(item);
             output += "You ate the" + item.getName() + "!";
             addPoints(10);
         } else if(currentRoom.containsCharacterOfName(itemName) != null && currentRoom.containsCharacterOfName(itemName).getIsEatable()){
             Entity character = currentRoom.containsCharacterOfName(itemName);
             currentRoom.removeCharacter((Character) character);
             output += "You ate " + character.getName() + "!";
-        } else{
+            addPoints(10);
+        } else if(currentRoom.containsCharacterOfName(itemName) == null){
+            output += "You can't eat that or you already ate it.";
+        }        else {
             output += "You can't eat that or you already ate it.";
         }
         return output;
