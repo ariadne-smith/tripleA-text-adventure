@@ -1,5 +1,9 @@
 import java.util.List;
 
+/**
+ * Abstract class that is extended by the classes Item and Character, both used in the TextAdventure class.
+ */
+
 public abstract class Entity {
     String name;
     String description;

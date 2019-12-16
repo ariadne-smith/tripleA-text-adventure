@@ -1,6 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that represents separate locations within a TextAdventure game. Stores whether or not the character has already
+ * entered the room, whether or not the Room is accessible, an array of other Rooms and which directions they connect
+ * at, along with lists of characters and items contained within the Room.
+ */
+
 public class Room {
 
     private String name;
@@ -109,6 +115,11 @@ public class Room {
         return itemList;
     }
 
+    /**
+     * Returns a list of Items contained in the Room and their descriptions to display in the TextAdventure game. If
+     * there are no items, returns "There is nothing to see here."
+     */
+
     public String getItemListDescription(){
         if(itemList == null || itemList.isEmpty()){
             return "There is nothing else to see here.";
@@ -123,6 +134,11 @@ public class Room {
             return result;
         }
     }
+
+    /**
+     * Returns a list of Characters contained in the Room and their descriptions to display in the TextAdventure game.
+     * If there are no Characters, returns "There's no one here."
+     */
 
     public String getCharacterListDescription(){
         if(characterList == null || characterList.isEmpty()){
@@ -143,6 +159,11 @@ public class Room {
         this.itemList = itemList;
     }
 
+    /**
+     * Takes the String name of an Item and returns the Item if it exists in this Room. Otherwise, returns
+     * null.
+     */
+
     public Entity containsItemOfName(String itemName){
         for(Entity i: itemList){
             if(i.getName().equalsIgnoreCase(itemName)){
@@ -155,6 +176,11 @@ public class Room {
         return null;
     }
 
+    /**
+     * Takes the String name of an Character and returns the Character if it exists in this Room. Otherwise, returns
+     * null.
+     */
+
     public Entity containsCharacterOfName(String charName){
         for(Entity i: characterList){
             if(i.getName().equalsIgnoreCase(charName)){
@@ -163,6 +189,10 @@ public class Room {
         }
         return null;
     }
+
+    /**
+     * Returns the direction that corresponds with each index of the connections array stored within the Room class.
+     */
 
     public String indexToDirection(int index){
         if(index == 0){
@@ -187,8 +217,7 @@ public class Room {
     }
 
     /**
-     * Returns a description of the possible directions to go from a room.
-     * @return
+     * Returns a description of the possible directions to go from this Room.
      */
 
     public String getConnectionsDescription (){

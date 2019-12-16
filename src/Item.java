@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * Extends entity class and represents items in the TextAdventure class that the user can interact with.
+ */
 public class Item extends Entity {
 
     boolean isOpenable;
@@ -30,6 +33,10 @@ public class Item extends Entity {
         isOpenable = canBeOpened;
         isOpen = currentlyOpen;
     }
+
+    /**
+     * Populates the HashMap of interactions with every item in the game with the default response "That does nothing."
+     */
 
     public void populateInteractions(List<Entity> itemList){
         for(Entity i : itemList){
@@ -69,6 +76,10 @@ public class Item extends Entity {
         }
         return result;
     }
+
+    /**
+     * Returns a list of what is contained in the inventory of an Item formatted to be displayed in TextAdventure.
+     */
 
     public String describeContents() {
         String desc = "Inside here there is ";
@@ -148,6 +159,11 @@ public class Item extends Entity {
     public void setInventory(List<Entity> inventory) {
         this.inventory = inventory;
     }
+
+    /**
+     * Takes the String name of an Item and returns the Item if it exists in this Item's inventory. Otherwise, returns
+     * null.
+     */
 
     public Entity containsItemOfName(String itemName){
         if (inventory == null){
