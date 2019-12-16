@@ -9,6 +9,7 @@ public abstract class Entity {
     String description;
     List<Entity> inventory;
     boolean isEatable;
+    boolean isOpenable;
 
     public abstract void addItemToInventory(Entity item);
 
@@ -27,6 +28,10 @@ public abstract class Entity {
     public abstract boolean getIsEatable();
 
     public abstract void setIsEatable(boolean set);
+
+    public abstract boolean isOpenable();
+
+    public abstract boolean isOpen();
 
     @Override
     public abstract String toString();

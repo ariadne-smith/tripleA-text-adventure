@@ -39,6 +39,16 @@ public class Character extends Entity{
         inventory.remove(item);
     }
 
+    @Override
+    public boolean isOpen(){
+        return false;
+    }
+
+    @Override
+    public boolean isOpenable(){
+        return false;
+    }
+
     public String getName(){
         return this.name;
     }

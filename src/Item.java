@@ -70,7 +70,10 @@ public class Item extends Entity {
     @Override
     public String getInventoryList() {
         StringBuilder result = new StringBuilder();
-        for (Entity item : inventory){
+        if(inventory == null){
+            return null;
+
+        }        for (Entity item : inventory){
             result.append(" ").append(item.getDescription());
         }
         return result.toString();
@@ -106,6 +109,7 @@ public class Item extends Entity {
         return description;
     }
 
+    @Override
     public boolean isOpenable() {
         return isOpenable;
     }
@@ -114,6 +118,7 @@ public class Item extends Entity {
         isOpenable = openable;
     }
 
+    @Override
     public boolean isOpen() {
         return isOpen;
     }

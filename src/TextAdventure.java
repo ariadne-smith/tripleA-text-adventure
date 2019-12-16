@@ -274,6 +274,12 @@ public class TextAdventure {
         String itemName = command.substring(command.indexOf("pick up") + 7);
         itemName = itemName.toLowerCase().trim();
 
+        for(Entity i : currentRoom.getItemList()){
+            if(i.getInventoryList() != null){
+                if(i.containsItemOfName(itemName) != null &&  !i.isOpen()){
+                    return "You can't see a "+ itemName +" here.";
+                }            }
+        }
         if (user.containsItemOfName(itemName) != null) {
             //if it is already in user's inventory
             return "You already picked that up.";
