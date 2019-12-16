@@ -16,9 +16,7 @@ public class TextAdventure {
     private Room startingRoom;
     private Room currentRoom;
     private int score;
-    public List<Entity> allGameItems = new ArrayList<>();
-    public TextAdventureDisplay tad = new TextAdventureDisplay();
-    //public static Scanner scanner;
+    private List<Entity> allGameItems = new ArrayList<>();
 
     /**
      *
@@ -30,34 +28,28 @@ public class TextAdventure {
         this.rooms = rooms;
         startingRoom = rooms.get(0);
         currentRoom = startingRoom;
-        user = new Character("You, a wolf", "A big bad wolf", null);
-        //scanner = new Scanner();
+        user = new Character(null, null, null);
+        score = 0;
 
         for(Room r : rooms){
             allGameItems.addAll(r.getItemList());
         }
+        this.populateInteractions();
     }
 
     public TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms, Room startingRoom) {
         this.title = title;
-        this.story = story;
         this.commands = commands;
         this.rooms = rooms;
         this.startingRoom = startingRoom;
         currentRoom = startingRoom;
         user = new Character(null, null, null);
         score = 0;
-        //scanner = new Scanner(System.in);
 
         for(Room r : rooms) {
             allGameItems.addAll(r.getItemList());
         }
         this.populateInteractions();
-        /*for(Entity i : allGameItems){
-            Item definedItem = (Item) i;
-            definedItem.populateInteractions(allGameItems);
-        }*/
-
     }
 
     /**
@@ -66,7 +58,6 @@ public class TextAdventure {
 
     public void startGame() {
         startingRoom.addCharacter(user);
-        System.out.println("Current score: " + score);
     }
 
     /**
@@ -78,13 +69,11 @@ public class TextAdventure {
         while (true) {
             // = scanner.nextLine();
             if (command.contains("quit game")) {
-                //System.out.println("Quitting game");
                 return "Quitting game";
             }
             if (checkCommand(command)) {
                 return doCommand(command);
             } else {
-                //System.out.println("You can't do that.");
                 return "You can't do that.";
             }
         }
@@ -140,41 +129,30 @@ public class TextAdventure {
             return handleBlowDown(command);
         }
         if (command.contains("show inventory")) {
-            //System.out.println(user.getInventoryList());
-            //return true;
             return user.getInventoryList();
         }
         if (command.contains("go ")) {
             if (checkGo(command)) {
-                //return true;
                 return handleGo(command);
-            } /*else {
-                return false;
-            }*/
+            }
         }
         if (command.contains("open ")) {
             return handleOpen(command);
-            //return true;
         }
         if (command.contains("pick up ")) {
             return handlePickUp(command);
-            //return true;
         }
         if (command.contains("drop ")) {
             return handleDrop(command);
-            //return true;
         }
         if (command.contains("talk ")) {
             return handleTalk(command);
-            //return true;
         }
         if (command.contains("eat")){
             return handleEat(command);
-            //return true;
-        }  //else return false;
+        }
         if(command.contains("use")){
             return handleUse(command);
-            //return true;
         }
         else return "You can't do that.";
     }
@@ -200,7 +178,6 @@ public class TextAdventure {
             output += "\n" + currentRoom.getCharacterListDescription();
             output += "\n" + currentRoom.getItemListDescription();
         }
-        System.out.println("moveuserto" + output);
         return output;
     }
 
@@ -236,30 +213,23 @@ public class TextAdventure {
         String direction = command.substring(command.indexOf("go") + 2);
         direction = direction.toLowerCase().trim();
         if (direction.contains("north") && currentRoom.getConnections()[0] != null) {
-            //moveUserTo(currentRoom.getConnections()[0]);
             return true;
         }
         if (direction.contains("south") && currentRoom.getConnections()[1] != null) {
-            //moveUserTo(currentRoom.getConnections()[1]);
             return true;
         }
         if (direction.contains("east") && currentRoom.getConnections()[2] != null) {
-            //moveUserTo(currentRoom.getConnections()[2]);
             return true;
         }
         if (direction.contains("west") && currentRoom.getConnections()[3] != null) {
-            //moveUserTo(currentRoom.getConnections()[3]);
             return true;
         }
         if (direction.contains("in") && currentRoom.getConnections()[4] != null) {
-            //moveUserTo(currentRoom.getConnections()[4]);
             return true;
         }
         if (direction.contains("out") && currentRoom.getConnections()[5] != null) {
-            //moveUserTo(currentRoom.getConnections()[5]);
             return true;
         } else {
-//            System.out.println("Cannot do that. Try again.");
             return false;
         }
     }
@@ -296,7 +266,6 @@ public class TextAdventure {
                 && currentRoom.getConnections()[5].getAccessible()) {
             return moveUserTo(currentRoom.getConnections()[5]);
         } else {
-//            System.out.println("Cannot do that. Try again.");
             return "Cannot do that. Try again.";
         }
     }
@@ -316,22 +285,18 @@ public class TextAdventure {
             if (itemFound.isOpenable) {
                 if (itemFound.isOpen) {
                     //already open
-                    //System.out.println("It's already open!");
                     return "It's already open!";
                 } else {
                     //it's not open, so open it
                     itemFound.setOpen(true);
-                    //System.out.println((itemFound.describeContents()));
                     return itemFound.describeContents();
                 }
             } else {
                 //is not openable
-                //System.out.println("You can't open this.");
                 return "You can't open this.";
             }
         } else {
             //no such item found
-            //System.out.println("That doesn't exist here.");
             return "That doesn't exist here.";
         }
     }
@@ -342,7 +307,6 @@ public class TextAdventure {
 
         if (user.containsItemOfName(itemName) != null) {
             //if it is already in user's inventory
-            //System.out.println("You already picked that up.");
             return "You already picked that up.";
         } else if (currentRoom.containsItemOfName(itemName) != null &&
                 currentRoom.containsItemOfName(itemName).getIsPickUpAble()) {
@@ -350,10 +314,8 @@ public class TextAdventure {
             Entity item = currentRoom.containsItemOfName(itemName);
             user.addItemToInventory(item);
             currentRoom.removeItemFromRoom((Item) item);
-            //System.out.println("You picked up the " + itemName + ".");
             return "You picked up the " + itemName + ".";
         } else {
-            //System.out.println("You can't do that.");
             return "You can't do that.";
         }
     }
@@ -365,76 +327,20 @@ public class TextAdventure {
             Entity item = user.containsItemOfName(itemName);
             currentRoom.addItemToRoom((Item) item);
             user.removeItemFromInventory(item);
-            //System.out.println("You dropped the " + itemName + ".");
             return "You dropped the " + itemName + ".";
         } else {
-            //System.out.println("You don't have that on you.");
             return "You don't have that on you.";
         }
     }
 
-    //DELETEEEEE ????
-
-    /*
     private String handleTalk(String command) { //need to refactor
         String talkResponse = "";
-        String targetCharacterName, commandWord;
+        String targetCharacterName;
         String chosenTopic = "";
         if (command.contains("talk to")) {
-            commandWord = "talk to";
             targetCharacterName = command.substring(command.indexOf("talk to") + 7).trim();
         } else {
             //the command was just "talk"
-            commandWord = "talk";
-            targetCharacterName = command.substring(command.indexOf("talk") + 4).trim();
-        }
-
-        if(targetCharacterName.contains(" about ")){
-            chosenTopic = targetCharacterName.substring(targetCharacterName.indexOf("about") + 6);
-            targetCharacterName = targetCharacterName.substring(0, targetCharacterName.indexOf(" about "));
-        }
-
-        Character targetCharacter = findCharacterInRoomByName(currentRoom, targetCharacterName);
-
-        if (targetCharacter != null) {
-            //then the character is in the room
-            //so talk to it
-            if (!command.contains(" about ")) {
-                if (targetCharacter.getIsPlayersFirstTimeSpeakingTo()) {
-                    //then it's the user's first time speaking with this character
-                    talkResponse += targetCharacter.getFirstDialogue();
-                    talkResponse += "\n You can talk with " + targetCharacter.getName() + " about: " +
-                            targetCharacter.getDialogueByTopics().keySet();
-                    targetCharacter.setIsPlayersFirstTimeSpeakingTo(false);
-                } else {
-                    //it's not the first time
-                    talkResponse += targetCharacter.getGeneralGreeting();
-                }
-            } else {
-                chosenTopic = command.substring(
-                        command.indexOf("about") + 5
-                ).trim();
-                talkResponse += targetCharacter.beSpokenToAbout(chosenTopic);
-            }
-
-        } else{
-            talkResponse = "You can't do that or you need to rephrase it.";
-        }
-
-        return talkResponse;
-    }
-     */
-
-    private String handleTalk(String command) { //need to refactor
-        String talkResponse = "";
-        String targetCharacterName, commandWord;
-        String chosenTopic = "";
-        if (command.contains("talk to")) {
-            commandWord = "talk to";
-            targetCharacterName = command.substring(command.indexOf("talk to") + 7).trim();
-        } else {
-            //the command was just "talk"
-            commandWord = "talk";
             targetCharacterName = command.substring(command.indexOf("talk") + 4).trim();
         }
 
@@ -484,7 +390,6 @@ public class TextAdventure {
                 rooms.get(2).setAccessible(true);
                 output = "You blew down the Straw House!" + "\n" + currentRoom.getConnectionsDescription();
             }
-            //print out: "You blew the Straw House down!"
             else if(currentRoom.containsItemOfName("Straw House") == null){
                 output = "You already blew down the Straw House!";
             }
@@ -525,8 +430,6 @@ public class TextAdventure {
             String itemName2 = command.substring(command.indexOf("with") + 4).trim().toLowerCase();
             Item item1 = getItemForUse(itemName);
             Item item2 = getItemForUse(itemName2);
-            //System.out.println(itemName);
-            //System.out.println(itemName2);
             //if both of these items are valid items in the room or in the user's inventory
             if(item1 == null || item2 == null){
                 output += "You can't do that.";
@@ -570,12 +473,6 @@ public class TextAdventure {
             }
         }
         return result;
-    }
-
-
-    //item interaction methods -- must be static
-    static void doNothing(){
-        System.out.println("You can't do that.");
     }
 
     /**

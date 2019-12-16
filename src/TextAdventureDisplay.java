@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -24,10 +25,10 @@ public class TextAdventureDisplay extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         stage.setTitle("Triple-A Text Adventure");
         VBox organisation = new VBox();
-        HBox topLevel = new HBox(); //title - score
+        HBox topLevel = new HBox();
         Scene scene = new Scene(organisation, 660,450);
 
         gameTitle = new TextField();
@@ -56,6 +57,11 @@ public class TextAdventureDisplay extends Application {
         textDisplay.setPadding(new Insets(4));
         textDisplay.setEditable(false);
         textDisplay.setWrapText(true);
+
+        textDisplay.textProperty().addListener(
+                (ChangeListener<Object>) (observable, oldValue, newValue) ->
+                        textDisplay.setScrollTop(Double.MAX_VALUE)
+        );
 
 
         /*
@@ -220,7 +226,6 @@ public class TextAdventureDisplay extends Application {
             house2.setAccessible(true);
             pig1.setIsEatable(true);
             String output = "You have destroyed the Straw House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
-//            System.out.println(output);
             return output;
 
         });
@@ -229,7 +234,6 @@ public class TextAdventureDisplay extends Application {
             house3.setAccessible(true);
             pig2.setIsEatable(true);
             String output = "You have destroyed the Stick House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
-//            System.out.println(output);
             return output;
 
         });
@@ -266,9 +270,7 @@ public class TextAdventureDisplay extends Application {
                 Node currentFocus = scene.getFocusOwner();
                 if (currentFocus instanceof TextInputControl) {
                     printLnToDisplay("\n> " + ((TextInputControl) currentFocus).getText());
-                    //System.out.println("textfieldinstance true");
                     retrieveCommand(((TextInputControl) currentFocus).getText());
-                    //retrieveCommand(userInput.getText());
                     ((TextInputControl) currentFocus).setText("");
                     inventoryDisplay.setText(threeLittlePigs.getUser().getListOfItems());
                     scoreCounter.setText("Score: " + threeLittlePigs.getScore());
@@ -277,7 +279,6 @@ public class TextAdventureDisplay extends Application {
             }
             e.consume();
         });
-
 
         VBox middleLevel = new VBox();
         middleLevel.setSpacing(10.0);
@@ -294,15 +295,6 @@ public class TextAdventureDisplay extends Application {
         stage.setScene(scene);
         stage.show();
 
-    }
-
-    public void printUserInputToDisplay(){
-        if(textDisplay.getText().equals("")){
-            textDisplay.setText(userInput.getText());
-        } else {
-            textDisplay.setText(textDisplay.getText() + "\n" + userInput.getText());
-        }
-        userInput.setText("");
     }
 
     public void loadTextAdventure() {
@@ -330,9 +322,11 @@ public class TextAdventureDisplay extends Application {
 
     public void printToDisplay(String text){
         textDisplay.setText(textDisplay.getText() + text);
+        textDisplay.appendText("");
     }
 
     public void printLnToDisplay(String text){
         textDisplay.setText(textDisplay.getText() + "\n" + text);
+        textDisplay.appendText("");
     }
 }
