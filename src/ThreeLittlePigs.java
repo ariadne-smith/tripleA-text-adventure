@@ -157,7 +157,7 @@ public class ThreeLittlePigs {
         ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open", "eat", "talk"));
         //Existing rooms in game
         ArrayList<Room> rooms = new ArrayList<>((List.of(woods, house1, house2, house3, house3Interior, woods2, river, home)));
-        threeLittlePigs = new TextAdventure("Three Little Pigs", commands, rooms);
+        threeLittlePigs = new TextAdventure("Three Little Pigs", commands, rooms, woods);
 
         //Item + item interactions possible
         threeLittlePigs.addInteraction(leafBlower, house1Item, () ->{

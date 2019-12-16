@@ -45,7 +45,7 @@ public class TextAdventureDisplay extends Application {
 
         TextField commandList = new TextField();
         commandList.setText("You may use the following commands:" +
-                " \"go\", \"show inventory\", \"pick up\", \"drop\", \"open\", \"eat\", \"talk to\", \"blow down\"");
+                " \"go\", \"show inventory\", \"pick up\", \"drop\", \"open\", \"eat\", \"talk to\", \"blow down\", \"use item with item\"");
         commandList.setEditable(false);
         commandList.setDisable(true);
 
@@ -175,20 +175,35 @@ public class TextAdventureDisplay extends Application {
         Item house3Item = new Item("brick house", "a strong, well-built brick house", null);
         house3Item.setPickUpAble(false);
 
+//        Item leafBlower = new Item("leaf blower", "a gardening tool that generates a lot of wind", null);
+//        Item brick = new Item("brick", "looks like a leftover brick from building a house", null);
+//        Item window = new Item ("window", "a nice skylight on the roof of the brick house", null);
+//        window.setPickUpAble(false);
+//        Item rock = new Item("rock", "a flat gray rock", null);
+//        Item vine = new Item("vine", "a long green vine suspended from a tree branch", null);
+//        vine.setPickUpAble(false);
+        Item shed = new Item("shed", "a garden shed that might contain some tools",null);
+        shed.setOpenable(true);
         Item leafBlower = new Item("leaf blower", "a gardening tool that generates a lot of wind", null);
+        Item shovel = new Item ("shovel", "a standard shovel that would be good for shoveling snow", null);
+        Item gloves = new Item("gloves", "an old pair of gardening gloves", null);
+        shed.setInventory(List.of(shovel, leafBlower, gloves));
         Item brick = new Item("brick", "looks like a leftover brick from building a house", null);
         Item window = new Item ("window", "a nice skylight on the roof of the brick house", null);
         window.setPickUpAble(false);
-        Item rock = new Item("rock", "a flat gray rock", null);
-        Item vine = new Item("vine", "a long green vine suspended from a tree branch", null);
+
+        Item rock = new Item("rock", "a large gray rock", null);
+        rock.setPickUpAble(false);
+        Item vine = new Item("vine", "a long green vine suspended from a tree branch, too high to reach", null);
         vine.setPickUpAble(false);
+
 
         //Where the items are placed in the game
         woods.addCharacter(owl);
         house1.addCharacter(pig1);
         house1.addItemToRoom(house1Item);
         house2.addCharacter(pig2);
-        house2.addItemToRoom(leafBlower);
+        house2.addItemToRoom(shed);
         house2.addItemToRoom(house2Item);
         house3.addItemToRoom(brick);
         house3.addItemToRoom(window);
@@ -203,9 +218,9 @@ public class TextAdventureDisplay extends Application {
         woods.setConnections(new Room[] {null, null, house1, null, null, null});
         house1.setConnections(new Room[] {null, house2, null, woods, null, null});
         house2.setConnections(new Room[] {house1, null, house3, null, null, null});
-        house3.setConnections(new Room[] {null, river, null, house2, house3Interior, null});
+        house3.setConnections(new Room[] {null, woods2, null, house2, house3Interior, null});
         house3Interior.setConnections(new Room[] {null, null, null, null, null, house3});
-        woods2.setConnections(new Room[] {house3, null, null, null, null, null});
+        woods2.setConnections(new Room[] {house3, river, null, null, null, null});
         river.setConnections(new Room[] {woods2, home, null, null, null, null});
         home.setConnections(new Room[] {river, null, null, null, null, null});
 
@@ -214,7 +229,7 @@ public class TextAdventureDisplay extends Application {
         //Existing rooms in game
         ArrayList<Room> rooms = new ArrayList<>((List.of(woods, house1, house2, house3, house3Interior, woods2, river, home)));
 
-        TextAdventure threeLittlePigs = new TextAdventure("Three Little Pigs", commands, rooms);
+        TextAdventure threeLittlePigs = new TextAdventure("Three Little Pigs", commands, rooms, woods);
         currentTA = threeLittlePigs;
         currentTA.setStory("================================================== \n" +
                 "This is a story about the big bad wolf.");

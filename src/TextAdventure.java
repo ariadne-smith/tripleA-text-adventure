@@ -22,20 +22,6 @@ public class TextAdventure {
      *
      */
 
-    TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms) {
-        this.title = title;
-        this.commands = commands;
-        this.rooms = rooms;
-        startingRoom = rooms.get(0);
-        currentRoom = startingRoom;
-        user = new Character(null, null, null);
-        score = 0;
-
-        for(Room r : rooms){
-            allGameItems.addAll(r.getItemList());
-        }
-        this.populateInteractions();
-    }
 
     TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms, Room startingRoom) {
         this.title = title;
@@ -393,7 +379,7 @@ public class TextAdventure {
         itemName = itemName.toLowerCase().trim();
         if (currentRoom.containsItemOfName(itemName) != null && currentRoom.containsItemOfName(itemName).getIsEatable()) {
             Entity item = currentRoom.containsItemOfName(itemName);
-            currentRoom.removeItemFromRoom((Item) item);
+            currentRoom.removeItemFromRoom(item);
             output += "You ate the" + item.getName() + "!";
             addPoints(10);
         } else if(currentRoom.containsCharacterOfName(itemName) != null && currentRoom.containsCharacterOfName(itemName).getIsEatable()){
