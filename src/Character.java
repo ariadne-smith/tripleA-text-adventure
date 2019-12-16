@@ -3,6 +3,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A child class of entity that contains methods that allow the characters to talk and deals with the game's inventory
+ */
+
 public class Character extends Entity{
 
     private List<Entity> inventory;
@@ -44,6 +48,12 @@ public class Character extends Entity{
         this.name = newName;
     }
 
+    /**
+     * Methods that relate to 'PlayersFirstTimeSpeakingTo' document the first instance that the user interacts with
+     * characters that have been placed throughout the adventure. So, the second time the character is spoken to, it
+     * will not print out the same introductory message.
+     */
+
     public boolean getIsPlayersFirstTimeSpeakingTo() {
         return playersFirstTimeSpeakingTo;
     }
@@ -67,6 +77,12 @@ public class Character extends Entity{
     public void setGeneralGreeting(String generalGreeting) {
         this.generalGreeting = generalGreeting;
     }
+
+    /**
+     * An map, (dialogueByTopics) has been written for each character that has the ability to 'speak' to the user.
+     * These methods make calls to the specific maps, each 'topic' key has 'response' values that correspond to it
+     * that the user receives upon interacting with the character.
+     */
 
     public Map<String, String> getDialogueByTopics() {
         return dialogueByTopics;
@@ -132,6 +148,10 @@ public class Character extends Entity{
         }
         return null;
     }
+
+    /**
+     * These methods describe the items throughout the rooms and what actions make happen to them.
+     */
 
     @Override
     public boolean getIsPickUpAble() {
