@@ -306,17 +306,15 @@ public class TextAdventure {
         String talkResponse = "";
         String targetCharacterName;
         String chosenTopic;
-        if (command.contains("talk to")) {
+        if (command.contains("talk to") && command.length() > 7) {
             targetCharacterName = command.substring(command.indexOf("talk to") + 7).trim();
         } else {
             //the command was just "talk"
             targetCharacterName = command.substring(command.indexOf("talk") + 4).trim();
         }
-
         if(targetCharacterName.contains(" about ")){
             targetCharacterName = targetCharacterName.substring(0, targetCharacterName.indexOf(" about "));
         }
-
 
         if (currentRoom.containsCharacterOfName(targetCharacterName) != null && !targetCharacterName.equalsIgnoreCase(user.getName())) {
             //then the character is in the room
