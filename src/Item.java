@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -12,9 +11,9 @@ public class Item extends Entity {
 
     boolean isOpenable;
     boolean isOpen;
-    boolean isPickupable;
-    boolean isEatable;
-    Map<Entity, Supplier<String>> interactionsByItem = new HashMap<>();
+    private boolean isPickupable;
+    private boolean isEatable;
+    private Map<Entity, Supplier<String>> interactionsByItem = new HashMap<>();
 
     public Item (String name, String description, List<Entity> inventory){
         this.name = name;
@@ -38,7 +37,7 @@ public class Item extends Entity {
      * Populates the HashMap of interactions with every item in the game with the default response "That does nothing."
      */
 
-    public void populateInteractions(List<Entity> itemList){
+    void populateInteractions(List<Entity> itemList){
         for(Entity i : itemList){
             if(!i.getName().equals(this.getName())){
                 interactionsByItem.put(i, () -> "That does nothing.");
@@ -46,11 +45,11 @@ public class Item extends Entity {
         }
     }
 
-    public void addInteraction(Item item, Supplier<String> interaction){
+    void addInteraction(Item item, Supplier<String> interaction){
         interactionsByItem.put(item, interaction);
     }
 
-    public Supplier<String> getInteraction(Item item){
+    Supplier<String> getInteraction(Item item){
         return interactionsByItem.get(item);
     }
 
@@ -70,35 +69,35 @@ public class Item extends Entity {
 
     @Override
     public String getInventoryList() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (Entity item : inventory){
-            result = result + " " + item.getDescription();
+            result.append(" ").append(item.getDescription());
         }
-        return result;
+        return result.toString();
     }
 
     /**
      * Returns a list of what is contained in the inventory of an Item formatted to be displayed in TextAdventure.
      */
 
-    public String describeContents() {
-        String desc = "Inside here there is ";
+    String describeContents() {
+        StringBuilder desc = new StringBuilder("Inside here there is ");
         int ct = 0;
-        for (Entity i : inventory) {
+        for (Entity ignored : inventory) {
             ct++;
         }
         for (Entity i : inventory) {
             {
-                desc += "a(n) " + i.getName();
+                desc.append("a(n) ").append(i.getName());
                 if (ct == 1) {
-                    desc += ".";
-                    return desc;
+                    desc.append(".");
+                    return desc.toString();
                 } else {
                     ct--;
                 }
             }
         }
-        return desc;
+        return desc.toString();
     }
 
     @Override
@@ -118,11 +117,11 @@ public class Item extends Entity {
         return isOpen;
     }
 
-    public void setOpen(boolean open) {
+    void setOpen(boolean open) {
         isOpen = open;
     }
 
-    public void setPickUpAble(boolean set){
+    void setPickUpAble(boolean set){
         isPickupable = set;
     }
 

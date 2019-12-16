@@ -16,9 +16,10 @@ import java.util.List;
 
 public class TextAdventureDisplay extends Application {
 
-    public TextArea textDisplay, inventoryDisplay;
-    public TextField userInput, gameTitle, scoreCounter, commandList;
-    TextAdventure currentTA;
+    private TextArea textDisplay, inventoryDisplay;
+    private TextField gameTitle;
+    private TextField scoreCounter;
+    private TextAdventure currentTA;
 
     public static void main(String[] args) {
         launch(args);
@@ -42,7 +43,7 @@ public class TextAdventureDisplay extends Application {
         scoreCounter.setEditable(false);
         scoreCounter.setDisable(true);
 
-        commandList = new TextField();
+        TextField commandList = new TextField();
         commandList.setText("You may use the following commands:" +
                 " \"go\", \"show inventory\", \"pick up\", \"drop\", \"open\", \"eat\", \"talk to\", \"blow down\"");
         commandList.setEditable(false);
@@ -225,16 +226,14 @@ public class TextAdventureDisplay extends Application {
             house1.removeItemFromRoom(house1Item);
             house2.setAccessible(true);
             pig1.setIsEatable(true);
-            String output = "You have destroyed the Straw House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
-            return output;
+            return "You have destroyed the Straw House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
 
         });
         threeLittlePigs.addInteraction(leafBlower, house2Item, () ->{
             house2.removeItemFromRoom(house2Item);
             house3.setAccessible(true);
             pig2.setIsEatable(true);
-            String output = "You have destroyed the Stick House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
-            return output;
+            return "You have destroyed the Stick House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
 
         });
         threeLittlePigs.addInteraction(brick, window, () ->{
@@ -264,7 +263,7 @@ public class TextAdventureDisplay extends Application {
 
         loadTextAdventure();
 
-        userInput = new TextField();
+        TextField userInput = new TextField();
         userInput.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
                 Node currentFocus = scene.getFocusOwner();
@@ -297,7 +296,7 @@ public class TextAdventureDisplay extends Application {
 
     }
 
-    public void loadTextAdventure() {
+    private void loadTextAdventure() {
         gameTitle.setText(currentTA.getTitle());
         Room room = currentTA.getStartingRoom();
         printToDisplay("Available commands: " + currentTA.getCommandList());
@@ -316,16 +315,16 @@ public class TextAdventureDisplay extends Application {
         currentTA.startGame();
     }
 
-    public void retrieveCommand(String commandString){
+    private void retrieveCommand(String commandString){
         printLnToDisplay(currentTA.runGame(commandString));
     }
 
-    public void printToDisplay(String text){
+    private void printToDisplay(String text){
         textDisplay.setText(textDisplay.getText() + text);
         textDisplay.appendText("");
     }
 
-    public void printLnToDisplay(String text){
+    private void printLnToDisplay(String text){
         textDisplay.setText(textDisplay.getText() + "\n" + text);
         textDisplay.appendText("");
     }

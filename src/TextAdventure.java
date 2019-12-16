@@ -22,7 +22,7 @@ public class TextAdventure {
      *
      */
 
-    public TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms) {
+    TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms) {
         this.title = title;
         this.commands = commands;
         this.rooms = rooms;
@@ -37,7 +37,7 @@ public class TextAdventure {
         this.populateInteractions();
     }
 
-    public TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms, Room startingRoom) {
+    TextAdventure(String title, ArrayList<String> commands, ArrayList<Room> rooms, Room startingRoom) {
         this.title = title;
         this.commands = commands;
         this.rooms = rooms;
@@ -56,7 +56,7 @@ public class TextAdventure {
      * 'Places' the user into the first room that has been designated by the story line, also causes the score to display.
      */
 
-    public void startGame() {
+    void startGame() {
         startingRoom.addCharacter(user);
     }
 
@@ -65,9 +65,8 @@ public class TextAdventure {
      * calls on doCommand, if doCommand determines an incorrect input, runGame handles the output that informs the user of this.
      */
 
-    public String runGame(String command) {
+    String runGame(String command) {
         while (true) {
-            // = scanner.nextLine();
             if (command.contains("quit game")) {
                 return "Quitting game";
             }
@@ -83,7 +82,7 @@ public class TextAdventure {
      * Method to check if the user's input command is valid.
      */
 
-    public boolean checkCommand(String command){
+    private boolean checkCommand(String command){
         command = command.toLowerCase().trim();
         if(command.contains("blow down ")){
             return true;
@@ -92,11 +91,7 @@ public class TextAdventure {
             return true;
         }
         if (command.contains("go ")) {
-            if (checkGo(command)) {
-                return true;
-            } else {
-                return false;
-            }
+            return checkGo(command);
         }
         if (command.contains("open ")) {
             return true;
@@ -113,17 +108,14 @@ public class TextAdventure {
         if (command.contains("eat ")){
             return true;
         }
-        if(command.contains("use ")){
-            return true;
-        }
-        else return false;
+        return command.contains("use ");
     }
 
     /**
      * Handles the user's input commands, if valid the method calls on the correct method to implement the command.
      */
 
-    public String doCommand(String command) {
+    private String doCommand(String command) {
         command = command.toLowerCase().trim();
         if (command.contains("blow down ")) {
             return handleBlowDown(command);
@@ -163,7 +155,7 @@ public class TextAdventure {
      * already been in the room it does not print out anything and simply moves the user to the correct room.
      */
 
-    public String moveUserTo(Room room) {
+    String moveUserTo(Room room) {
         String output = "";
         currentRoom.removeCharacter(user);
         currentRoom = room;
@@ -189,7 +181,7 @@ public class TextAdventure {
      * Connects an existing item to its 'receiver' item through an interaction (ex: blow, eat).
      */
 
-    public void addInteraction(Item item1, Item item2, Supplier<String> interaction){
+    void addInteraction(Item item1, Item item2, Supplier<String> interaction){
         item1.addInteraction(item2, interaction);
         item2.addInteraction(item1, interaction);
     }
@@ -198,7 +190,7 @@ public class TextAdventure {
      *
      */
 
-    public void populateInteractions(){
+    void populateInteractions(){
         for (Entity item : allGameItems) {
             ((Item)item).populateInteractions(allGameItems);
         }
@@ -227,11 +219,7 @@ public class TextAdventure {
         if (direction.contains("in") && currentRoom.getConnections()[4] != null) {
             return true;
         }
-        if (direction.contains("out") && currentRoom.getConnections()[5] != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return direction.contains("out") && currentRoom.getConnections()[5] != null;
     }
 
     /**
@@ -313,7 +301,7 @@ public class TextAdventure {
             //if the room contains the item, pick it up
             Entity item = currentRoom.containsItemOfName(itemName);
             user.addItemToInventory(item);
-            currentRoom.removeItemFromRoom((Item) item);
+            currentRoom.removeItemFromRoom(item);
             return "You picked up the " + itemName + ".";
         } else {
             return "You can't do that.";
@@ -336,7 +324,7 @@ public class TextAdventure {
     private String handleTalk(String command) { //need to refactor
         String talkResponse = "";
         String targetCharacterName;
-        String chosenTopic = "";
+        String chosenTopic;
         if (command.contains("talk to")) {
             targetCharacterName = command.substring(command.indexOf("talk to") + 7).trim();
         } else {
@@ -345,7 +333,6 @@ public class TextAdventure {
         }
 
         if(targetCharacterName.contains(" about ")){
-            chosenTopic = targetCharacterName.substring(targetCharacterName.indexOf("about") + 6);
             targetCharacterName = targetCharacterName.substring(0, targetCharacterName.indexOf(" about "));
         }
 
@@ -458,21 +445,21 @@ public class TextAdventure {
      * Gets the commands that are possible for the user to use in their current position.
      */
 
-    public String getCommandList() {
-        String result = "";
+    String getCommandList() {
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < commands.size(); i++) {
             if (commands.get(i).equals("go")) {
-                result = result + commands.get(i) + " (direction)";
+                result.append(commands.get(i)).append(" (direction)");
             } else {
-                result = result + commands.get(i);
+                result.append(commands.get(i));
             }
             if (i < commands.size() - 1) {
-                result = result + ", ";
+                result.append(", ");
             } else {
-                result = result + ".";
+                result.append(".");
             }
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -492,27 +479,27 @@ public class TextAdventure {
     }
 
 
-    public String getTitle(){
+    String getTitle(){
         return this.title;
     }
 
-    public String getStory(){
+    String getStory(){
         return this.story;
     }
 
-    public void setStory(String story){
+    void setStory(String story){
         this.story = story;
     }
 
-    public Room getStartingRoom(){
+    Room getStartingRoom(){
         return this.startingRoom;
     }
 
-    public Room getCurrentRoom(){
+    Room getCurrentRoom(){
         return currentRoom;
     }
 
-    public void addPoints(int points){
+    void addPoints(int points){
         score += points;
     }
 
@@ -521,11 +508,11 @@ public class TextAdventure {
         user.setDescription(description);
     }
 
-    public Character getUser(){
+    Character getUser(){
         return user;
     }
 
-    public int getScore(){
+    int getScore(){
         return score;
     }
 }

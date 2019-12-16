@@ -62,48 +62,48 @@ public class Room {
         this.name = name;
     }
 
-    public String getDescription() {
+    String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    void setDescription(String description) {
         this.description = description;
     }
 
-    public String getStory() {
+    String getStory() {
         return story;
     }
 
-    public void setStory(String story) {
+    void setStory(String story) {
         this.story = story;
     }
 
-    public void setAccessible(boolean access){
+    void setAccessible(boolean access){
         accessible = access;
     }
 
-    public boolean getAccessible(){
+    boolean getAccessible(){
         return accessible;
     }
 
-    public Boolean getPlayerFirstArrives() {
+    Boolean getPlayerFirstArrives() {
         return playerFirstArrives;
     }
 
-    public void setPlayerFirstArrives(Boolean playerFirstArrives) {
+    void setPlayerFirstArrives(Boolean playerFirstArrives) {
         this.playerFirstArrives = playerFirstArrives;
     }
 
-    public Room[] getConnections() {
+    Room[] getConnections() {
         //return connections;
         return connections.clone();
     }
 
-    public void setConnections(Room[] connections) {
+    void setConnections(Room[] connections) {
         this.connections = connections;
     }
 
-    public List<Entity> getCharacterList() {
+    List<Entity> getCharacterList() {
         return characterList;
     }
 
@@ -111,7 +111,7 @@ public class Room {
         this.characterList = characterList;
     }
 
-    public List<Entity> getItemList() {
+    List<Entity> getItemList() {
         return itemList;
     }
 
@@ -120,18 +120,18 @@ public class Room {
      * there are no items, returns "There is nothing to see here."
      */
 
-    public String getItemListDescription(){
+    String getItemListDescription(){
         if(itemList == null || itemList.isEmpty()){
             return "There is nothing else to see here.";
         } else{
-            String result = "Here, you can see: \n";
+            StringBuilder result = new StringBuilder("Here, you can see: \n");
             for (Entity item : itemList){
-                result = result + "a(n) " + item.getName();
+                result.append("a(n) ").append(item.getName());
                 if(item.getDescription()!= null){
-                    result = result + ", " + item.getDescription() + "\n";
+                    result.append(", ").append(item.getDescription()).append("\n");
                 }
             }
-            return result;
+            return result.toString();
         }
     }
 
@@ -140,18 +140,18 @@ public class Room {
      * If there are no Characters, returns "There's no one here."
      */
 
-    public String getCharacterListDescription(){
+    String getCharacterListDescription(){
         if(characterList == null || characterList.isEmpty()){
             return "There's no one here.";
         } else {
-            String result = "Present, there is: \n";
+            StringBuilder result = new StringBuilder("Present, there is: \n");
             for (Entity character : characterList){
-                result += character.getName();
+                result.append(character.getName());
                 if(character.getDescription() != null){
-                    result += ": " + character.getDescription() + "\n";
+                    result.append(": ").append(character.getDescription()).append("\n");
                 }
             }
-            return result;
+            return result.toString();
         }
     }
 
@@ -164,7 +164,7 @@ public class Room {
      * null.
      */
 
-    public Entity containsItemOfName(String itemName){
+    Entity containsItemOfName(String itemName){
         for(Entity i: itemList){
             if(i.getName().equalsIgnoreCase(itemName)){
                 return i;
@@ -181,7 +181,7 @@ public class Room {
      * null.
      */
 
-    public Entity containsCharacterOfName(String charName){
+    Entity containsCharacterOfName(String charName){
         for(Entity i: characterList){
             if(i.getName().equalsIgnoreCase(charName)){
                 return i;
@@ -194,7 +194,7 @@ public class Room {
      * Returns the direction that corresponds with each index of the connections array stored within the Room class.
      */
 
-    public String indexToDirection(int index){
+    private String indexToDirection(int index){
         if(index == 0){
             return "north";
         }
@@ -220,30 +220,30 @@ public class Room {
      * Returns a description of the possible directions to go from this Room.
      */
 
-    public String getConnectionsDescription (){
-        String result = "You may go ";
+    String getConnectionsDescription(){
+        StringBuilder result = new StringBuilder("You may go ");
         if (connections == null){
-            result = "You may not move.";
-            return result;
+            result = new StringBuilder("You may not move.");
+            return result.toString();
         }
         for(int i = 0; i < connections.length; i ++){
             if (connections[i] != null && connections[i].getAccessible()){
                 if(connections.length > 2){
-                    result = result + indexToDirection(i) +  ", ";
+                    result.append(indexToDirection(i)).append(", ");
                 }
                 else if (connections.length == 2){
-                    result = result + indexToDirection(i)+  "and " + indexToDirection(i + 1) + ".";
+                    result.append(indexToDirection(i)).append("and ").append(indexToDirection(i + 1)).append(".");
                     break;
                 }
                 else{
-                    result = result + indexToDirection(i);
+                    result.append(indexToDirection(i));
                 }
             }
         }
-        if (result.endsWith(", ")){
-            result = result.substring(0, result.length()-2) + ".";
+        if (result.toString().endsWith(", ")){
+            result = new StringBuilder(result.substring(0, result.length() - 2) + ".");
         }
-        return result;
+        return result.toString();
     }
 
 }

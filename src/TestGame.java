@@ -14,7 +14,6 @@ public class TestGame {
 
     public static void main(String[] args) {
         Room room1, room2, room3, room4, room5, room6;
-        Character user = new Character("Player", "You are the player.", List.of());
 
         room1 = new Room("Room 1");
         room1.setDescription("You are in the first room.");
@@ -66,12 +65,6 @@ public class TestGame {
 
         testGame.populateInteractions();
 
-//        testGame.addInteraction(box, pen, () ->{
-//            testGame.getCurrentRoom().removeItemFromRoom(pen);
-//            System.out.println("The box destroyed the pen!");
-//        });
-
         testGame.startGame();
-        //testGame.runGame();
     }
 }

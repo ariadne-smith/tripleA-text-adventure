@@ -13,7 +13,6 @@ public class Character extends Entity{
     private boolean playersFirstTimeSpeakingTo;
     private String firstDialogue, generalGreeting;
     private Map<String, String> dialogueByTopics;
-    private boolean isPickUpAble = false;
 
     public Character(String name, String description, List<Entity> inventory) {
         this.name = name;
@@ -44,7 +43,7 @@ public class Character extends Entity{
         return this.name;
     }
 
-    public void setName(String newName){
+    void setName(String newName){
         this.name = newName;
     }
 
@@ -54,27 +53,27 @@ public class Character extends Entity{
      * will not print out the same introductory message.
      */
 
-    public boolean getIsPlayersFirstTimeSpeakingTo() {
+    boolean getIsPlayersFirstTimeSpeakingTo() {
         return playersFirstTimeSpeakingTo;
     }
 
-    public void setIsPlayersFirstTimeSpeakingTo(boolean playerFirstSpeaksTo) {
+    void setIsPlayersFirstTimeSpeakingTo(boolean playerFirstSpeaksTo) {
         this.playersFirstTimeSpeakingTo = playerFirstSpeaksTo;
     }
 
-    public String getFirstDialogue() {
+    String getFirstDialogue() {
         return firstDialogue;
     }
 
-    public void setFirstDialogue(String firstDialogue) {
+    void setFirstDialogue(String firstDialogue) {
         this.firstDialogue = firstDialogue;
     }
 
-    public String getGeneralGreeting() {
+    String getGeneralGreeting() {
         return generalGreeting;
     }
 
-    public void setGeneralGreeting(String generalGreeting) {
+    void setGeneralGreeting(String generalGreeting) {
         this.generalGreeting = generalGreeting;
     }
 
@@ -84,7 +83,7 @@ public class Character extends Entity{
      * that the user receives upon interacting with the character.
      */
 
-    public Map<String, String> getDialogueByTopics() {
+    Map<String, String> getDialogueByTopics() {
         return dialogueByTopics;
     }
 
@@ -92,11 +91,11 @@ public class Character extends Entity{
         this.dialogueByTopics = dialogueByTopics;
     }
 
-    public void populateDialogueByTopics(String topic, String dialogue){
+    void populateDialogueByTopics(String topic, String dialogue){
         this.dialogueByTopics.put(topic, dialogue);
     }
 
-    public String beSpokenToAbout(String topic){ //test this and figure out char null
+    String beSpokenToAbout(String topic){
         if(dialogueByTopics.isEmpty()){
             return "They have nothing to say to you.";
         } else {
@@ -110,28 +109,28 @@ public class Character extends Entity{
     }
 
     public String getInventoryList() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         if(inventory == null || inventory.isEmpty()){
             return "There's nothing in your inventory.";
         }
         for (Entity item : inventory){
-            result = result + " " + item.getName();
+            result.append(" ").append(item.getName());
             if(item.getDescription()!= null){
-                result = result + "\n" + item.getDescription();
+                result.append("\n").append(item.getDescription());
             }
         }
-        return result;
+        return result.toString();
     }
 
-    public String getListOfItems(){
-        String result = "";
+    String getListOfItems(){
+        StringBuilder result = new StringBuilder();
         if(inventory == null || inventory.isEmpty()){
             return "There's nothing in your inventory.";
         }
         for (Entity item : inventory){
-            result = result + " | " + item.getName();
+            result.append(" | ").append(item.getName());
         }
-        return result;
+        return result.toString();
     }
 
     public Entity containsItemOfName(String itemName){
@@ -173,7 +172,7 @@ public class Character extends Entity{
         return description;
     }
 
-    public void setDescription(String desc){
+    void setDescription(String desc){
         this.description = desc;
     }
 
