@@ -213,6 +213,8 @@ public class TextAdventureDisplay extends Application {
         currentTA.setStory("================================================== \n" +
                 "This is a story about the big bad wolf.");
 
+        currentTA.populateInteractions();
+
         //Item + item interactions possible
         threeLittlePigs.addInteraction(leafBlower, house1Item, () ->{
             house1.removeItemFromRoom(house1Item);

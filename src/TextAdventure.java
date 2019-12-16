@@ -427,13 +427,13 @@ public class TextAdventure {
             currentRoom.removeItemFromRoom(currentRoom.containsItemOfName("Straw House"));
             if(currentRoom.containsCharacterOfName("Billy") != null){
                 currentRoom.containsCharacterOfName("Billy").setIsEatable(true);
+                rooms.get(2).setAccessible(true);
+                output = "You blew down the Straw House!" + "\n" + currentRoom.getConnectionsDescription();
             }
-            rooms.get(2).setAccessible(true);
-            output = "You blew down the Straw house!" + "\n" +currentRoom.getConnectionsDescription();
             //print out: "You blew the Straw House down!"
-        }
-        else if(currentRoom.containsItemOfName("Straw House") == null){
-            output = "You already blew down the Straw House!";
+            else if(currentRoom.containsItemOfName("Straw House") == null){
+                output = "You already blew down the Straw House!";
+            }
         }
         else{
             output = "You can't blow this down.";
