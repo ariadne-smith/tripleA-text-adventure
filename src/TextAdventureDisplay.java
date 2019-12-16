@@ -111,7 +111,7 @@ public class TextAdventureDisplay extends Application {
         Room home = new Room("Home");
         home.setStory("You're home! After a long and harrowing trip through the woods and a neighborhood full of pigs, you've managed to evade the cops" +
                 "and arrive home. Your family cheers when they see you and you swear to never trek into the woods without some extra provisions" +
-                "ever again." );
+                "ever again. " + "\n" + scoreCounter.getText() + "\n" + " Enter 'quit game' to quit." );
         home.setDescription("");
         home.setAccessible(false);
 
@@ -196,12 +196,11 @@ public class TextAdventureDisplay extends Application {
         woods.setConnections(new Room[] {null, null, house1, null, null, null});
         house1.setConnections(new Room[] {null, house2, null, woods, null, null});
         house2.setConnections(new Room[] {house1, null, house3, null, null, null});
-        house3.setConnections(new Room[] {null, null, null, house2, house3Interior, null});
+        house3.setConnections(new Room[] {null, river, null, house2, house3Interior, null});
         house3Interior.setConnections(new Room[] {null, null, null, null, null, house3});
         woods2.setConnections(new Room[] {house3, null, null, null, null, null});
-        //river
-        //home
-        woods3.setConnections(new Room[] {house3, null, null, null, null, null}); //not done
+        river.setConnections(new Room[] {woods2, home, null, null, null, null});
+        home.setConnections(new Room[] {river, null, null, null, null, null});
 
         //Commands possible
         ArrayList<String> commands = new ArrayList<>(List.of("go", "show inventory", "pick up", "drop", "open", "eat", "talk to", "blow down"));
@@ -219,7 +218,6 @@ public class TextAdventureDisplay extends Application {
         threeLittlePigs.addInteraction(leafBlower, house1Item, () ->{
             house1.removeItemFromRoom(house1Item);
             house2.setAccessible(true);
-            threeLittlePigs.addPoints(10);
             pig1.setIsEatable(true);
             String output = "You have destroyed the Straw House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
 //            System.out.println(output);
@@ -229,7 +227,6 @@ public class TextAdventureDisplay extends Application {
         threeLittlePigs.addInteraction(leafBlower, house2Item, () ->{
             house2.removeItemFromRoom(house2Item);
             house3.setAccessible(true);
-            threeLittlePigs.addPoints(10);
             pig2.setIsEatable(true);
             String output = "You have destroyed the Stick House." + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
 //            System.out.println(output);
@@ -243,20 +240,18 @@ public class TextAdventureDisplay extends Application {
             threeLittlePigs.getCurrentRoom().removeItemFromRoom(window);
             threeLittlePigs.getCurrentRoom().removeItemFromRoom(brick);
             house3Interior.addItemToRoom(brick);
-//            System.out.println("You broke the window with the brick!");
-//            System.out.println(threeLittlePigs.getCurrentRoom().getConnectionsDescription());
             return "You broke the window with the brick!" + "\n" + threeLittlePigs.getCurrentRoom().getConnectionsDescription();
         });
+
         threeLittlePigs.addInteraction(vine, rock, () -> {
             river.setAccessible(false);
             home.setAccessible(true);
-//            System.out.println("You move the rock so that you can reach the vine and you swing across the river! The " +
-//                    "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
-//                    "Congratulations, you've made it home!");
             threeLittlePigs.moveUserTo(home);
             return "You move the rock so that you can reach the vine and you swing across the river! The " +
                     "vine snaps just as you hit the other shore. You walk forwards from the shore and see a familiar neighborhood. " +
-                    "Congratulations, you've made it home!";
+                    "Congratulations, you've made it home!" + "\n" + " After a long and harrowing trip through the woods and a neighborhood full of pigs, " +
+                    "you've managed to evade the cops and arrive home. Your family cheers when they see you and you swear to never trek into the woods without " +
+                    "some extra provisions ever again. " + "\n" + scoreCounter.getText() + "\n" + " Enter 'quit game' to quit.";
         });
 
         /*

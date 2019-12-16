@@ -159,13 +159,8 @@ public class TextAdventure {
         currentRoom = room;
         currentRoom.addCharacter(user);
         if (currentRoom.getPlayerFirstArrives()) {
-            System.out.println("Current score: " + score);
-
             output += currentRoom.getStory();
             currentRoom.setPlayerFirstArrives(false);
-        } else{
-            score--;
-            System.out.println("Current score: " + score);
         }
         output += "\n" + currentRoom.getDescription();
         output += "\n" + currentRoom.getConnectionsDescription();
@@ -450,6 +445,7 @@ public class TextAdventure {
             Entity item = currentRoom.containsItemOfName(itemName);
             currentRoom.removeItemFromRoom((Item) item);
             output += "You ate the" + item.getName() + "!";
+            addPoints(10);
         } else if(currentRoom.containsCharacterOfName(itemName) != null && currentRoom.containsCharacterOfName(itemName).getIsEatable()){
             Entity character = currentRoom.containsCharacterOfName(itemName);
             currentRoom.removeCharacter((Character) character);
