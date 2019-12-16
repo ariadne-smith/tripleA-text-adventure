@@ -25,6 +25,14 @@ public class TextAdventureDisplay extends Application {
         launch(args);
     }
 
+    /*
+     * Initialises all the objects of the GUI and
+     * opens the window in which those objects are contained.
+     * Includes the current story for the text adventure
+     * to be played, as well as event handling for certain
+     * GUI objects.
+     */
+
     @Override
     public void start(Stage stage) {
         stage.setTitle("Triple-A Text Adventure");
@@ -175,13 +183,6 @@ public class TextAdventureDisplay extends Application {
         Item house3Item = new Item("brick house", "a strong, well-built brick house", null);
         house3Item.setPickUpAble(false);
 
-//        Item leafBlower = new Item("leaf blower", "a gardening tool that generates a lot of wind", null);
-//        Item brick = new Item("brick", "looks like a leftover brick from building a house", null);
-//        Item window = new Item ("window", "a nice skylight on the roof of the brick house", null);
-//        window.setPickUpAble(false);
-//        Item rock = new Item("rock", "a flat gray rock", null);
-//        Item vine = new Item("vine", "a long green vine suspended from a tree branch", null);
-//        vine.setPickUpAble(false);
         Item shed = new Item("shed", "a garden shed that might contain some tools",null);
         shed.setOpenable(true);
         Item leafBlower = new Item("leaf blower", "a gardening tool that generates a lot of wind", null);
@@ -196,7 +197,6 @@ public class TextAdventureDisplay extends Application {
         rock.setPickUpAble(false);
         Item vine = new Item("vine", "a long green vine suspended from a tree branch, too high to reach", null);
         vine.setPickUpAble(false);
-
 
         //Where the items are placed in the game
         woods.addCharacter(owl);
@@ -231,7 +231,7 @@ public class TextAdventureDisplay extends Application {
 
         TextAdventure threeLittlePigs = new TextAdventure("Three Little Pigs", commands, rooms, woods);
         currentTA = threeLittlePigs;
-        currentTA.setStory("================================================== \n" +
+        currentTA.setStory("=========================================================== \n" +
                 "This is a story about the big bad wolf.");
 
         currentTA.populateInteractions();
@@ -311,6 +311,12 @@ public class TextAdventureDisplay extends Application {
 
     }
 
+    /*
+     * Loads a text adventure such that its title,
+     * starting room, commands, and story show up
+     * in the text adventure display.
+     */
+
     private void loadTextAdventure() {
         gameTitle.setText(currentTA.getTitle());
         Room room = currentTA.getStartingRoom();
@@ -330,14 +336,33 @@ public class TextAdventureDisplay extends Application {
         currentTA.startGame();
     }
 
+    /*
+     * Takes a command as a string (extracted from a textfield
+     * for user input), processes the command according to
+     * the current text adventure's instructions,
+     * and prints the returned string to the display's textarea.
+     */
+
     private void retrieveCommand(String commandString){
         printLnToDisplay(currentTA.runGame(commandString));
     }
+
+    /*
+     * Prints text to the display's text area, then
+     * triggers the textarea event that scrolls the
+     * textarea view down.
+     */
 
     private void printToDisplay(String text){
         textDisplay.setText(textDisplay.getText() + text);
         textDisplay.appendText("");
     }
+
+    /*
+     * Prints text on a new line to the display's
+     * text area, then triggers the textarea even that
+     * scrolls the textarea view down.
+     */
 
     private void printLnToDisplay(String text){
         textDisplay.setText(textDisplay.getText() + "\n" + text);
