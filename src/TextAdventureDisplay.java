@@ -80,19 +80,19 @@ public class TextAdventureDisplay extends Application {
         Room house1 = new Room ("The Straw House");
         house1.setStory("You’ve trekked out of the woods and followed the rocky dirt road until you" +
                 " find a neighborhood full of questionably constructed straw houses. Your nose twitches " +
-                "and you realize the one right in front of you quite possibly contains bacon…");
+                "and you realize the one right in front of you contains bacon! Better find a way to get inside.");
         house1.setDescription("This is the site of the straw house.");
 
         Room house2 = new Room("The Stick House");
         house2.setStory("You decide to look for some more food and continue on to the next neighborhood," +
-                " filled with stick houses. You sniff the air and have a good feeling about a house to your left…");
+                " filled with stick houses. You sniff the air and have a good feeling about a house to your left . . .");
         house2.setDescription("Here is the site of a stick house.");
         house2.setAccessible(false);
 
         Room house3 = new Room("The Brick House");
         house3.setStory("You decide to look for some more food and continue on to the next neighborhood, filled with " +
                 "brick houses. You sniff the air and have a good feeling about a house up ahead, which is made of bricks " +
-                "and has a lovely skylight.");
+                "and has a lovely skylight. Inside, you can see a little pig moving about.");
         house3.setDescription("Here is the site of the brick house.");
         house3.setAccessible(false);
 
@@ -230,6 +230,7 @@ public class TextAdventureDisplay extends Application {
         ArrayList<Room> rooms = new ArrayList<>((List.of(woods, house1, house2, house3, house3Interior, woods2, river, home)));
 
         TextAdventure threeLittlePigs = new TextAdventure("Three Little Pigs", commands, rooms, woods);
+        threeLittlePigs.setUser("a wolf", "a big bad wolf");
         currentTA = threeLittlePigs;
         currentTA.setStory("================================================== \n" +
                 "This is a story about the big bad wolf.");
