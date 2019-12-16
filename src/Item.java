@@ -169,7 +169,7 @@ public class Item extends Entity {
             return null;
         } else {
             for (Entity item : inventory) {
-                if (itemName.equals(item.getName().toLowerCase())) {
+                if (itemName.equals(item.getName().toLowerCase()) && this.isOpen) {
                     return item;
                 }
             }
